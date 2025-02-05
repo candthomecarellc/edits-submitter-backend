@@ -4,14 +4,8 @@ import { formController } from './form.controller';
 
 const router = Router();
 
-router.post(
-  '/takeAndProcessData',
-  upload.fields([
-    {
-      name: 'supportingDocument',
-      maxCount: 3,
-    },
-  ]),
+router.route('/takeAndProcessData').post(
+  upload.any(),
   formController.takeAndProcessData,
 );
 

@@ -1,19 +1,29 @@
-import { IFiles } from "./form.interface";
+import fs from 'fs';
+import { PDFDocument } from 'pdf-lib';
 
-const takeAndProcessData = (data: unknown, file:IFiles): unknown => {
-    if (!file.supportingDocument) {
-        throw new Error('Supporting document is required');
-    }
-    file.supportingDocument.map((singleFile) => {
-        console.log(singleFile.path);
-    });
-    
-    // Process data
-    
+const takeAndProcessData = async (
+  data: any,
+  file: any,
+): Promise<unknown> => {
+  const pdfBytes = fs.readFileSync('./input.pdf');
+  const pdfDoc = await PDFDocument.load(pdfBytes);
 
-    return data;
+  // Get the form in the PDF
+  const form = pdfDoc.getForm();
+
+  // Get all fields in the form
+  const fields = form.getFields();
+//   console.log(fields);
+  
+
+  // Print the name of each field
+  fields.forEach((field) => {
+    console.log(field);
+  });
+
+  return { data, file };
 };
 
 export const formServices = {
-    takeAndProcessData
+  takeAndProcessData,
 };
