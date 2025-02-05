@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
 
@@ -5,6 +6,8 @@ const takeAndProcessData = async (
   data: any,
   file: any,
 ): Promise<unknown> => {
+  console.log(file);
+  
   const pdfBytes = fs.readFileSync('./input.pdf');
   const pdfDoc = await PDFDocument.load(pdfBytes);
 
