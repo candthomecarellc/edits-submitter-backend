@@ -185,6 +185,165 @@ const takeAndProcessData = async (
   form.getTextField('familyInfo.4.race').setText(data?.['familyInfo.4.race'] || '');
   // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
 
+  // houseHold Vetran yes/no checkbox
+  form.getTextField('veteranName').setText(data?.veteranName || '');
+  // TODO: Have to Add Checkbox of Yes/No Self Employed
+  // TODO: Have to Add Checkbox of Yes/No No Earning
+
+  // Earning From Work 1
+  form.getTextField('earningFromWork.0.name').setText(data?.['earningFromWork.0.name'] || '');
+  form.getTextField('earningFromWork.0.tyoeOfWork').setText(data?.['earningFromWork.0.tyoeOfWork'] || '');
+  form.getTextField('earningFromWork.0.howMuchEarned').setText(data?.['earningFromWork.0.howMuchEarned'] || '');
+  form.getTextField('earningFromWork.0.howOftenPaid').setText(data?.['earningFromWork.0.howOftenPaid'] || '');
+  // Earning From Work 2
+  form.getTextField('earningFromWork.1.name').setText(data?.['earningFromWork.1.name'] || '');
+  form.getTextField('earningFromWork.1.tyoeOfWork').setText(data?.['earningFromWork.1.tyoeOfWork'] || '');
+  form.getTextField('earningFromWork.1.howMuchEarned').setText(data?.['earningFromWork.1.howMuchEarned'] || '');
+  form.getTextField('earningFromWork.1.howOftenPaid').setText(data?.['earningFromWork.1.howOftenPaid'] || '');
+  // Earning From Work 3
+  form.getTextField('earningFromWork.2.name').setText(data?.['earningFromWork.2.name'] || '');
+  form.getTextField('earningFromWork.2.tyoeOfWork').setText(data?.['earningFromWork.2.tyoeOfWork'] || '');
+  form.getTextField('earningFromWork.2.howMuchEarned').setText(data?.['earningFromWork.2.howMuchEarned'] || '');
+  form.getTextField('earningFromWork.2.howOftenPaid').setText(data?.['earningFromWork.2.howOftenPaid'] || '');
+
+  // TODO: Have to Add Checkbox of Yes/No if no unearned income
+  //Unearned Income 1
+  form.getTextField('unearnedIncome.0.name').setText(data?.['unearnedIncome.0.name'] || '');
+  form.getTextField('unearnedIncome.0.tyoeOfWork').setText(data?.['unearnedIncome.0.tyoeOfWork'] || '');
+  form.getTextField('unearnedIncome.0.howMuchEarned').setText(data?.['unearnedIncome.0.howMuchEarned'] || '');
+  form.getTextField('unearnedIncome.0.howOftenPaid').setText(data?.['unearnedIncome.0.howOftenPaid'] || '');
+  //Unearned Income 2
+  form.getTextField('unearnedIncome.1.name').setText(data?.['unearnedIncome.1.name'] || '');
+  form.getTextField('unearnedIncome.1.tyoeOfWork').setText(data?.['unearnedIncome.1.tyoeOfWork'] || '');
+  form.getTextField('unearnedIncome.1.howMuchEarned').setText(data?.['unearnedIncome.1.howMuchEarned'] || '');
+  form.getTextField('unearnedIncome.1.howOftenPaid').setText(data?.['unearnedIncome.1.howOftenPaid'] || '');
+  //Unearned Income 3
+  form.getTextField('unearnedIncome.2.name').setText(data?.['unearnedIncome.2.name'] || '');
+  form.getTextField('unearnedIncome.2.tyoeOfWork').setText(data?.['unearnedIncome.2.tyoeOfWork'] || '');
+  form.getTextField('unearnedIncome.2.howMuchEarned').setText(data?.['unearnedIncome.2.howMuchEarned'] || '');
+  form.getTextField('unearnedIncome.2.howOftenPaid').setText(data?.['unearnedIncome.2.howOftenPaid'] || '');
+  
+  // TODO: Have to Add Checkbox of Yes/No if no contributions
+  //Contributions 1
+  form.getTextField('contributions.0.name').setText(data?.['contributions.0.name'] || '');
+  form.getTextField('contributions.0.tyoeOfWork').setText(data?.['contributions.0.tyoeOfWork'] || '');
+  form.getTextField('contributions.0.howMuchEarned').setText(data?.['contributions.0.howMuchEarned'] || '');
+  form.getTextField('contributions.0.howOftenPaid').setText(data?.['contributions.0.howOftenPaid'] || '');
+  //Contributions 2
+  form.getTextField('contributions.1.name').setText(data?.['contributions.1.name'] || '');
+  form.getTextField('contributions.1.tyoeOfWork').setText(data?.['contributions.1.tyoeOfWork'] || '');
+  form.getTextField('contributions.1.howMuchEarned').setText(data?.['contributions.1.howMuchEarned'] || '');
+  form.getTextField('contributions.1.howOftenPaid').setText(data?.['contributions.1.howOftenPaid'] || '');
+  //Contributions 3
+  form.getTextField('contributions.2.name').setText(data?.['contributions.2.name'] || '');
+  form.getTextField('contributions.2.tyoeOfWork').setText(data?.['contributions.2.tyoeOfWork'] || '');
+  form.getTextField('contributions.2.howMuchEarned').setText(data?.['contributions.2.howMuchEarned'] || '');
+  form.getTextField('contributions.2.howOftenPaid').setText(data?.['contributions.2.howOftenPaid'] || '');
+
+  // TODO: Have to Add Checkbox of Yes/No if no other income
+  //Other Income 1
+  form.getTextField('otherIncome.0.name').setText(data?.['otherIncome.0.name'] || '');
+  form.getTextField('otherIncome.0.tyoeOfWork').setText(data?.['otherIncome.0.tyoeOfWork'] || '');
+  form.getTextField('otherIncome.0.howMuchEarned').setText(data?.['otherIncome.0.howMuchEarned'] || '');
+  form.getTextField('otherIncome.0.howOftenPaid').setText(data?.['otherIncome.0.howOftenPaid'] || '');
+  //Other Income 2
+  form.getTextField('otherIncome.1.name').setText(data?.['otherIncome.1.name'] || '');
+  form.getTextField('otherIncome.1.tyoeOfWork').setText(data?.['otherIncome.1.tyoeOfWork'] || '');
+  form.getTextField('otherIncome.1.howMuchEarned').setText(data?.['otherIncome.1.howMuchEarned'] || '');
+  form.getTextField('otherIncome.1.howOftenPaid').setText(data?.['otherIncome.1.howOftenPaid'] || '');
+  //Other Income 3
+  form.getTextField('otherIncome.2.name').setText(data?.['otherIncome.2.name'] || '');
+  form.getTextField('otherIncome.2.tyoeOfWork').setText(data?.['otherIncome.2.tyoeOfWork'] || '');
+  form.getTextField('otherIncome.2.howMuchEarned').setText(data?.['otherIncome.2.howMuchEarned'] || '');
+  form.getTextField('otherIncome.2.howOftenPaid').setText(data?.['otherIncome.2.howOftenPaid'] || '');
+
+  form.getTextField('applingAdulthaveNoIncome').setText(data?.applingAdulthaveNoIncome || '');
+  form.getTextField('explainHowLiving').setText(data?.explainHowLiving || '');
+  // todo: applierChangeJob.changeJobin3Month checkbox 
+  form.getTextField('applierChangeJob.lastJobDate.month').setText(data?.['applierChangeJob.lastJobDate.month'] || '');
+  form.getTextField('applierChangeJob.lastJobDate.day').setText(data?.['applierChangeJob.lastJobDate.day'] || '');
+  form.getTextField('applierChangeJob.lastJobDate.year').setText(data?.['applierChangeJob.lastJobDate.year'] || '');
+  form.getTextField('applierChangeJob.nameofEmployer').setText(data?.['applierChangeJob.nameofEmployer'] || '');
+
+  // applierStudent.student checkbox
+  // applierStudent.studentType checkbox
+  form.getTextField('applierStudent.nameOfStudent').setText(data?.['applierStudent.nameOfStudent'] || '');
+  // payForChildCare checkbox
+
+  // payForChildCare 1
+  form.getTextField('childCare.0.childName').setText(data?.['childCare.0.childName'] || '');
+  form.getTextField('childCare.0.howMuchPaid').setText(data?.['childCare.0.howMuchPaid'] || '');
+  form.getTextField('childCare.0.howOftenPaid').setText(data?.['childCare.0.howOftenPaid'] || '');
+  // payForChildCare 2
+  form.getTextField('childCare.1.childName').setText(data?.['childCare.1.childName'] || '');
+  form.getTextField('childCare.1.howMuchPaid').setText(data?.['childCare.1.howMuchPaid'] || '');
+  form.getTextField('childCare.1.howOftenPaid').setText(data?.['childCare.1.howOftenPaid'] || '');
+  // payForChildCare 3
+  form.getTextField('childCare.2.childName').setText(data?.['childCare.2.childName'] || '');
+  form.getTextField('childCare.2.howMuchPaid').setText(data?.['childCare.2.howMuchPaid'] || '');
+  form.getTextField('childCare.2.howOftenPaid').setText(data?.['childCare.2.howOftenPaid'] || '');
+
+  // familyPlanningServiceOnly checkbox
+  // isPayCourtOrdered.payCourtOrdered checkbox
+  form.getTextField('isPayCourtOrdered.payCourtOrderedAmount').setText(data?.['isPayCourtOrdered.payCourtOrderedAmount'] || '');
+  form.getTextField('isPayCourtOrdered.whoPayCourtOrdered').setText(data?.['isPayCourtOrdered.whoPayCourtOrdered'] || '');
+
+  //applyingHavingMedicare checkbox
+  // applyingHavingCommercialInsurance.commercialInsurance
+  form.getTextField('applyingHavingCommercialInsurance.nameOfInsured').setText(data?.['applyingHavingCommercialInsurance.nameOfInsured'] || '');
+  form.getTextField('applyingHavingCommercialInsurance.personCovered').setText(data?.['applyingHavingCommercialInsurance.personCovered'] || '');
+  form.getTextField('applyingHavingCommercialInsurance.costOfPolicy').setText(data?.['applyingHavingCommercialInsurance.costOfPolicy'] || '');
+  form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.month').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.month'] || '');
+  form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.day').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.day'] || '');
+  form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.year').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.year'] || '');
+  //currentJobInsurance
+  form.getTextField('monthlyHousingPayment').setText(data?.['monthlyHousingPayment'] || '');
+  form.getTextField('payForWater.payForWaterAmount').setText(data?.['payForWater.payForWaterAmount'] || '');
+  // payForWater.howOftenPaid checkbox
+  // freeHousingAsPartofYourPay checkbox
+  //nursingHomeCare
+  // blindOrDisabledOrChronicallyIll
+
+  //prescriptionBill3Month.prescriptionBill
+  form.getTextField('prescriptionBill3Month.name').setText(data?.['prescriptionBill3Month.name'] || '');
+  form.getTextField('prescriptionBill3Month.whichMonth').setText(data?.['prescriptionBill3Month.whichMonth'] || '');
+
+  //prescriptionBillOlder
+  //moveIntoThisCounty.move 
+  form.getTextField('moveIntoThisCounty.who').setText(data?.['moveIntoThisCounty.who'] || '');
+  form.getTextField('moveIntoThisCounty.whichState').setText(data?.['moveIntoThisCounty.whichState'] || '');
+  form.getTextField('moveIntoThisCounty.whichCounty').setText(data?.['moveIntoThisCounty.whichCounty'] || '');
+
+  //pendingLawSuit.pending
+  form.getTextField('pendingLawSuit.who').setText(data?.['pendingLawSuit.who'] || '');
+  //workersCompensationCase.workersCompensation
+  form.getTextField('workersCompensationCase.who').setText(data?.['workersCompensationCase.who'] || '');
+  //deceased.deceased
+  form.getTextField('deceased.who').setText(data?.['deceased.who'] || '');
+
+  //parentLiveOutside.parentLiveOutside
+  //parentLiveOutside.fearOfHarm
+  form.getTextField('parentLiveOutside.childName1').setText(data?.['parentLiveOutside.childName1'] || '');
+  form.getTextField('parentLiveOutside.childName2').setText(data?.['parentLiveOutside.childName2'] || '');
+  form.getTextField('parentLiveOutside.nameOfParent1').setText(data?.['parentLiveOutside.nameOfParent1'] || '');
+  form.getTextField('parentLiveOutside.nameOfParent2').setText(data?.['parentLiveOutside.nameOfParent2'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth1.month').setText(data?.['parentLiveOutside.dateOfBirth1.month'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth1.day').setText(data?.['parentLiveOutside.dateOfBirth1.day'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth1.year').setText(data?.['parentLiveOutside.dateOfBirth1.year'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth2.month').setText(data?.['parentLiveOutside.dateOfBirth2.month'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth2.day').setText(data?.['parentLiveOutside.dateOfBirth2.day'] || '');
+  form.getTextField('parentLiveOutside.dateOfBirth2.year').setText(data?.['parentLiveOutside.dateOfBirth2.year'] || '');
+  form.getTextField('parentLiveOutside.street1').setText(data?.['parentLiveOutside.street1'] || '');
+  form.getTextField('parentLiveOutside.street2').setText(data?.['parentLiveOutside.street2'] || '');
+  form.getTextField('parentLiveOutside.city1').setText(data?.['parentLiveOutside.city1'] || '');
+  form.getTextField('parentLiveOutside.city2').setText(data?.['parentLiveOutside.city2'] || '');
+  form.getTextField('parentLiveOutside.ssn1').setText(data?.['parentLiveOutside.ssn1'] || '');
+  form.getTextField('parentLiveOutside.ssn2').setText(data?.['parentLiveOutside.ssn2'] || '');
+
+  //marriedLivesOutside.marriedLivesOutside
+  //marriedLivesOutside.fearOfHarm
+  form.getTextField('marriedLivesOutside.applyingPerson').setText(data?.['marriedLivesOutside.applyingPerson'] || '');
+  
 
   return { data, file };
 };
