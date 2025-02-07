@@ -1,43 +1,46 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
-import { PDFDocument } from 'pdf-lib';
+// import { PDFDocument } from 'pdf-lib';
 import { Express } from 'express';
 
 const takeAndProcessData = async (
   data: any,
   file: Express.Multer.File[],
 ): Promise<unknown> => {
-  const pdfBytes = fs.readFileSync('./input.pdf');
-  const pdfDoc = await PDFDocument.load(pdfBytes);
-  const form = pdfDoc.getForm();
+  /* try {
+    const pdfBytes = fs.readFileSync('./input.pdf');
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const form = pdfDoc.getForm();
 
-  // Set the value of the formTextField
-  form.getTextField('applicantName').setText(data?.applicantName || '');
-  form.getTextField('applicationDate').setText(data?.applicationDate || '');
+
+    // Set the value of the formTextField
+  form.getTextField('applicantName').setText(data.applicantName || '');
+  form.getTextField('applicationDate').setText(data.applicationDate || '');
   // TODO: File Uplaod Section Add
-  form.getTextField('personalInfo.firstName').setText(data?.['personalInfo?.firstName'] || '');
-  form.getTextField('personalInfo.middleName').setText(data?.['personalInfo?.middleName'] || '');
-  form.getTextField('personalInfo.lastName').setText(data?.['personalInfo?.lastName'] || '');
-  form.getTextField('personalInfo.primaryPhoneNumber').setText(data?.['personalInfo?.primaryPhoneNumber'] || '');
+  form.getTextField('personalInfo.firstName').setText(data?.['personalInfo.firstName'] || '');
+  form.getTextField('personalInfo.middleName').setText(data?.['personalInfo.middleName'] || '');
+  form.getTextField('personalInfo.lastName').setText(data?.['personalInfo.lastName'] || '');
+  form.getTextField('personalInfo.primaryPhoneNumber').setText(data?.['personalInfo.primaryPhoneNumber'] || '');
   // TODO:Phone Type Add
-  form.getTextField('personalInfo.secondaryPhoneNumber').setText(data?.['personalInfo?.secondaryPhoneNumber'] || '');
+  form.getTextField('personalInfo.secondaryPhoneNumber').setText(data?.['personalInfo.secondaryPhoneNumber'] || '');
   // TODO:Phone Type Add
-  form.getTextField('personalInfo.languageSpeak').setText(data?.['personalInfo?.languageSpeak'] || '');
-  form.getTextField('personalInfo.languageRead').setText(data?.['personalInfo?.languageRead'] || '');
+  form.getTextField('personalInfo.languageSpeak').setText(data?.['personalInfo.languageSpeak'] || '');
+  form.getTextField('personalInfo.languageRead').setText(data?.['personalInfo.languageRead'] || '');
   // TODO: HomeLess Section Add
-  form.getTextField('homeAddress.street').setText(data?.['homeAddress?.street'] || '');
-  form.getTextField('homeAddress.city').setText(data?.['homeAddress?.city'] || '');
-  form.getTextField('homeAddress.state').setText(data?.['homeAddress?.state'] || '');
-  form.getTextField('homeAddress.zip').setText(data?.['homeAddress?.zip'] || '');
-  form.getTextField('homeAddress.county').setText(data?.['homeAddress?.county'] || '');
-  form.getTextField('homeAddress.apt').setText(data?.['homeAddress?.apt'] || '');
+  form.getTextField('homeAddress.street').setText(data?.['homeAddress.street'] || '');
+  form.getTextField('homeAddress.city').setText(data?.['homeAddress.city'] || '');
+  form.getTextField('homeAddress.state').setText(data?.['homeAddress.state'] || '');
+  form.getTextField('homeAddress.zip').setText(data?.['homeAddress.zip'] || '');
+  form.getTextField('homeAddress.county').setText(data?.['homeAddress.county'] || '');
+  form.getTextField('homeAddress.apt').setText(data?.['homeAddress.apt'] || '');
   form.getTextField('mailingAddress.street').setText(data?.['mailingAddress.street'] || '');
   form.getTextField('mailingAddress.city').setText(data?.['mailingAddress.city'] || '');
   form.getTextField('mailingAddress.state').setText(data?.['mailingAddress.state'] || '');
   form.getTextField('mailingAddress.zip').setText(data?.['mailingAddress.zip'] || '');
   form.getTextField('mailingAddress.apt').setText(data?.['mailingAddress.apt'] || '');
   form.getTextField('anotherPerson.Name').setText(data?.['anotherPerson.Name'] || '');
-  form.getTextField('anotherPerson.phoneNumber').setText(data?.['anotherPerson.phoneNumber'] || '');
+  form.getTextField('anotherPerson.phoneNumber').setText(data?.['anotherPerson.phoneHome'] || '');
   //TODO: Phone Type Add
   form.getTextField('anotherPerson.street').setText(data?.['anotherPerson.street'] || '');
   form.getTextField('anotherPerson.city').setText(data?.['anotherPerson.city'] || '');
@@ -62,7 +65,7 @@ const takeAndProcessData = async (
   form.getTextField('familyInfo.0.pregnantDueDate.day').setText(data?.['familyInfo.0.pregnantDueDate.day'] || '');
   form.getTextField('familyInfo.0.pregnantDueDate.year').setText(data?.['familyInfo.0.pregnantDueDate.year'] || '');
   // TODO: Have to Add Checkbox of Yes/No Parent applying for child
-  form.getTextField('familyInfo.0.relationship').setText(data?.['familyInfo.0.relationship'] || '');
+  // form.getTextField('familyInfo.0.relationship').setText(data?.['familyInfo.0.relationship'] || ''); // Self
   // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
   form.getTextField('familyInfo.0.publicHealthCoverage.idNumber').setText(data?.['familyInfo.0.publicHealthCoverage.idNumber'] || '');
   form.getTextField('familyInfo.0.ssn').setText(data?.['familyInfo.0.ssn'] || '');
@@ -343,7 +346,93 @@ const takeAndProcessData = async (
   //marriedLivesOutside.marriedLivesOutside
   //marriedLivesOutside.fearOfHarm
   form.getTextField('marriedLivesOutside.applyingPerson').setText(data?.['marriedLivesOutside.applyingPerson'] || '');
+  form.getTextField('marriedLivesOutside.spouseName').setText(data?.['marriedLivesOutside.spouseName'] || '');
+  form.getTextField('marriedLivesOutside.dateOfBirth.month').setText(data?.['marriedLivesOutside.dateOfBirth.month'] || '');
+  form.getTextField('marriedLivesOutside.dateOfBirth.day').setText(data?.['marriedLivesOutside.dateOfBirth.day'] || '');
+  form.getTextField('marriedLivesOutside.dateOfBirth.year').setText(data?.['marriedLivesOutside.dateOfBirth.year'] || '');
+  form.getTextField('marriedLivesOutside.street').setText(data?.['marriedLivesOutside.street'] || '');
+  form.getTextField('marriedLivesOutside.city').setText(data?.['marriedLivesOutside.city'] || '');
+  form.getTextField('marriedLivesOutside.ssn').setText(data?.['marriedLivesOutside.ssn'] || '');
+
+  // doWanttoJoinHealthPlan checkbox 
+  // healthPlan 1
+  form.getTextField('healthPlan.0.lastName').setText(data?.['healthPlan.0.lastName'] || '');
+  form.getTextField('healthPlan.0.firstName').setText(data?.['healthPlan.0.firstName'] || '');
+  form.getTextField('healthPlan.0.dob').setText(data?.['healthPlan.0.dob'] || '');
+  form.getTextField('healthPlan.0.ssn').setText(data?.['healthPlan.0.ssn'] || '');
+  form.getTextField('healthPlan.0.nameOfHealthPlan').setText(data?.['healthPlan.0.nameOfHealthPlan'] || '');
+  form.getTextField('healthPlan.0.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.0.preferred.preferredDoctorOrClinic'] || '');
+  // healthPlan.0.preferred.currentProvider checkbox
+  form.getTextField('healthPlan.0.obGyn').setText(data?.['healthPlan.0.obGyn'] || '');
+
+  // healthPlan 2
+  form.getTextField('healthPlan.1.lastName').setText(data?.['healthPlan.1.lastName'] || '');
+  form.getTextField('healthPlan.1.firstName').setText(data?.['healthPlan.1.firstName'] || '');
+  form.getTextField('healthPlan.1.dob').setText(data?.['healthPlan.1.dob'] || '');
+  form.getTextField('healthPlan.1.ssn').setText(data?.['healthPlan.1.ssn'] || '');
+  form.getTextField('healthPlan.1.nameOfHealthPlan').setText(data?.['healthPlan.1.nameOfHealthPlan'] || '');
+  form.getTextField('healthPlan.1.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.1.preferred.preferredDoctorOrClinic'] || '');
+  // healthPlan.1.preferred.currentProvider checkbox
+  form.getTextField('healthPlan.1.obGyn').setText(data?.['healthPlan.1.obGyn'] || '');
+
+  // healthPlan 3
+  form.getTextField('healthPlan.2.lastName').setText(data?.['healthPlan.2.lastName'] || '');
+  form.getTextField('healthPlan.2.firstName').setText(data?.['healthPlan.2.firstName'] || '');
+  form.getTextField('healthPlan.2.dob').setText(data?.['healthPlan.2.dob'] || '');
+  form.getTextField('healthPlan.2.ssn').setText(data?.['healthPlan.2.ssn'] || '');
+  form.getTextField('healthPlan.2.nameOfHealthPlan').setText(data?.['healthPlan.2.nameOfHealthPlan'] || '');
+  form.getTextField('healthPlan.2.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.2.preferred.preferredDoctorOrClinic'] || '');
+  // healthPlan.2.preferred.currentProvider checkbox
+  form.getTextField('healthPlan.2.obGyn').setText(data?.['healthPlan.2.obGyn'] || '');
+
+  // healthPlan 4
+  form.getTextField('healthPlan.3.lastName').setText(data?.['healthPlan.3.lastName'] || '');
+  form.getTextField('healthPlan.3.firstName').setText(data?.['healthPlan.3.firstName'] || '');
+  form.getTextField('healthPlan.3.dob').setText(data?.['healthPlan.3.dob'] || '');
+  form.getTextField('healthPlan.3.ssn').setText(data?.['healthPlan.3.ssn'] || '');
+  form.getTextField('healthPlan.3.nameOfHealthPlan').setText(data?.['healthPlan.3.nameOfHealthPlan'] || '');
+  form.getTextField('healthPlan.3.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.3.preferred.preferredDoctorOrClinic'] || '');
+  // healthPlan.3.preferred.currentProvider checkbox
+  form.getTextField('healthPlan.3.obGyn').setText(data?.['healthPlan.3.obGyn'] || '');
+
+  // healthPlan 5
+  form.getTextField('healthPlan.4.lastName').setText(data?.['healthPlan.4.lastName'] || '');
+  form.getTextField('healthPlan.4.firstName').setText(data?.['healthPlan.4.firstName'] || '');
+  form.getTextField('healthPlan.4.dob').setText(data?.['healthPlan.4.dob'] || '');
+  form.getTextField('healthPlan.4.ssn').setText(data?.['healthPlan.4.ssn'] || '');
+  form.getTextField('healthPlan.4.nameOfHealthPlan').setText(data?.['healthPlan.4.nameOfHealthPlan'] || '');
+  form.getTextField('healthPlan.4.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.4.preferred.preferredDoctorOrClinic'] || '');
+  // healthPlan.4.preferred.currentProvider checkbox
+  form.getTextField('healthPlan.4.obGyn').setText(data?.['healthPlan.4.obGyn'] || '');
+
+
+
+  // Save the pdf to the file system
+  const filledPdfBytes = await pdfDoc.save();
+  const filledPdfBuffer = Buffer.from(filledPdfBytes);
+  fs.writeFileSync('./processed_files/filled.pdf', filledPdfBuffer);
+
+  console.log('PDF processing complete!');
   
+
+  } catch (error) {
+    console.log(error);
+  } */
+
+const values = Object.values(data);
+const headers = Object.keys(data);
+
+const csvString = headers.join(',') + '\n' + values.join(',');
+
+
+// Write the string to a .txt file
+fs.writeFile('./processed_files/output.txt', csvString, (err) => {
+  if (err) {
+    console.error('Error writing file:', err);
+  } else {
+    console.log('File saved successfully as output.txt');
+  }
+});
 
   return { data, file };
 };
