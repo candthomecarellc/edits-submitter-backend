@@ -8,6 +8,9 @@ const takeAndProcessData = async (
   data: any,
   file: Express.Multer.File[],
 ): Promise<unknown> => {
+
+  
+
   try {
     const pdfBytes = fs.readFileSync('./input.pdf');
     const pdfDoc = await PDFDocument.load(pdfBytes);
