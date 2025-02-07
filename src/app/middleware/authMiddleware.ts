@@ -32,7 +32,7 @@ const authMiddleware = async (
 
     req.user = user.toObject(); // Now TypeScript knows about the 'user' property
     next();
-  } catch (error: any) {
+  } catch (error: unknown) {
     res
       .status(401)
       .send(new ApiResponse(401, error, 'Access token is expired or invalid'));
