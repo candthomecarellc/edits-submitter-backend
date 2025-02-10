@@ -9,8 +9,6 @@ const takeAndProcessData = async (
   file: Express.Multer.File[],
 ): Promise<unknown> => {
 
-  
-
   try {
     const pdfBytes = fs.readFileSync('./input.pdf');
     const pdfDoc = await PDFDocument.load(pdfBytes);
@@ -32,7 +30,16 @@ const takeAndProcessData = async (
     form
       .getTextField('personalInfo.primaryPhoneNumber')
       .setText(data?.['personalInfo.primaryPhoneNumber'] || '');
-    // TODO:Phone Type Add
+    
+
+      const checkbox = form.getCheckBox('checkbox.field');
+  
+      // Check the checkbox
+      checkbox.check();
+
+
+      
+
     form
       .getTextField('personalInfo.secondaryPhoneNumber')
       .setText(data?.['personalInfo.secondaryPhoneNumber'] || '');
