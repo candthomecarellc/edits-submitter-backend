@@ -12,7 +12,7 @@ const takeAndProcessData = async (
     const pdfBytes = fs.readFileSync('./input.pdf');
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
-    console.log(data);
+    console.log(data); 
   try {
     // Set the value of the formTextField
     form.getTextField('applicantName').setText(data.applicantName || '');
