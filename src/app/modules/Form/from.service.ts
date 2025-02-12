@@ -196,26 +196,22 @@ const takeAndProcessData = async (
 
     if(data?.['familyInfo.0.sex']) form.getRadioGroup('familyInfo.0.sex').select(data?.['familyInfo.0.sex']);
     if(data?.['familyInfo.0.isApplying']) form.getRadioGroup('familyInfo.0.isApplying').select(data?.['familyInfo.0.isApplying']);
-
     form.getTextField('familyInfo.0.genderIdentity').setText(data?.['familyInfo.0.genderIdentity'] || '');
-
     if(data?.['familyInfo.0.isPregnant']) form.getRadioGroup('familyInfo.0.isPregnant').select(data?.['familyInfo.0.isPregnant']);
-
     form.getTextField('familyInfo.0.pregnantDueDate.month').setText(data?.['familyInfo.0.pregnantDueDate.month'] || '');
     form.getTextField('familyInfo.0.pregnantDueDate.day').setText(data?.['familyInfo.0.pregnantDueDate.day'] || '');
     form.getTextField('familyInfo.0.pregnantDueDate.year').setText(data?.['familyInfo.0.pregnantDueDate.year'] || '');
-
     if(data?.['familyInfo.0.isParent']) form.getRadioGroup('familyInfo.0.isParent').select(data?.['familyInfo.0.isParent']);
     // form.getTextField('familyInfo.0.relationship').setText(data?.['familyInfo.0.relationship'] || ''); // for this field it is fixed value 'Self'
-    // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
-    form.getTextField('familyInfo.0.publicHealthCoverage.idNumber').setText(data?.['familyInfo.0.publicHealthCoverage.idNumber'] || '');
+    if(data?.['familyInfo.0.publicHealthCoverage']) form.getRadioGroup('familyInfo.0.publicHealthCoverage').select(data?.['familyInfo.0.publicHealthCoverage']);
+    form.getTextField('familyInfo.0.publicHealthCoverageidNumber').setText(data?.['familyInfo.0.publicHealthCoverageidNumber'] || '');
     form.getTextField('familyInfo.0.ssn').setText(data?.['familyInfo.0.ssn'] || '');
-    // TODO: Have to Add Checkbox of Yes/No US Citizen
-    form.getTextField('familyInfo.0.usCitizenship.receivedImmigrationStatusDate.month',).setText(data?.['familyInfo.0.usCitizenship.receivedImmigrationStatusDate.month'] || '',);
-    form.getTextField('familyInfo.0.usCitizenship.receivedImmigrationStatusDate.day',).setText(data?.['familyInfo.0.usCitizenship.receivedImmigrationStatusDate.day'] || '',);
-    form.getTextField('familyInfo.0.usCitizenship.receivedImmigrationStatusDate.year',).setText(data?.['familyInfo.0.usCitizenship.receivedImmigrationStatusDate.year'] || '',);
+    if(data?.['familyInfo.0.usCitizenship']) form.getRadioGroup('familyInfo.0.usCitizenship').select(data?.['familyInfo.0.usCitizenship']);
+    form.getTextField('familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.month',).setText(data?.['familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.month'] || '',);
+    form.getTextField('familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.day',).setText(data?.['familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.day'] || '',);
+    form.getTextField('familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.year',).setText(data?.['familyInfo.0.usCitizenshipReceivedImmigrationStatusDate.year'] || '',);
     form.getTextField('familyInfo.0.race').setText(data?.['familyInfo.0.race'] || '');
-    // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
+    if(data?.['familyInfo.0.receivedAServiceFromIHS']) form.getRadioGroup('familyInfo.0.receivedAServiceFromIHS').select(data?.['familyInfo.0.receivedAServiceFromIHS']);
 
     // 2nd Member
     form.getTextField('familyInfo.1.name').setText(data?.['familyInfo.1.name'] || '');
@@ -238,16 +234,15 @@ const takeAndProcessData = async (
     form.getTextField('familyInfo.1.pregnantDueDate.year').setText(data?.['familyInfo.1.pregnantDueDate.year'] || '');
     if(data?.['familyInfo.1.isParent']) form.getRadioGroup('familyInfo.1.isParent').select(data?.['familyInfo.1.isParent']);
     form.getTextField('familyInfo.1.relationship').setText(data?.['familyInfo.1.relationship'] || '');
-    // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
-    form.getTextField('familyInfo.1.publicHealthCoverage.idNumber').setText(data?.['familyInfo.1.publicHealthCoverage.idNumber'] || '');
+    if(data?.['familyInfo.1.publicHealthCoverage']) form.getRadioGroup('familyInfo.1.publicHealthCoverage').select(data?.['familyInfo.1.publicHealthCoverage']);
+    form.getTextField('familyInfo.1.publicHealthCoverageidNumber').setText(data?.['familyInfo.1.publicHealthCoverageidNumber'] || '');
     form.getTextField('familyInfo.1.ssn').setText(data?.['familyInfo.1.ssn'] || '');
-    // TODO: Have to Add Checkbox of Yes/No US Citizen
-    form.getTextField('familyInfo.1.usCitizenship.receivedImmigrationStatusDate.month',).setText(data?.['familyInfo.1.usCitizenship.receivedImmigrationStatusDate.month'] || '',);
-    form.getTextField('familyInfo.1.usCitizenship.receivedImmigrationStatusDate.day',).setText(data?.['familyInfo.1.usCitizenship.receivedImmigrationStatusDate.day'] || '',);
-    form.getTextField('familyInfo.1.usCitizenship.receivedImmigrationStatusDate.year',).setText(data?.['familyInfo.1.usCitizenship.receivedImmigrationStatusDate.year'] || '',);
-    form.getTextField('familyInfo.1.race')
-      .setText(data?.['familyInfo.1.race'] || '');
-    // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
+    if(data?.['familyInfo.1.usCitizenship']) form.getRadioGroup('familyInfo.1.usCitizenship').select(data?.['familyInfo.1.usCitizenship']);
+    form.getTextField('familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.month',).setText(data?.['familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.month'] || '',);
+    form.getTextField('familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.day',).setText(data?.['familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.day'] || '',);
+    form.getTextField('familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.year',).setText(data?.['familyInfo.1.usCitizenshipReceivedImmigrationStatusDate.year'] || '',);
+    form.getTextField('familyInfo.1.race').setText(data?.['familyInfo.1.race'] || '');
+    if(data?.['familyInfo.1.receivedAServiceFromIHS']) form.getRadioGroup('familyInfo.1.receivedAServiceFromIHS').select(data?.['familyInfo.1.receivedAServiceFromIHS']);
 
     // 3nd Member
     form.getTextField('familyInfo.2.name').setText(data?.['familyInfo.2.name'] || '');
@@ -267,15 +262,15 @@ const takeAndProcessData = async (
     form.getTextField('familyInfo.2.pregnantDueDate.year').setText(data?.['familyInfo.2.pregnantDueDate.year'] || '');
     if(data?.['familyInfo.2.isParent']) form.getRadioGroup('familyInfo.2.isParent').select(data?.['familyInfo.2.isParent']);
     form.getTextField('familyInfo.2.relationship').setText(data?.['familyInfo.2.relationship'] || '');
-    // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
-    form.getTextField('familyInfo.2.publicHealthCoverage.idNumber').setText(data?.['familyInfo.2.publicHealthCoverage.idNumber'] || '');
+    if(data?.['familyInfo.2.publicHealthCoverage']) form.getRadioGroup('familyInfo.2.publicHealthCoverage').select(data?.['familyInfo.2.publicHealthCoverage']);
+    form.getTextField('familyInfo.2.publicHealthCoverageidNumber').setText(data?.['familyInfo.2.publicHealthCoverageidNumber'] || '');
     form.getTextField('familyInfo.2.ssn').setText(data?.['familyInfo.2.ssn'] || '');
-    // TODO: Have to Add Checkbox of Yes/No US Citizen
-    form.getTextField('familyInfo.2.usCitizenship.receivedImmigrationStatusDate.month',).setText(data?.['familyInfo.2.usCitizenship.receivedImmigrationStatusDate.month'] || '',);
-    form.getTextField('familyInfo.2.usCitizenship.receivedImmigrationStatusDate.day',).setText(data?.['familyInfo.2.usCitizenship.receivedImmigrationStatusDate.day'] || '',);
-    form.getTextField('familyInfo.2.usCitizenship.receivedImmigrationStatusDate.year',).setText(data?.['familyInfo.2.usCitizenship.receivedImmigrationStatusDate.year'] || '',);
+    if(data?.['familyInfo.2.usCitizenship']) form.getRadioGroup('familyInfo.2.usCitizenship').select(data?.['familyInfo.2.usCitizenship']);
+    form.getTextField('familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.month',).setText(data?.['familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.month'] || '',);
+    form.getTextField('familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.day',).setText(data?.['familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.day'] || '',);
+    form.getTextField('familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.year',).setText(data?.['familyInfo.2.usCitizenshipReceivedImmigrationStatusDate.year'] || '',);
     form.getTextField('familyInfo.2.race').setText(data?.['familyInfo.2.race'] || '');
-    // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
+    if(data?.['familyInfo.2.receivedAServiceFromIHS']) form.getRadioGroup('familyInfo.2.receivedAServiceFromIHS').select(data?.['familyInfo.2.receivedAServiceFromIHS']);
 
     // 4rd Member
     form.getTextField('familyInfo.3.name').setText(data?.['familyInfo.3.name'] || '');
@@ -295,15 +290,15 @@ const takeAndProcessData = async (
     form.getTextField('familyInfo.3.pregnantDueDate.year').setText(data?.['familyInfo.3.pregnantDueDate.year'] || '');
     if(data?.['familyInfo.3.isParent']) form.getRadioGroup('familyInfo.3.isParent').select(data?.['familyInfo.3.isParent']);
     form.getTextField('familyInfo.3.relationship').setText(data?.['familyInfo.3.relationship'] || '');
-    // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
-    form.getTextField('familyInfo.3.publicHealthCoverage.idNumber').setText(data?.['familyInfo.3.publicHealthCoverage.idNumber'] || '');
+    if(data?.['familyInfo.3.publicHealthCoverage']) form.getRadioGroup('familyInfo.3.publicHealthCoverage').select(data?.['familyInfo.3.publicHealthCoverage']);
+    form.getTextField('familyInfo.3.publicHealthCoverageidNumber').setText(data?.['familyInfo.3.publicHealthCoverageidNumber'] || '');
     form.getTextField('familyInfo.3.ssn').setText(data?.['familyInfo.3.ssn'] || '');
-    // TODO: Have to Add Checkbox of Yes/No US Citizen
-    form.getTextField('familyInfo.3.usCitizenship.receivedImmigrationStatusDate.month',).setText(data?.['familyInfo.3.usCitizenship.receivedImmigrationStatusDate.month'] || '',);
-    form.getTextField('familyInfo.3.usCitizenship.receivedImmigrationStatusDate.day',).setText(data?.['familyInfo.3.usCitizenship.receivedImmigrationStatusDate.day'] || '',);
-    form.getTextField('familyInfo.3.usCitizenship.receivedImmigrationStatusDate.year',).setText(data?.['familyInfo.3.usCitizenship.receivedImmigrationStatusDate.year'] || '',);
+    if(data?.['familyInfo.3.usCitizenship']) form.getRadioGroup('familyInfo.3.usCitizenship').select(data?.['familyInfo.3.usCitizenship']);
+    form.getTextField('familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.month',).setText(data?.['familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.month'] || '',);
+    form.getTextField('familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.day',).setText(data?.['familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.day'] || '',);
+    form.getTextField('familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.year',).setText(data?.['familyInfo.3.usCitizenshipReceivedImmigrationStatusDate.year'] || '',);
     form.getTextField('familyInfo.3.race').setText(data?.['familyInfo.3.race'] || '');
-    // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
+    if(data?.['familyInfo.3.receivedAServiceFromIHS']) form.getRadioGroup('familyInfo.3.receivedAServiceFromIHS').select(data?.['familyInfo.3.receivedAServiceFromIHS']);
 
     // 5th Member
     form.getTextField('familyInfo.4.name').setText(data?.['familyInfo.4.name'] || '');
@@ -323,21 +318,21 @@ const takeAndProcessData = async (
     form.getTextField('familyInfo.4.pregnantDueDate.year').setText(data?.['familyInfo.4.pregnantDueDate.year'] || '');
     if(data?.['familyInfo.4.isParent']) form.getRadioGroup('familyInfo.4.isParent').select(data?.['familyInfo.4.isParent']);
     form.getTextField('familyInfo.4.relationship').setText(data?.['familyInfo.4.relationship'] || '');
-    // TODO: Have to Add Checkbox of Yes/No Public Health Coverage
-    form.getTextField('familyInfo.4.publicHealthCoverage.idNumber').setText(data?.['familyInfo.4.publicHealthCoverage.idNumber'] || '');
+    if(data?.['familyInfo.4.publicHealthCoverage']) form.getRadioGroup('familyInfo.4.publicHealthCoverage').select(data?.['familyInfo.4.publicHealthCoverage']);
+    form.getTextField('familyInfo.4.publicHealthCoverageidNumber').setText(data?.['familyInfo.4.publicHealthCoverageidNumber'] || '');
     form.getTextField('familyInfo.4.ssn').setText(data?.['familyInfo.4.ssn'] || '');
-    // TODO: Have to Add Checkbox of Yes/No US Citizen
-    form.getTextField('familyInfo.4.usCitizenship.receivedImmigrationStatusDate.month',).setText(data?.['familyInfo.4.usCitizenship.receivedImmigrationStatusDate.month'] || '',);
-    form.getTextField('familyInfo.4.usCitizenship.receivedImmigrationStatusDate.day',).setText( data?.['familyInfo.4.usCitizenship.receivedImmigrationStatusDate.day'] || '',);
-    form.getTextField('familyInfo.4.usCitizenship.receivedImmigrationStatusDate.year',
-      ).setText(data?.['familyInfo.4.usCitizenship.receivedImmigrationStatusDate.year'] || '',);
+    if(data?.['familyInfo.4.usCitizenship']) form.getRadioGroup('familyInfo.4.usCitizenship').select(data?.['familyInfo.4.usCitizenship']);
+    form.getTextField('familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.month',).setText(data?.['familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.month'] || '',);
+    form.getTextField('familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.day',).setText(data?.['familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.day'] || '',);
+    form.getTextField('familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.year',).setText(data?.['familyInfo.4.usCitizenshipReceivedImmigrationStatusDate.year'] || '',);
     form.getTextField('familyInfo.4.race').setText(data?.['familyInfo.4.race'] || '');
-    // TODO: Have to Add Checkbox of Yes/No receivedAServiceFromIHS
+    if(data?.['familyInfo.4.receivedAServiceFromIHS']) form.getRadioGroup('familyInfo.4.receivedAServiceFromIHS').select(data?.['familyInfo.4.receivedAServiceFromIHS']);
 
-    // houseHold Vetran yes/no checkbox
-    form.getTextField('veteranName').setText(data?.veteranName || '');
-    // TODO: Have to Add Checkbox of Yes/No Self Employed
-    // TODO: Have to Add Checkbox of Yes/No No Earning
+    if(data.householdVeteran) form.getRadioGroup('householdVeteran').select(data.householdVeteran);
+    form.getTextField('veteranName').setText(data.veteranName || '');
+
+    if(data.selfEmploymentInfo) form.getRadioGroup('selfEmploymentInfo').select(data.selfEmploymentInfo);
+    if(data.noEarningsFromWork) form.getRadioGroup('noEarningsFromWork').select('no');
 
     // Earning From Work 1
     form.getTextField('earningFromWork.0.name').setText(data?.['earningFromWork.0.name'] || '');
@@ -355,7 +350,7 @@ const takeAndProcessData = async (
     form.getTextField('earningFromWork.2.howMuchEarned').setText(data?.['earningFromWork.2.howMuchEarned'] || '');
     form.getTextField('earningFromWork.2.howOftenPaid').setText(data?.['earningFromWork.2.howOftenPaid'] || '');
 
-    // TODO: Have to Add Checkbox of Yes/No if no unearned income
+    if(data.noUnearnedIncome) form.getCheckBox('noUnearnedIncome').check();
     //Unearned Income 1
     form.getTextField('unearnedIncome.0.name').setText(data?.['unearnedIncome.0.name'] || '');
     form.getTextField('unearnedIncome.0.tyoeOfWork').setText(data?.['unearnedIncome.0.tyoeOfWork'] || '');
@@ -372,7 +367,7 @@ const takeAndProcessData = async (
     form.getTextField('unearnedIncome.2.howMuchEarned').setText(data?.['unearnedIncome.2.howMuchEarned'] || '');
     form.getTextField('unearnedIncome.2.howOftenPaid').setText(data?.['unearnedIncome.2.howOftenPaid'] || '');
 
-    // TODO: Have to Add Checkbox of Yes/No if no contributions
+    if(data.noContributions) form.getCheckBox('noContributions').check();
     //Contributions 1
     form.getTextField('contributions.0.name').setText(data?.['contributions.0.name'] || '');
     form.getTextField('contributions.0.tyoeOfWork').setText(data?.['contributions.0.tyoeOfWork'] || '');
@@ -389,7 +384,7 @@ const takeAndProcessData = async (
     form.getTextField('contributions.2.howMuchEarned').setText(data?.['contributions.2.howMuchEarned'] || '');
     form.getTextField('contributions.2.howOftenPaid').setText(data?.['contributions.2.howOftenPaid'] || '');
 
-    // TODO: Have to Add Checkbox of Yes/No if no other income
+    if(data.noOtherIncome) form.getCheckBox('noOtherIncome').check();
     //Other Income 1
     form.getTextField('otherIncome.0.name').setText(data?.['otherIncome.0.name'] || '');
     form.getTextField('otherIncome.0.tyoeOfWork').setText(data?.['otherIncome.0.tyoeOfWork'] || '');
@@ -408,16 +403,16 @@ const takeAndProcessData = async (
 
     form.getTextField('applingAdulthaveNoIncome').setText(data?.applingAdulthaveNoIncome || '');
     form.getTextField('explainHowLiving').setText(data?.explainHowLiving || '');
-    // todo: applierChangeJob.changeJobin3Month checkbox
+    if(data?.['applierChangeJob.changeJobin3Month']) form.getRadioGroup('applierChangeJob.changeJobin3Month').select(data?.['applierChangeJob.changeJobin3Month']);
     form.getTextField('applierChangeJob.lastJobDate.month').setText(data?.['applierChangeJob.lastJobDate.month'] || '');
     form.getTextField('applierChangeJob.lastJobDate.day').setText(data?.['applierChangeJob.lastJobDate.day'] || '');
     form.getTextField('applierChangeJob.lastJobDate.year').setText(data?.['applierChangeJob.lastJobDate.year'] || '');
     form.getTextField('applierChangeJob.nameofEmployer').setText(data?.['applierChangeJob.nameofEmployer'] || '');
 
-    // applierStudent.student checkbox
-    // applierStudent.studentType checkbox
+    if(data?.['applierStudent.student']) form.getRadioGroup('applierStudent.student').select(data?.['applierStudent.student']);
+    if(data?.['applierStudent.studentType']) form.getRadioGroup('applierStudent.school').select(data?.['applierStudent.school']);
     form.getTextField('applierStudent.nameOfStudent').setText(data?.['applierStudent.nameOfStudent'] || '');
-    // payForChildCare checkbox
+    if(data.payForChildCare) form.getRadioGroup('payForChildCare').select(data.payForChildCare);
 
     // payForChildCare 1
     form.getTextField('childCare.0.childName').setText(data?.['childCare.0.childName'] || '');
@@ -432,12 +427,12 @@ const takeAndProcessData = async (
     form.getTextField('childCare.2.howMuchPaid').setText(data?.['childCare.2.howMuchPaid'] || '');
     form.getTextField('childCare.2.howOftenPaid').setText(data?.['childCare.2.howOftenPaid'] || '');
 
-    // familyPlanningServiceOnly checkbox
-    // isPayCourtOrdered.payCourtOrdered checkbox
+    if(data?.familyPlanningServiceOnly) form.getRadioGroup('familyPlanningServiceOnly').select(data?.familyPlanningServiceOnly);
+    if(data?.['isPayCourtOrdered.payCourtOrdered']) form.getRadioGroup('isPayCourtOrdered.payCourtOrdered').select(data?.['isPayCourtOrdered.payCourtOrdered']);
     form.getTextField('isPayCourtOrdered.payCourtOrderedAmount').setText(data?.['isPayCourtOrdered.payCourtOrderedAmount'] || '');
     form.getTextField('isPayCourtOrdered.whoPayCourtOrdered').setText(data?.['isPayCourtOrdered.whoPayCourtOrdered'] || '');
 
-    //applyingHavingMedicare checkbox
+    if(data?.applyingHavingMedicare) form.getRadioGroup('applyingHavingMedicare').select(data?.applyingHavingMedicare);
     // applyingHavingCommercialInsurance.commercialInsurance
     form.getTextField('applyingHavingCommercialInsurance.nameOfInsured').setText(data?.['applyingHavingCommercialInsurance.nameOfInsured'] || '');
     form.getTextField('applyingHavingCommercialInsurance.personCovered').setText(data?.['applyingHavingCommercialInsurance.personCovered'] || '');
@@ -445,33 +440,33 @@ const takeAndProcessData = async (
     form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.month').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.month'] || '',);
     form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.day').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.day'] || '',);
     form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.year').setText(data?.['applyingHavingCommercialInsurance.endOfCoverage.year'] || '',);
-    //currentJobInsurance
+    if(data.currentJobInsurance) form.getRadioGroup('currentJobInsurance').select(data.currentJobInsurance);
     form.getTextField('monthlyHousingPayment').setText(data?.['monthlyHousingPayment'] || '');
     form.getTextField('payForWater.payForWaterAmount').setText(data?.['payForWater.payForWaterAmount'] || '');
-    // payForWater.howOftenPaid checkbox
-    // freeHousingAsPartofYourPay checkbox
-    //nursingHomeCare
-    // blindOrDisabledOrChronicallyIll
+    if(data?.['payForWater.howOftenPaid']) form.getRadioGroup('payForWater.howOftenPaid').select(data?.['payForWater.howOftenPaid']);
+    if(data?.freeHousingAsPartofYourPay) form.getRadioGroup('freeHousingAsPartofYourPay').select(data?.freeHousingAsPartofYourPay);
+    if(data?.nursingHomeCare) form.getRadioGroup('nursingHomeCare').select(data?.nursingHomeCare);
+    if(data?.blindOrDisabledOrChronicallyIll) form.getRadioGroup('blindOrDisabledOrChronicallyIll').select(data?.blindOrDisabledOrChronicallyIll);
 
-    //prescriptionBill3Month.prescriptionBill
+    if(data?.['prescriptionBill3Month.prescriptionBill']) form.getRadioGroup('prescriptionBill3Month.prescriptionBill').select(data?.['prescriptionBill3Month.prescriptionBill']);
     form.getTextField('prescriptionBill3Month.name').setText(data?.['prescriptionBill3Month.name'] || '');
     form.getTextField('prescriptionBill3Month.whichMonth').setText(data?.['prescriptionBill3Month.whichMonth'] || '');
 
-    //prescriptionBillOlder
-    //moveIntoThisCounty.move
+    if(data?.prescriptionBillOlder) form.getRadioGroup('prescriptionBillOlder').select(data?.prescriptionBillOlder);
+    if(data?.['moveIntoThisCounty.move']) form.getRadioGroup('moveIntoThisCounty.move').select(data?.['moveIntoThisCounty.move']);
     form.getTextField('moveIntoThisCounty.who').setText(data?.['moveIntoThisCounty.who'] || '');
     form.getTextField('moveIntoThisCounty.whichState').setText(data?.['moveIntoThisCounty.whichState'] || '');
     form.getTextField('moveIntoThisCounty.whichCounty').setText(data?.['moveIntoThisCounty.whichCounty'] || '');
 
-    //pendingLawSuit.pending
+    if(data?.['pendingLawSuit.pending']) form.getRadioGroup('pendingLawSuit.pending').select(data?.['pendingLawSuit.pending']);
     form.getTextField('pendingLawSuit.who').setText(data?.['pendingLawSuit.who'] || '');
-    //workersCompensationCase.workersCompensation
+    if(data?.['workersCompensationCase.workersCompensation']) form.getRadioGroup('workersCompensationCase.workersCompensation').select(data?.['workersCompensationCase.workersCompensation']);
     form.getTextField('workersCompensationCase.who').setText(data?.['workersCompensationCase.who'] || '');
-    //deceased.deceased
+    if(data?.['deceased.deceased']) form.getRadioGroup('deceased.deceased').select(data?.['deceased.deceased']);
     form.getTextField('deceased.who').setText(data?.['deceased.who'] || '');
 
-    //parentLiveOutside.parentLiveOutside
-    //parentLiveOutside.fearOfHarm
+    if(data?.['parentLiveOutside.parentLiveOutside']) form.getRadioGroup('parentLiveOutside.parentLiveOutside').select(data?.['parentLiveOutside.parentLiveOutside']);
+    if(data?.['parentLiveOutside.fearOfHarm']) form.getCheckBox('parentLiveOutside.fearOfHarm').check();
     form.getTextField('parentLiveOutside.childName1').setText(data?.['parentLiveOutside.childName1'] || '');
     form.getTextField('parentLiveOutside.childName2').setText(data?.['parentLiveOutside.childName2'] || '');
     form.getTextField('parentLiveOutside.nameOfParent1').setText(data?.['parentLiveOutside.nameOfParent1'] || '');
@@ -489,8 +484,8 @@ const takeAndProcessData = async (
     form.getTextField('parentLiveOutside.ssn1').setText(data?.['parentLiveOutside.ssn1'] || '');
     form.getTextField('parentLiveOutside.ssn2').setText(data?.['parentLiveOutside.ssn2'] || '');
 
-    //marriedLivesOutside.marriedLivesOutside
-    //marriedLivesOutside.fearOfHarm
+    if(data?.['marriedLivesOutside.marriedLivesOutside']) form.getRadioGroup('marriedLivesOutside.marriedLivesOutside').select(data?.['marriedLivesOutside.marriedLivesOutside']);
+    if(data?.['marriedLivesOutside.fearOfHarm']) form.getCheckBox('marriedLivesOutside.fearOfHarm').check();
     form.getTextField('marriedLivesOutside.applyingPerson').setText(data?.['marriedLivesOutside.applyingPerson'] || '');
     form.getTextField('marriedLivesOutside.spouseName').setText(data?.['marriedLivesOutside.spouseName'] || '');
     form.getTextField('marriedLivesOutside.dateOfBirth.month').setText(data?.['marriedLivesOutside.dateOfBirth.month'] || '');
@@ -500,7 +495,7 @@ const takeAndProcessData = async (
     form.getTextField('marriedLivesOutside.city').setText(data?.['marriedLivesOutside.city'] || '');
     form.getTextField('marriedLivesOutside.ssn').setText(data?.['marriedLivesOutside.ssn'] || '');
 
-    // doWanttoJoinHealthPlan checkbox
+    if(data?.doWanttoJoinHealthPlan) form.getCheckBox('doWanttoJoinHealthPlan').check();
     // healthPlan 1
     form.getTextField('healthPlan.0.lastName').setText(data?.['healthPlan.0.lastName'] || '');
     form.getTextField('healthPlan.0.firstName').setText(data?.['healthPlan.0.firstName'] || '');
@@ -508,7 +503,7 @@ const takeAndProcessData = async (
     form.getTextField('healthPlan.0.ssn').setText(data?.['healthPlan.0.ssn'] || '');
     form.getTextField('healthPlan.0.nameOfHealthPlan').setText(data?.['healthPlan.0.nameOfHealthPlan'] || '');
     form.getTextField('healthPlan.0.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.0.preferred.preferredDoctorOrClinic'] || '');
-    // healthPlan.0.preferred.currentProvider checkbox
+    if(data?.['healthPlan.0.preferred.currentProvider']) form.getCheckBox('healthPlan.0.preferred.currentProvider').check();
     form.getTextField('healthPlan.0.obGyn').setText(data?.['healthPlan.0.obGyn'] || '');
 
     // healthPlan 2
@@ -518,7 +513,7 @@ const takeAndProcessData = async (
     form.getTextField('healthPlan.1.ssn').setText(data?.['healthPlan.1.ssn'] || '');
     form.getTextField('healthPlan.1.nameOfHealthPlan').setText(data?.['healthPlan.1.nameOfHealthPlan'] || '');
     form.getTextField('healthPlan.1.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.1.preferred.preferredDoctorOrClinic'] || '');
-    // healthPlan.1.preferred.currentProvider checkbox
+    if(data?.['healthPlan.1.preferred.currentProvider']) form.getCheckBox('healthPlan.1.preferred.currentProvider').check();
     form.getTextField('healthPlan.1.obGyn').setText(data?.['healthPlan.1.obGyn'] || '');
 
     // healthPlan 3
@@ -528,7 +523,7 @@ const takeAndProcessData = async (
     form.getTextField('healthPlan.2.ssn').setText(data?.['healthPlan.2.ssn'] || '');
     form.getTextField('healthPlan.2.nameOfHealthPlan').setText(data?.['healthPlan.2.nameOfHealthPlan'] || '');
     form.getTextField('healthPlan.2.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.2.preferred.preferredDoctorOrClinic'] || '');
-    // healthPlan.2.preferred.currentProvider checkbox
+    if(data?.['healthPlan.2.preferred.currentProvider']) form.getCheckBox('healthPlan.2.preferred.currentProvider').check();
     form.getTextField('healthPlan.2.obGyn').setText(data?.['healthPlan.2.obGyn'] || '');
 
     // healthPlan 4
@@ -538,7 +533,7 @@ const takeAndProcessData = async (
     form.getTextField('healthPlan.3.ssn').setText(data?.['healthPlan.3.ssn'] || '');
     form.getTextField('healthPlan.3.nameOfHealthPlan').setText(data?.['healthPlan.3.nameOfHealthPlan'] || '');
     form.getTextField('healthPlan.3.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.3.preferred.preferredDoctorOrClinic'] || '');
-    // healthPlan.3.preferred.currentProvider checkbox
+    if(data?.['healthPlan.3.preferred.currentProvider']) form.getCheckBox('healthPlan.3.preferred.currentProvider').check();
     form.getTextField('healthPlan.3.obGyn').setText(data?.['healthPlan.3.obGyn'] || '');
 
     // healthPlan 5
@@ -548,7 +543,7 @@ const takeAndProcessData = async (
     form.getTextField('healthPlan.4.ssn').setText(data?.['healthPlan.4.ssn'] || '');
     form.getTextField('healthPlan.4.nameOfHealthPlan').setText(data?.['healthPlan.4.nameOfHealthPlan'] || '');
     form.getTextField('healthPlan.4.preferred.preferredDoctorOrClinic').setText(data?.['healthPlan.4.preferred.preferredDoctorOrClinic'] || '');
-    // healthPlan.4.preferred.currentProvider checkbox
+    if(data?.['healthPlan.4.preferred.currentProvider']) form.getCheckBox('healthPlan.4.preferred.currentProvider').check();
     form.getTextField('healthPlan.4.obGyn').setText(data?.['healthPlan.4.obGyn'] || '');
 
     // Save the pdf to the file system
