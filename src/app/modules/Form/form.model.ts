@@ -1,179 +1,169 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
+import { Express } from 'express'; 
 import { PDFDocument } from 'pdf-lib';
-import { Express } from 'express';
+import CustomError from '../../errors/CusromError';
 
-const takeAndProcessData = async (data: any, file: Express.Multer.File[]): Promise<unknown> => {
+// Helper function to handle nested data paths
+const getValue = (data: any, path: string) => data?.[path] || '';
+
+const takeAndProcessData = async (
+  data: any,
+  file: Express.Multer.File[],
+): Promise<unknown> => {
+  const pdfBytes = fs.readFileSync('./input.pdf');
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+  const form = pdfDoc.getForm();
+  
   try {
-    const pdfBytes = fs.readFileSync('./input.pdf');
-    const pdfDoc = await PDFDocument.load(pdfBytes);
-    const form = pdfDoc.getForm();
-
-    // Section A: Applicant's Information
-    form.getTextField('applicantName').setText(data.applicantName || '');
-    form.getTextField('applicationDate').setText(data.applicationDate || '');
-
-    // Personal Information
-    form.getTextField('personalInfo.firstName').setText(data.personalInfo.firstName || '');
-    form.getTextField('personalInfo.middleName').setText(data.personalInfo.middleName || '');
-    form.getTextField('personalInfo.lastName').setText(data.personalInfo.lastName || '');
-    form.getTextField('personalInfo.primaryPhoneNumber').setText(data.personalInfo.primaryPhoneNumber || '');
-    form.getTextField('personalInfo.secondaryPhoneNumber').setText(data.personalInfo.secondaryPhoneNumber || '');
-    form.getTextField('personalInfo.languageSpeak').setText(data.personalInfo.languageSpeak || '');
-    form.getTextField('personalInfo.languageRead').setText(data.personalInfo.languageRead || '');
-
-    // Home Address
-    form.getTextField('homeAddress.street').setText(data.homeAddress.street || '');
-    form.getTextField('homeAddress.city').setText(data.homeAddress.city || '');
-    form.getTextField('homeAddress.state').setText(data.homeAddress.state || '');
-    form.getTextField('homeAddress.zip').setText(data.homeAddress.zip || '');
-    form.getTextField('homeAddress.county').setText(data.homeAddress.county || '');
-    form.getTextField('homeAddress.apt').setText(data.homeAddress.apt || '');
-
-    // Mailing Address
-    form.getTextField('mailingAddress.street').setText(data.mailingAddress.street || '');
-    form.getTextField('mailingAddress.city').setText(data.mailingAddress.city || '');
-    form.getTextField('mailingAddress.state').setText(data.mailingAddress.state || '');
-    form.getTextField('mailingAddress.zip').setText(data.mailingAddress.zip || '');
-    form.getTextField('mailingAddress.apt').setText(data.mailingAddress.apt || '');
-
-    // Another Person
-    form.getTextField('anotherPerson.name').setText(data.anotherPerson.name || '');
-    form.getTextField('anotherPerson.phoneNumber').setText(data.anotherPerson.phoneNumber || '');
-    form.getTextField('anotherPerson.street').setText(data.anotherPerson.street || '');
-    form.getTextField('anotherPerson.city').setText(data.anotherPerson.city || '');
-    form.getTextField('anotherPerson.state').setText(data.anotherPerson.state || '');
-    form.getTextField('anotherPerson.zip').setText(data.anotherPerson.zip || '');
-    form.getTextField('anotherPerson.apt').setText(data.anotherPerson.apt || '');
-
-    // Family Information
-    data.familyInfo.forEach((member: { name: any; birthName: any; cityOfBirth: any; stateOfBirth: any; countryOfBirth: any; dateOfBirth: { month: any; day: any; year: any; }; genderIdentity: any; pregnantDueDate: { month: any; day: any; year: any; }; relationship: any; publicHealthCoverage: { idNumber: any; }; ssn: any; usCitizenship: { receivedImmigrationStatusDate: { month: any; day: any; year: any; }; }; race: any; }, index: any) => {
-      form.getTextField(`familyInfo.${index}.name`).setText(member.name || '');
-      form.getTextField(`familyInfo.${index}.birthName`).setText(member.birthName || '');
-      form.getTextField(`familyInfo.${index}.cityOfBirth`).setText(member.cityOfBirth || '');
-      form.getTextField(`familyInfo.${index}.stateOfBirth`).setText(member.stateOfBirth || '');
-      form.getTextField(`familyInfo.${index}.countryOfBirth`).setText(member.countryOfBirth || '');
-      form.getTextField(`familyInfo.${index}.dateOfBirth.month`).setText(member.dateOfBirth.month || '');
-      form.getTextField(`familyInfo.${index}.dateOfBirth.day`).setText(member.dateOfBirth.day || '');
-      form.getTextField(`familyInfo.${index}.dateOfBirth.year`).setText(member.dateOfBirth.year || '');
-      form.getTextField(`familyInfo.${index}.genderIdentity`).setText(member.genderIdentity || '');
-      form.getTextField(`familyInfo.${index}.pregnantDueDate.month`).setText(member.pregnantDueDate.month || '');
-      form.getTextField(`familyInfo.${index}.pregnantDueDate.day`).setText(member.pregnantDueDate.day || '');
-      form.getTextField(`familyInfo.${index}.pregnantDueDate.year`).setText(member.pregnantDueDate.year || '');
-      form.getTextField(`familyInfo.${index}.relationship`).setText(member.relationship || '');
-      form.getTextField(`familyInfo.${index}.publicHealthCoverage.idNumber`).setText(member.publicHealthCoverage.idNumber || '');
-      form.getTextField(`familyInfo.${index}.ssn`).setText(member.ssn || '');
-      form.getTextField(`familyInfo.${index}.usCitizenship.receivedImmigrationStatusDate.month`).setText(member.usCitizenship.receivedImmigrationStatusDate.month || '');
-      form.getTextField(`familyInfo.${index}.usCitizenship.receivedImmigrationStatusDate.day`).setText(member.usCitizenship.receivedImmigrationStatusDate.day || '');
-      form.getTextField(`familyInfo.${index}.usCitizenship.receivedImmigrationStatusDate.year`).setText(member.usCitizenship.receivedImmigrationStatusDate.year || '');
-      form.getTextField(`familyInfo.${index}.race`).setText(member.race || '');
+    // Dynamic checkboxes (field name is the checkbox name)
+    const dynamicCheckboxes = [
+      'uscitizenshiporDOB', 'usCitizenship', 'identityDocument', 'identityDocumentExtra',
+      'ImmigrationstatesIdentity', 'ImmigrationStatus', 'dobIdentity', 'homeAddressDocument',
+      'wagesAndSalary', 'selfEmployment', 'unemploymentBenefits', 'privatePensionsAnnuities',
+      'socialSecurity', 'workersCompensation', 'childSupportAlimony', 'veteransBenefits',
+      'militaryPay', 'incomeFromRent', 'interestDividendsRoyalties', 'careForChildrenorAdults',
+      'proofOfstudentStatus'
+    ];
+    dynamicCheckboxes.forEach(field => {
+      if (data[field]) form.getCheckBox(data[field]).check();
     });
 
-    // Section C: Family Income
-    data.earningFromWork.forEach((income: { name: any; typeOfWork: any; howMuchEarned: any; howOftenPaid: any; }, index: any) => {
-      form.getTextField(`earningFromWork.${index}.name`).setText(income.name || '');
-      form.getTextField(`earningFromWork.${index}.typeOfWork`).setText(income.typeOfWork || '');
-      form.getTextField(`earningFromWork.${index}.howMuchEarned`).setText(income.howMuchEarned || '');
-      form.getTextField(`earningFromWork.${index}.howOftenPaid`).setText(income.howOftenPaid || '');
+    // Fixed checkboxes (field name matches PDF checkbox name)
+    const fixedCheckboxes = [
+      'homeLess', 'anotherPerson.permissions.ApplyMedicaidForMe',
+      'anotherPerson.permissions.disussMyCase', 'anotherPerson.permissions.getNoticesAndCorrespondence',
+      'doWanttoJoinHealthPlan'
+    ];
+    fixedCheckboxes.forEach(field => {
+      if (data[field]) form.getCheckBox(field).check();
     });
 
-    data.unearnedIncome.forEach((income: { name: any; typeOfIncome: any; howMuchEarned: any; howOftenPaid: any; }, index: any) => {
-      form.getTextField(`unearnedIncome.${index}.name`).setText(income.name || '');
-      form.getTextField(`unearnedIncome.${index}.typeOfIncome`).setText(income.typeOfIncome || '');
-      form.getTextField(`unearnedIncome.${index}.howMuchEarned`).setText(income.howMuchEarned || '');
-      form.getTextField(`unearnedIncome.${index}.howOftenPaid`).setText(income.howOftenPaid || '');
+    // Radio groups configuration
+    const radioGroups = [
+      { dataField: 'personalInfo.primaryPhoneType', radioGroup: 'Primary Phone Type' },
+      { dataField: 'personalInfo.secondaryPhoneType', radioGroup: 'Another Phone Type' },
+      { dataField: 'anotherPerson.phoneType', radioGroup: 'Phone type' },
+      { dataField: 'blindNoticeType', radioGroup: 'If you are blind or visually impaired and require information in an alternative format, check the type of mail you want to receive from us. Please return this form with your application' },
+      { dataField: 'householdVeteran', radioGroup: 'householdVeteran' },
+      { dataField: 'selfEmploymentInfo', radioGroup: 'selfEmploymentInfo' },
+      { dataField: 'noEarningsFromWork', radioGroup: 'noEarningsFromWork' },
+      { dataField: 'applierChangeJob.changeJobin3Month', radioGroup: 'applierChangeJob.changeJobin3Month' },
+      { dataField: 'applierStudent.student', radioGroup: 'applierStudent.student' },
+      { dataField: 'applierStudent.studentType', radioGroup: 'applierStudent.studentType' },
+      { dataField: 'payForChildCare', radioGroup: 'payForChildCare' },
+      { dataField: 'familyPlanningServiceOnly', radioGroup: 'familyPlanningServiceOnly' },
+      { dataField: 'isPayCourtOrdered.payCourtOrdered', radioGroup: 'isPayCourtOrdered.payCourtOrdered' },
+      { dataField: 'applyingHavingMedicare', radioGroup: 'applyingHavingMedicare' },
+      { dataField: 'currentJobInsurance', radioGroup: 'currentJobInsurance' },
+      { dataField: 'payForWater.howOftenPaid', radioGroup: 'payForWater.howOftenPaid' },
+      { dataField: 'freeHousingAsPartofYourPay', radioGroup: 'freeHousingAsPartofYourPay' },
+      { dataField: 'nursingHomeCare', radioGroup: 'nursingHomeCare' },
+      { dataField: 'blindOrDisabledOrChronicallyIll', radioGroup: 'blindOrDisabledOrChronicallyIll' },
+      { dataField: 'prescriptionBill3Month.prescriptionBill', radioGroup: 'prescriptionBill3Month.prescriptionBill' },
+      { dataField: 'prescriptionBillOlder', radioGroup: 'prescriptionBillOlder' },
+      { dataField: 'moveIntoThisCounty.move', radioGroup: 'moveIntoThisCounty.move' },
+      { dataField: 'pendingLawSuit.pending', radioGroup: 'pendingLawSuit.pending' },
+      { dataField: 'workersCompensationCase.workersCompensation', radioGroup: 'workersCompensationCase.workersCompensation' },
+      { dataField: 'deceased.deceased', radioGroup: 'deceased.deceased' },
+      { dataField: 'parentLiveOutside.parentLiveOutside', radioGroup: 'parentLiveOutside.parentLiveOutside' },
+      { dataField: 'marriedLivesOutside.marriedLivesOutside', radioGroup: 'marriedLivesOutside.marriedLivesOutside' },
+    ];
+
+    // Add family member radio groups (0-4)
+    for (let i = 0; i < 5; i++) {
+      const fields = [
+        { dataField: `familyInfo.${i}.sex`, radioGroup: `familyInfo.${i}.sex` },
+        { dataField: `familyInfo.${i}.isApplying`, radioGroup: `familyInfo.${i}.isApplying` },
+        { dataField: `familyInfo.${i}.isPregnant`, radioGroup: `familyInfo.${i}.isPregnant` },
+        { dataField: `familyInfo.${i}.isParent`, radioGroup: `familyInfo.${i}.isParent` },
+        { dataField: `familyInfo.${i}.publicHealthCoverage`, radioGroup: `familyInfo.${i}.publicHealthCoverage` },
+        { dataField: `familyInfo.${i}.usCitizenship`, radioGroup: `familyInfo.${i}.usCitizenship` },
+        { dataField: `familyInfo.${i}.receivedAServiceFromIHS`, radioGroup: `familyInfo.${i}.receivedAServiceFromIHS` },
+      ];
+      radioGroups.push(...fields);
+    }
+
+    radioGroups.forEach(({ dataField, radioGroup }) => {
+      const value = getValue(data, dataField);
+      if (value) form.getRadioGroup(radioGroup).select(value);
     });
 
-    data.contributions.forEach((contribution: { name: any; typeOfIncome: any; howMuch: any; howOftenPaid: any; }, index: any) => {
-      form.getTextField(`contributions.${index}.name`).setText(contribution.name || '');
-      form.getTextField(`contributions.${index}.typeOfIncome`).setText(contribution.typeOfIncome || '');
-      form.getTextField(`contributions.${index}.howMuch`).setText(contribution.howMuch || '');
-      form.getTextField(`contributions.${index}.howOftenPaid`).setText(contribution.howOftenPaid || '');
+    // Text fields configuration
+    const textFields = [
+      'applicantName', 'applicationDate',
+      'personalInfo.firstName', 'personalInfo.middleName', 'personalInfo.lastName',
+      'personalInfo.primaryPhoneNumber', 'personalInfo.secondaryPhoneNumber',
+      'personalInfo.languageSpeak', 'personalInfo.languageRead',
+      'homeAddress.street', 'homeAddress.city', 'homeAddress.state', 'homeAddress.zip', 'homeAddress.county', 'homeAddress.apt',
+      'mailingAddress.street', 'mailingAddress.city', 'mailingAddress.state', 'mailingAddress.zip', 'mailingAddress.apt',
+      'anotherPerson.Name', 'anotherPerson.phoneHome', 'anotherPerson.street', 'anotherPerson.city', 'anotherPerson.state', 'anotherPerson.zip', 'anotherPerson.apt',
+      'veteranName',
+      'applingAdulthaveNoIncome', 'explainHowLiving',
+      'applierChangeJob.lastJobDate.month', 'applierChangeJob.lastJobDate.day', 'applierChangeJob.lastJobDate.year', 'applierChangeJob.nameofEmployer',
+      'applierStudent.nameOfStudent',
+      'isPayCourtOrdered.payCourtOrderedAmount', 'isPayCourtOrdered.whoPayCourtOrdered',
+      'applyingHavingCommercialInsurance.nameOfInsured', 'applyingHavingCommercialInsurance.personCovered', 'applyingHavingCommercialInsurance.costOfPolicy',
+      'applyingHavingCommercialInsurance.endOfCoverage.month', 'applyingHavingCommercialInsurance.endOfCoverage.day', 'applyingHavingCommercialInsurance.endOfCoverage.year',
+      'monthlyHousingPayment', 'payForWater.payForWaterAmount',
+      'prescriptionBill3Month.name', 'prescriptionBill3Month.whichMonth',
+      'moveIntoThisCounty.who', 'moveIntoThisCounty.whichState', 'moveIntoThisCounty.whichCounty',
+      'pendingLawSuit.who', 'workersCompensationCase.who', 'deceased.who',
+      'parentLiveOutside.childName1', 'parentLiveOutside.childName2', 'parentLiveOutside.nameOfParent1', 'parentLiveOutside.nameOfParent2',
+      'parentLiveOutside.dateOfBirth1.month', 'parentLiveOutside.dateOfBirth1.day', 'parentLiveOutside.dateOfBirth1.year',
+      'parentLiveOutside.dateOfBirth2.month', 'parentLiveOutside.dateOfBirth2.day', 'parentLiveOutside.dateOfBirth2.year',
+      'parentLiveOutside.street1', 'parentLiveOutside.street2', 'parentLiveOutside.city1', 'parentLiveOutside.city2',
+      'parentLiveOutside.ssn1', 'parentLiveOutside.ssn2',
+      'marriedLivesOutside.applyingPerson', 'marriedLivesOutside.spouseName',
+      'marriedLivesOutside.dateOfBirth.month', 'marriedLivesOutside.dateOfBirth.day', 'marriedLivesOutside.dateOfBirth.year',
+      'marriedLivesOutside.street', 'marriedLivesOutside.city', 'marriedLivesOutside.ssn',
+    ];
+
+    // Add family member text fields (0-4)
+    for (let i = 0; i < 5; i++) {
+      const fields = [
+        `familyInfo.${i}.name`, `familyInfo.${i}.birthName`, `familyInfo.${i}.stateOfBirth`, `familyInfo.${i}.cityOfBirth`,
+        `familyInfo.${i}.countryOfBirth`, `familyInfo.${i}.dateOfBirth.month`, `familyInfo.${i}.dateOfBirth.day`,
+        `familyInfo.${i}.dateOfBirth.year`, `familyInfo.${i}.genderIdentity`, `familyInfo.${i}.pregnantDueDate.month`,
+        `familyInfo.${i}.pregnantDueDate.day`, `familyInfo.${i}.pregnantDueDate.year`, `familyInfo.${i}.relationship`,
+        `familyInfo.${i}.publicHealthCoverageidNumber`, `familyInfo.${i}.ssn`,
+        `familyInfo.${i}.usCitizenshipReceivedImmigrationStatusDate.month`, `familyInfo.${i}.usCitizenshipReceivedImmigrationStatusDate.day`,
+        `familyInfo.${i}.usCitizenshipReceivedImmigrationStatusDate.year`, `familyInfo.${i}.race`,
+      ];
+      textFields.push(...fields);
+    }
+
+    // Add health plan text fields (0-4)
+    for (let i = 0; i < 5; i++) {
+      const fields = [
+        `healthPlan.${i}.lastName`, `healthPlan.${i}.firstName`, `healthPlan.${i}.dob`, `healthPlan.${i}.ssn`,
+        `healthPlan.${i}.nameOfHealthPlan`, `healthPlan.${i}.preferred.preferredDoctorOrClinic`, `healthPlan.${i}.obGyn`
+      ];
+      textFields.push(...fields);
+    }
+
+    textFields.forEach(pdfField => {
+      const value = getValue(data, pdfField);
+      form.getTextField(pdfField).setText(value);
     });
 
-    data.otherIncome.forEach((income: { name: any; typeOfIncome: any; howMuch: any; howOftenPaid: any; }, index: any) => {
-      form.getTextField(`otherIncome.${index}.name`).setText(income.name || '');
-      form.getTextField(`otherIncome.${index}.typeOfIncome`).setText(income.typeOfIncome || '');
-      form.getTextField(`otherIncome.${index}.howMuch`).setText(income.howMuch || '');
-      form.getTextField(`otherIncome.${index}.howOftenPaid`).setText(income.howOftenPaid || '');
-    });
-
-    // Section D: Health Insurance
-    form.getTextField('applyingHavingMedicare').setText(data.applyingHavingMedicare || '');
-    form.getTextField('applyingHavingCommercialInsurance.nameOfInsured').setText(data.applyingHavingCommercialInsurance.nameOfInsured || '');
-    form.getTextField('applyingHavingCommercialInsurance.personCovered').setText(data.applyingHavingCommercialInsurance.personCovered || '');
-    form.getTextField('applyingHavingCommercialInsurance.costOfPolicy').setText(data.applyingHavingCommercialInsurance.costOfPolicy || '');
-    form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.month').setText(data.applyingHavingCommercialInsurance.endOfCoverage.month || '');
-    form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.day').setText(data.applyingHavingCommercialInsurance.endOfCoverage.day || '');
-    form.getTextField('applyingHavingCommercialInsurance.endOfCoverage.year').setText(data.applyingHavingCommercialInsurance.endOfCoverage.year || '');
-
-    // Section E: Housing Expenses
-    form.getTextField('monthlyHousingPayment').setText(data.monthlyHousingPayment || '');
-    form.getTextField('payForWater.payForWaterAmount').setText(data.payForWater.payForWaterAmount || '');
-    form.getTextField('payForWater.howOftenPaid').setText(data.payForWater.howOftenPaid || '');
-
-    // Section F: Blind, Disabled, Chronically Ill or Nursing Home Care
-    form.getTextField('nursingHomeCare').setText(data.nursingHomeCare || '');
-    form.getTextField('blindOrDisabledOrChronicallyIll').setText(data.blindOrDisabledOrChronicallyIll || '');
-
-    // Section G: Additional Health Questions
-    form.getTextField('prescriptionBill3Month.name').setText(data.prescriptionBill3Month.name || '');
-    form.getTextField('prescriptionBill3Month.whichMonth').setText(data.prescriptionBill3Month.whichMonth || '');
-    form.getTextField('moveIntoThisCounty.who').setText(data.moveIntoThisCounty.who || '');
-    form.getTextField('moveIntoThisCounty.whichState').setText(data.moveIntoThisCounty.whichState || '');
-    form.getTextField('moveIntoThisCounty.whichCounty').setText(data.moveIntoThisCounty.whichCounty || '');
-    form.getTextField('pendingLawSuit.who').setText(data.pendingLawSuit.who || '');
-    form.getTextField('workersCompensationCase.who').setText(data.workersCompensationCase.who || '');
-    form.getTextField('deceased.who').setText(data.deceased.who || '');
-
-    // Section H: Parent or Spouse Not Living in the Family or Deceased
-    form.getTextField('parentLiveOutside.childName1').setText(data.parentLiveOutside.childName1 || '');
-    form.getTextField('parentLiveOutside.childName2').setText(data.parentLiveOutside.childName2 || '');
-    form.getTextField('parentLiveOutside.nameOfParent1').setText(data.parentLiveOutside.nameOfParent1 || '');
-    form.getTextField('parentLiveOutside.nameOfParent2').setText(data.parentLiveOutside.nameOfParent2 || '');
-    form.getTextField('parentLiveOutside.dateOfBirth1.month').setText(data.parentLiveOutside.dateOfBirth1.month || '');
-    form.getTextField('parentLiveOutside.dateOfBirth1.day').setText(data.parentLiveOutside.dateOfBirth1.day || '');
-    form.getTextField('parentLiveOutside.dateOfBirth1.year').setText(data.parentLiveOutside.dateOfBirth1.year || '');
-    form.getTextField('parentLiveOutside.dateOfBirth2.month').setText(data.parentLiveOutside.dateOfBirth2.month || '');
-    form.getTextField('parentLiveOutside.dateOfBirth2.day').setText(data.parentLiveOutside.dateOfBirth2.day || '');
-    form.getTextField('parentLiveOutside.dateOfBirth2.year').setText(data.parentLiveOutside.dateOfBirth2.year || '');
-    form.getTextField('parentLiveOutside.street1').setText(data.parentLiveOutside.street1 || '');
-    form.getTextField('parentLiveOutside.street2').setText(data.parentLiveOutside.street2 || '');
-    form.getTextField('parentLiveOutside.city1').setText(data.parentLiveOutside.city1 || '');
-    form.getTextField('parentLiveOutside.city2').setText(data.parentLiveOutside.city2 || '');
-    form.getTextField('parentLiveOutside.ssn1').setText(data.parentLiveOutside.ssn1 || '');
-    form.getTextField('parentLiveOutside.ssn2').setText(data.parentLiveOutside.ssn2 || '');
-
-    // Section I: Health Plan Selection
-    data.healthPlan.forEach((plan: { lastName: any; firstName: any; dob: any; ssn: any; nameOfHealthPlan: any; preferred: { preferredDoctorOrClinic: any; }; obGyn: any; }, index: any) => {
-      form.getTextField(`healthPlan.${index}.lastName`).setText(plan.lastName || '');
-      form.getTextField(`healthPlan.${index}.firstName`).setText(plan.firstName || '');
-      form.getTextField(`healthPlan.${index}.dob`).setText(plan.dob || '');
-      form.getTextField(`healthPlan.${index}.ssn`).setText(plan.ssn || '');
-      form.getTextField(`healthPlan.${index}.nameOfHealthPlan`).setText(plan.nameOfHealthPlan || '');
-      form.getTextField(`healthPlan.${index}.preferred.preferredDoctorOrClinic`).setText(plan.preferred.preferredDoctorOrClinic || '');
-      form.getTextField(`healthPlan.${index}.obGyn`).setText(plan.obGyn || '');
-    });
-
-    // Save the filled PDF
+    // Save the PDF
     const filledPdfBytes = await pdfDoc.save();
     const filledPdfBuffer = Buffer.from(filledPdfBytes);
     fs.writeFileSync('./processed_files/filled.pdf', filledPdfBuffer);
     console.log('PDF processing complete!');
   } catch (error) {
     console.log(error);
+    throw new CustomError(String(error), 400);
   }
 
+  // Write CSV
   const values = Object.values(data);
   const csvString = values.join(',');
-
   fs.writeFile('./processed_files/output.txt', csvString, (err) => {
-    if (err) {
-      console.error('Error writing file:', err);
-    } else {
-      console.log('File saved successfully as output.txt');
-    }
+    if (err) throw new CustomError(String(err), 400);
+    console.log('File saved successfully as output.txt');
   });
 
   return { data, file };
