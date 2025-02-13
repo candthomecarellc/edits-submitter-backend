@@ -43,10 +43,7 @@ const takeAndProcessData = async (
     // Set applicant information
     setTextField('applicantName', data.applicantName);
     setTextField('applicationDate', data.applicationDate);
-    /* 
-    {},{},,,,
-    
-    */
+
     // Check citizenship and identity checkboxes
     checkCheckbox(data.uscitizenshiporDOB);
     checkCheckbox(data.usCitizenship);
@@ -339,9 +336,10 @@ const takeAndProcessData = async (
   }
 
   const values = Object.values(data);
-  console.log(values.length);
 
   const csvString = values.join(',');
+
+  
 
   fs.writeFile('./processed_files/output.txt', csvString, (err) => {
     if (err) {
