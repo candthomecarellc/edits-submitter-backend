@@ -49,13 +49,11 @@ const takeAndProcessData = async (
     if(data.identityDocumentExtra === 'Marriage certificate') form.getCheckBox('Marriage certificate').check();
     if(data.identityDocumentExtra === 'NYS Benefit Identification Card') form.getCheckBox('NYS Benefit Identification Card').check();
 
-    // Check the checkbox ImmigrationstatesIdentity
-    if(data.immigrationStatusIdentity === 'I551 Permanent Resident Card Green Card') form.getCheckBox('I551 Permanent Resident Card Green Card').check();
-    if(data.immigrationStatusIdentity === 'I688B or I766 Employment Authorization Card') form.getCheckBox('I688B or I766 Employment Authorization Card').check();
 
-    // Check the checkbox ImmigrationStatus
-    if(data.immigrationStatus === 'I94 ArrivalDeparture Record') form.getCheckBox('I94 ArrivalDeparture Record').check();
-    if(data.immigrationStatus === 'USCIS Form I797 Notice of Action') form.getCheckBox('USCIS Form I797 Notice of Action').check();
+    if(data.ImmigrationstatesIdentity) form.getCheckBox(data.ImmigrationstatesIdentity).check();
+
+
+    if(data.ImmigrationStatus) form.getCheckBox(data.ImmigrationStatus).check();
 
     // Check the checkbox dobIdentity
     if(data.dobIdentity === 'Visa') form.getCheckBox('Visa').check();
@@ -155,7 +153,7 @@ const takeAndProcessData = async (
     form.getTextField('personalInfo.primaryPhoneNumber').setText(data?.['personalInfo.primaryPhoneNumber'] || '');
     if(data?.['personalInfo.primaryPhoneType']) form.getRadioGroup('Primary Phone Type').select(data?.['personalInfo.primaryPhoneType']);
     form.getTextField('personalInfo.secondaryPhoneNumber').setText(data?.['personalInfo.secondaryPhoneNumber'] || '');
-    if(data?.['personalInfo.secondaryPhoneType']) form.getRadioGroup('Secondary Phone Type').select(data?.['personalInfo.secondaryPhoneType']);
+    if(data?.['personalInfo.secondaryPhoneType']) form.getRadioGroup('Another Phone Type').select(data?.['personalInfo.secondaryPhoneType']);
     form.getTextField('personalInfo.languageSpeak').setText(data?.['personalInfo.languageSpeak'] || '');
     form.getTextField('personalInfo.languageRead').setText(data?.['personalInfo.languageRead'] || '');
     if(data?.homeLess) form.getCheckBox('homeLess').check();
@@ -410,7 +408,7 @@ const takeAndProcessData = async (
     form.getTextField('applierChangeJob.nameofEmployer').setText(data?.['applierChangeJob.nameofEmployer'] || '');
 
     if(data?.['applierStudent.student']) form.getRadioGroup('applierStudent.student').select(data?.['applierStudent.student']);
-    if(data?.['applierStudent.studentType']) form.getRadioGroup('applierStudent.school').select(data?.['applierStudent.school']);
+    if(data?.['applierStudent.studentType']) form.getRadioGroup('applierStudent.studentType').select(data?.['applierStudent.studentType']);
     form.getTextField('applierStudent.nameOfStudent').setText(data?.['applierStudent.nameOfStudent'] || '');
     if(data.payForChildCare) form.getRadioGroup('payForChildCare').select(data.payForChildCare);
 
