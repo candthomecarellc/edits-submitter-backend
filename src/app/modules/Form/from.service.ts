@@ -339,8 +339,6 @@ const takeAndProcessData = async (
 
   const csvString = values.join(',');
 
-  
-
   fs.writeFile('./processed_files/output.txt', csvString, (err) => {
     if (err) {
       new CustomError(String(err), 400);
