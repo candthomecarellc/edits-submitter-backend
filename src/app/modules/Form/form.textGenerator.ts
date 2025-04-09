@@ -7,7 +7,8 @@ import {
   generateSubmitionType,
 } from '../../utils/utilityFunction';
 
-const formTextGenerator = (data: any, imageRecords: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const formTextGenerator = (data:any, imageRecords: number) => {
   let HEADER_RECORD = '';
   let DATA_RECORD = '';
   const SUBMITTER_ID = '0004';
