@@ -3,40 +3,52 @@ import * as path from 'path';
 import logger from './logger';
 
 // this function is used to generate the record sent
-const generateRecordSent = (record: string) => {
-    // 00000001 is first record , then 00000002 , 00000003 , 00000004 , 00000005 , 00000006 , 00000007 , 00000008 , 00000009 , 00000010 so on
-    const existingRecord = record || '00000001' // this is the existing record come from the database
-    
-    const newRecord = parseInt(existingRecord) + 1;
+const generateRecordSent = (record?: string) => {
+  // 00000001 is first record , then 00000002 , 00000003 , 00000004 , 00000005 , 00000006 , 00000007 , 00000008 , 00000009 , 00000010 so on
+  const existingRecord = record || '00000001'; // this is the existing record come from the database
 
-    return newRecord.toString().padStart(8, '0');
-}
+  const newRecord = parseInt(existingRecord) + 1;
+
+  return newRecord.toString().padStart(8, '0');
+};
+
+const generateSubmitionType = (type: string) => {
+  if (type === 'new') {
+    return 'N';
+  }
+  if (type === 'resubmit') {
+    return 'R';
+  }
+  if (type === 'deferral extension') {
+    return 'D';
+  }
+};
 
 // this function is used to manipulate the date
-const dateMenupulation = (type: string , SubmitedDate?:Date) => {
-    const date = SubmitedDate || new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
+const dateMenupulation = (type: string, SubmitedDate?: Date) => {
+  const date = SubmitedDate || new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
 
-    if (type === 'date') {
-        // mmddyyyy
-        return `${month}${day}${year}`;
-    }
+  if (type === 'date') {
+    // mmddyyyy
+    return `${month}${day}${year}`;
+  }
 
-    if (type === 'time') {
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        // HHMM
-        return `${hour}${minute}`;
-    }
+  if (type === 'time') {
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    // HHMM
+    return `${hour}${minute}`;
+  }
 
-    if (type === 'sign') {
-        // mm/dd/yy
-        const formatedYear = year.toString().slice(-2);
-        return `${month}/${day}/${formatedYear}`;
-    }
-}
+  if (type === 'sign') {
+    // mm/dd/yy
+    const formatedYear = year.toString().slice(-2);
+    return `${month}/${day}/${formatedYear}`;
+  }
+};
 
 // this function is used to generate the unique patient UID
 /**
@@ -83,11 +95,11 @@ function saveUIDs(): void {
 loadUIDs();
 
 /**
- * Generates the next sequential UID
+ * Helper function to generate the next sequential UID
  * Format: CNT[A-Z]00001, CNT[A-Z]00002, etc.
  * @returns string - The next sequential UID
  */
-function generateNextUID(): string {
+function generateNextSequentialUID(): string {
   // Get all existing UIDs
   const existingUIDs = Array.from(generatedUIDs);
 
@@ -113,60 +125,98 @@ function generateNextUID(): string {
     return `CNT${letter}${(number + 1).toString().padStart(5, '0')}`;
   }
 }
-
 /**
- * Comprehensive function to handle UID generation and validation
- * This function will:
- * 1. Check if the UID exists
- * 2. Generate the next sequential UID if it exists
- * 3. Save the new UID to the database
- * 4. Return the unique UID
+ * Comprehensive function to handle all UID operations:
+ * - Generate new UIDs
+ * - Validate existing UIDs
+ * - Save UIDs to database
+ * - Get UID count
  *
- * @param existingUID - Optional existing UID to check and regenerate if needed
- * @returns string - A unique sequential patient UID
+ * @param operation - The operation to perform: 'generate', 'validate', or 'count'
+ * @param existingUID - Optional existing UID to check or use
+ * @returns The result based on the operation (string UID, boolean validation result, or number count)
  */
-function ensureUniqueUID(existingUID?: string): string {
-  let uid: string;
+function handlePatientUID(
+  operation: 'generate' | 'validate' | 'count',
+  existingUID?: string,
+): string | boolean | number {
+  // For generating a new UID or using an existing one
+  if (operation === 'generate') {
+    let uid: string;
 
-  // If an existing UID is provided, check if it exists
-  if (existingUID) {
-    if (!generatedUIDs.has(existingUID)) {
-      // If it doesn't exist, use it
-      uid = existingUID;
+    if (existingUID) {
+      // If an existing UID is provided, check if it exists
+      if (!generatedUIDs.has(existingUID)) {
+        // If it doesn't exist, use it
+        uid = existingUID;
+      } else {
+        // If it exists, generate a new one
+        uid = generateNextSequentialUID();
+      }
     } else {
-      // If it exists, generate the next sequential UID
-      uid = generateNextUID();
+      // No existing UID provided, generate a new one
+      uid = generateNextSequentialUID();
     }
-  } else {
-    // No existing UID provided, generate the next sequential UID
-    uid = generateNextUID();
+
+    // Add the new UID to our database and save
+    generatedUIDs.add(uid);
+    saveUIDs();
+
+    return uid;
   }
 
-  // Add the new UID to our database and save
-  generatedUIDs.add(uid);
-  saveUIDs();
+  // For validating if a UID exists
+  if (operation === 'validate' && existingUID) {
+    return generatedUIDs.has(existingUID);
+  }
 
-  return uid;
+  // For getting the count of UIDs
+  if (operation === 'count') {
+    return generatedUIDs.size;
+  }
+
+  // Default return for invalid operations
+  return false;
 }
 
-/**
- * Checks if a UID has been previously generated
- * @param uid - The UID to check
- * @returns boolean - True if the UID exists, false otherwise
- */
+// Wrapper functions for backward compatibility
+function ensureUniqueUID(existingUID?: string): string {
+  return handlePatientUID('generate', existingUID) as string;
+}
+
 function isUIDGenerated(uid: string): boolean {
-  return generatedUIDs.has(uid);
+  return handlePatientUID('validate', uid) as boolean;
 }
 
-/**
- * Gets the total count of generated UIDs
- * @returns number - The total number of unique UIDs generated
- */
 function getGeneratedUIDCount(): number {
-  return generatedUIDs.size;
+  return handlePatientUID('count') as number;
 }
-    
-    
 
+const generateImageRecords = (noOfImageRecords: number) => {
+  // 'file number will be like 001,002, .... 999' convert actual number to this format
+  const imageRecords = noOfImageRecords.toString().padStart(3, '0');
+  return imageRecords;
+};
 
-export { generateRecordSent , dateMenupulation , ensureUniqueUID , isUIDGenerated , getGeneratedUIDCount };
+const generateUniqueCaseId = (submitterId: string) => {
+  // this will be total 20 digit unique case id
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const day = currentDate.getDate();
+  const hour = currentDate.getHours();
+  const minute = currentDate.getMinutes();
+  const second = currentDate.getSeconds();
+  const uniqueCaseId = `${submitterId}${year}${month}${day}${hour}${minute}${second}`;
+  return uniqueCaseId;
+};
+export {
+  dateMenupulation,
+  ensureUniqueUID,
+  generateImageRecords,
+  generateRecordSent,
+  generateSubmitionType,
+  generateUniqueCaseId,
+  getGeneratedUIDCount,
+  isUIDGenerated,
+};

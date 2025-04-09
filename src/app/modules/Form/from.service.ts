@@ -13,7 +13,6 @@ const takeAndProcessData = async (
   const pdfBytes = fs.readFileSync('./input.pdf');
   const pdfDoc = await PDFDocument.load(pdfBytes);
   const form = pdfDoc.getForm();
-  console.log(data);
 
   try {
     // Helper function to safely set text field values
@@ -702,10 +701,17 @@ const takeAndProcessData = async (
     throw new CustomError(String(error), 400);
   }
 
+  // calculate the number of image records file uploaded
+  const noOfImageRecords = file.length;
+
+  console.log(`noOfImageRecords: ${noOfImageRecords}`);
+  console.log(file);
+
+
   const values = Object.values(data);
   const csvString = values.join(',');
 
-  const formText = formTextGenerator(data);
+  const formText = formTextGenerator(data , noOfImageRecords);
 
   if (formText) {
     fs.writeFile('./processed_files/output2.txt', formText, (err) => {
