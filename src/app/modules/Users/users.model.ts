@@ -33,18 +33,53 @@ const userSchema = new Schema<IUser>(
 );
 
 userSchema.pre('save', async function (next) {
-  // hashing password and save into DB
-  this.password = await bcrypt.hash(
-      this.password as string,
-      Number(config.bcryptSaltRounds),
-  );
+  console.log('🔍 Pre-save hook triggered');
+  if (this.isModified('password')) {
+    console.log('🔐 Password has been modified, hashing...');
+    console.log('📝 Original password:', this.password);
+    console.log('📝 Original password length:', (this.password as string).length);
+    try {
+      const saltRounds = Number(config.bcryptSaltRounds);
+      console.log('🧂 Using salt rounds:', saltRounds);
+      
+      const hashedPassword = await bcrypt.hash(
+        this.password as string,
+        saltRounds,
+      );
+      console.log('📝 Hashed password:', hashedPassword);
+      console.log('📝 Hashed password length:', hashedPassword.length);
+      
+      this.password = hashedPassword;
+      console.log('✅ Password hashed and saved successfully');
+    } catch (error) {
+      console.error('❌ Error hashing password:', error);
+      throw error;
+    }
+  }
   next();
 });
 
 userSchema.methods.verifyPassword = async function (
   password: string,
 ): Promise<boolean> {
-  return await bcrypt.compare(password, this.password);
+  console.log('🔍 Starting password verification');
+  console.log('📝 Input password:', password);
+  console.log('📝 Input password length:', password.length);
+  console.log('📝 Stored hashed password:', this.password);
+  console.log('📝 Stored hashed password length:', this.password.length);
+  try {
+    const result = await bcrypt.compare(password, this.password);
+    console.log('🔑 Password comparison result:', result);
+    if (!result) {
+      console.log('⚠️ Password mismatch details:');
+      console.log('- Input password:', password);
+      console.log('- Stored hash:', this.password);
+    }
+    return result;
+  } catch (error) {
+    console.error('❌ Error during password verification:', error);
+    throw error;
+  }
 };
 
 // json web token generation method for access token

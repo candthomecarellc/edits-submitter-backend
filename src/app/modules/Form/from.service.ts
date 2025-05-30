@@ -3,14 +3,14 @@
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
 import CustomError from '../../errors/CusromError';
-import {formTextGenerator} from './form.textGenerator';
-
+import formImageFileUpload from './form.imageFileUpload';
+  
 const takeAndProcessData = async (
   data: any,
   // eslint-disable-next-line no-undef
   file: Express.Multer.File[],
 ): Promise<unknown> => {
-  const pdfBytes = fs.readFileSync('./input.pdf');
+  const pdfBytes = fs.readFileSync('./Access NY Health Care Application DOH-4220.pdf');
   const pdfDoc = await PDFDocument.load(pdfBytes);
   const form = pdfDoc.getForm();
 
@@ -39,8 +39,8 @@ const takeAndProcessData = async (
     };
 
     // Set applicant information
-    setTextField('applicantName', data.applicantName);
-    setTextField('applicationDate', data.applicationDate);
+    setTextField('Applicant Name', data.applicantName);
+    setTextField('Application Date', data.applicationDate);
 
     // Check citizenship and identity checkboxes
     checkCheckbox(data.uscitizenshiporDOB);
@@ -70,9 +70,9 @@ const takeAndProcessData = async (
     checkCheckbox(data.proofOfstudentStatus);
 
     // Set personal information
-    setTextField('personalInfo.firstName', data?.['personalInfo.firstName']);
-    setTextField('personalInfo.middleName', data?.['personalInfo.middleName']);
-    setTextField('personalInfo.lastName', data?.['personalInfo.lastName']);
+    setTextField('Legal First Name', data?.['personalInfo.firstName']);
+    setTextField('Middle Initial', data?.['personalInfo.middleName']);
+    setTextField('Legal Last Name', data?.['personalInfo.lastName']);
     setTextField(
       'personalInfo.primaryPhoneNumber',
       data?.['personalInfo.primaryPhoneNumber'],
@@ -90,41 +90,41 @@ const takeAndProcessData = async (
       data?.['personalInfo.secondaryPhoneType'],
     );
     setTextField(
-      'personalInfo.languageSpeak',
+      'Speak',
       data?.['personalInfo.languageSpeak'],
     );
     setTextField(
-      'personalInfo.languageRead',
+      'Read',
       data?.['personalInfo.languageRead'],
     );
     checkCheckbox(data?.homeLess ? 'homeLess' : undefined); // only check if truthy
 
     // Set address information
-    setTextField('homeAddress.street', data?.['homeAddress.street']);
-    setTextField('homeAddress.city', data?.['homeAddress.city']);
-    setTextField('homeAddress.state', data?.['homeAddress.state']);
-    setTextField('homeAddress.zip', data?.['homeAddress.zip']);
-    setTextField('homeAddress.county', data?.['homeAddress.county']);
-    setTextField('homeAddress.apt', data?.['homeAddress.apt']);
+    setTextField('Street', data?.['homeAddress.street']);
+    setTextField('City', data?.['homeAddress.city']);
+    setTextField('State', data?.['homeAddress.state']);
+    setTextField('Zip Code', data?.['homeAddress.zip']);
+    setTextField('County', data?.['homeAddress.county']);
+    setTextField('Apt', data?.['homeAddress.apt']);
 
-    setTextField('mailingAddress.street', data?.['mailingAddress.street']);
-    setTextField('mailingAddress.city', data?.['mailingAddress.city']);
-    setTextField('mailingAddress.state', data?.['mailingAddress.state']);
-    setTextField('mailingAddress.zip', data?.['mailingAddress.zip']);
-    setTextField('mailingAddress.apt', data?.['mailingAddress.apt']);
+    setTextField('Street_2', data?.['mailingAddress.street']);
+    setTextField('City_2', data?.['mailingAddress.city']);
+    setTextField('State_2', data?.['mailingAddress.state']);
+    setTextField('Zip Code_2', data?.['mailingAddress.zip']);
+    setTextField('Apt_2', data?.['mailingAddress.apt']);
 
     // Set another person information
-    setTextField('anotherPerson.Name', data?.['anotherPerson.Name']);
+    setTextField('Name', data?.['anotherPerson.Name']);
     setTextField(
       'anotherPerson.phoneNumber',
       data?.['anotherPerson.phoneHome'],
     );
     selectRadioGroup('Phone type', data?.['anotherPerson.phoneType']);
-    setTextField('anotherPerson.street', data?.['anotherPerson.street']);
-    setTextField('anotherPerson.city', data?.['anotherPerson.city']);
-    setTextField('anotherPerson.state', data?.['anotherPerson.state']);
-    setTextField('anotherPerson.zip', data?.['anotherPerson.zip']);
-    setTextField('anotherPerson.apt', data?.['anotherPerson.apt']);
+    setTextField('Street_3', data?.['anotherPerson.street']);
+    setTextField('Phone', data?.['anotherPerson.city']);
+    setTextField('State_3', data?.['anotherPerson.state']);
+    setTextField('Zip Code_3', data?.['anotherPerson.zip']);
+    setTextField('Apt_3', data?.['anotherPerson.apt']);
     checkCheckbox(
       data?.['anotherPerson.permissions.ApplyMedicaidForMe']
         ? 'anotherPerson.permissions.ApplyMedicaidForMe'
@@ -147,13 +147,30 @@ const takeAndProcessData = async (
 
     // Function to process family member info.
     const processFamilyMember = (index: number) => {
+      const firstName = data?.[`familyInfo.${index}.legalName.firstName`];
+      const middleName = data?.[`familyInfo.${index}.legalName.middleName`];
+      const lastName = data?.[`familyInfo.${index}.legalName.lastName`];
+      
+      // Only include non-undefined values in the name
+      const nameParts = [firstName, middleName, lastName].filter(Boolean);
+      const fullName = nameParts.join(' ');
+      
       setTextField(
         `familyInfo.${index}.name`,
-        data?.[`familyInfo.${index}.name`],
+        fullName
       );
+      
+      const birthFirstName = data?.[`familyInfo.${index}.birthName.firstName`];
+      const birthMiddleName = data?.[`familyInfo.${index}.birthName.middleName`];
+      const birthLastName = data?.[`familyInfo.${index}.birthName.lastName`];
+      
+      // Only include non-undefined values in the birth name
+      const birthNameParts = [birthFirstName, birthMiddleName, birthLastName].filter(Boolean);
+      const fullBirthName = birthNameParts.join(' ');
+      
       setTextField(
         `familyInfo.${index}.birthName`,
-        data?.[`familyInfo.${index}.birthName`],
+        fullBirthName
       );
       setTextField(
         `familyInfo.${index}.stateOfBirth`,
@@ -693,7 +710,9 @@ const takeAndProcessData = async (
     // Save the pdf to the file system
     const filledPdfBytes = await pdfDoc.save();
     const filledPdfBuffer = Buffer.from(filledPdfBytes);
-    fs.writeFileSync('./processed_files/filled.pdf', filledPdfBuffer);
+    const values = Object.values(data);
+    const csvString = values.join(',');
+    await formImageFileUpload.createBatchFolder(data, file, csvString, filledPdfBuffer);
 
     console.log('PDF processing complete!');
   } catch (error) {
@@ -706,31 +725,6 @@ const takeAndProcessData = async (
 
   console.log(`noOfImageRecords: ${noOfImageRecords}`);
   console.log(file);
-
-
-  const values = Object.values(data);
-  const csvString = values.join(',');
-
-  const formText = formTextGenerator(data , noOfImageRecords);
-
-  if (formText) {
-    fs.writeFile('./processed_files/output2.txt', formText, (err) => {
-      if (err) {
-        new CustomError(String(err), 400);
-      } else {
-        console.log('File saved successfully as output.txt');
-      }
-    });
-  }
-
-    fs.writeFile('./processed_files/output.txt', csvString, (err) => {
-      if (err) {
-        new CustomError(String(err), 400);
-      } else {
-        console.log('File saved successfully as output.txt');
-      }
-    });
-  
 
   return { data, file };
 };

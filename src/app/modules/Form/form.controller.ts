@@ -1,7 +1,7 @@
 import { Request, Response, Express } from 'express';
 import { ApiResponse } from '../../utils/ApiResponse';
 import catchAsync from '../../utils/catchAsync';
-import { formServices } from './from.service';
+import { formServices } from './from.service1';
 
 const takeAndProcessData = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;

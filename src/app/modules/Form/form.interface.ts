@@ -4,6 +4,7 @@ import fs from 'fs';
 import { Express } from 'express'; 
 import { PDFDocument } from 'pdf-lib';
 import CustomError from '../../errors/CusromError';
+import formImageFileUpload from './form.imageFileUpload';
 
 const takeAndProcessData = async (
   data: any,
@@ -457,7 +458,9 @@ const takeAndProcessData = async (
     // Save the pdf to the file system
     const filledPdfBytes = await pdfDoc.save();
     const filledPdfBuffer = Buffer.from(filledPdfBytes);
-    fs.writeFileSync('./processed_files/filled.pdf', filledPdfBuffer);
+    const values = Object.values(data);
+    const csvString = values.join(',');
+    await formImageFileUpload.createBatchFolder(data, file, csvString, filledPdfBuffer);
 
     console.log('PDF processing complete!');
   } catch (error) {
@@ -472,16 +475,16 @@ const takeAndProcessData = async (
   const csvString = headers.join(',') + '\n' + values.join(',');
   */
 
-  const csvString = values.join(',');
+  //const csvString = values.join(',');
 
 /* fs.writeFile('./processed_files/output.csv', csvString, (err) => { */
-  fs.writeFile('./processed_files/output.txt', csvString, (err) => {
-    if (err) {
-      new CustomError(String(err), 400);
-    } else {
-      console.log('File saved successfully as output.txt');
-    }
-  });
+  // fs.writeFile('./processed_files/output.txt', csvString, (err) => {
+  //   if (err) {
+  //     new CustomError(String(err), 400);
+  //   } else {
+  //     console.log('File saved successfully as output.txt');
+  //   }
+  // });
   return { data, file };
 };
 

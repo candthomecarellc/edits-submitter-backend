@@ -1,7 +1,7 @@
 import express from 'express';
 import { usersRoutes } from '../modules/Users/users.routes';
 import formRoutes from '../modules/Form/form.routes';
-
+import applicationRoutes from '../modules/Application/application.routes';
 const router = express.Router();
 
 const moduleRoutes = [
@@ -12,6 +12,10 @@ const moduleRoutes = [
   {
     path: '/form',
     route: formRoutes,
+  },
+  {
+    path: '/application',
+    route: applicationRoutes,
   }
 ];
 

@@ -8,4 +8,11 @@ const userValidationSchema = z.object({
     }),
 });
 
-export const validateUser = { userValidationSchema };
+const loginValidationSchema = z.object({
+    body: z.object({
+        email: z.string().email(),
+        password: z.string().min(6).max(30),
+    }),
+});
+
+export const validateUser = { userValidationSchema, loginValidationSchema };

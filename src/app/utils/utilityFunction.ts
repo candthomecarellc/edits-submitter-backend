@@ -1,11 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import logger from './logger';
+import { isObjectIdOrHexString } from 'mongoose';
+import { PDFDocument } from 'pdf-lib';
 
 // this function is used to generate the record sent
 const generateRecordSent = (record?: string) => {
   // 00000001 is first record , then 00000002 , 00000003 , 00000004 , 00000005 , 00000006 , 00000007 , 00000008 , 00000009 , 00000010 so on
-  const existingRecord = record || '00000001'; // this is the existing record come from the database
+  const existingRecord = record || '00000000'; // this is the existing record come from the database
 
   const newRecord = parseInt(existingRecord) + 1;
 
@@ -22,32 +24,41 @@ const generateSubmitionType = (type: string) => {
   if (type === 'deferral extension') {
     return 'D';
   }
+  else {
+    return 'N';
+  }
 };
 
 // this function is used to manipulate the date
-const dateMenupulation = (type: string, SubmitedDate?: Date) => {
-  const date = SubmitedDate || new Date();
+const formatDate = (SubmitedDate: Date, format: 'mmddyyyy' | 'mmddyy' | 'mm/dd/yyyy' | 'mm/dd/yy') => {
+  const date = new Date(SubmitedDate);
   const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based in JavaScript
+  const day = date.getDate().toString().padStart(2, '0'); // Days are 1-based
 
-  if (type === 'date') {
-    // mmddyyyy
+  if (format === 'mmddyyyy') {
     return `${month}${day}${year}`;
   }
 
-  if (type === 'time') {
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    // HHMM
-    return `${hour}${minute}`;
+  if (format === 'mmddyy') {
+    return `${month}${day}${year.toString().slice(-2)}`;
   }
 
-  if (type === 'sign') {
-    // mm/dd/yy
-    const formatedYear = year.toString().slice(-2);
-    return `${month}/${day}/${formatedYear}`;
+  if (format === 'mm/dd/yyyy') {
+    return `${month}/${day}/${year}`;
   }
+
+  if (format === 'mm/dd/yy') {
+    return `${month}/${day}${year.toString().slice(-2)}`;
+  }
+  return '';
+};
+
+const getTime = () => {
+  const date = new Date();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  return `${hour}${minute}`;
 };
 
 // this function is used to generate the unique patient UID
@@ -94,6 +105,54 @@ function saveUIDs(): void {
 // Initialize the database
 loadUIDs();
 
+
+const COUNT_FILE_PATH = path.join(__dirname, 'counts.json');
+
+interface Counts {
+  patientUID: string;
+  batchCount: string;
+}
+
+let counts: Counts = {
+  patientUID: "0",
+  batchCount: "0"
+};
+
+function loadCounts(): void {
+  try {
+    if (fs.existsSync(COUNT_FILE_PATH)) {
+      const data = fs.readFileSync(COUNT_FILE_PATH, 'utf-8');
+      counts = JSON.parse(data);
+    } else {
+      counts = {
+        patientUID: "0",
+        batchCount: "0",
+      };
+    }
+  } catch (error) {
+    logger.error('Error loading Counts database:', error);
+    counts = {
+      patientUID: "0",
+      batchCount: "0",
+    };
+  }
+}
+
+/**
+ * Save UIDs to the database file
+ */
+function saveCounts(): void {
+  try {
+    const data = JSON.stringify(counts);
+    fs.writeFileSync(COUNT_FILE_PATH, data);
+  } catch (error) {
+    logger.error('Error saving Counts database:', error);
+  }
+}
+
+
+// Initialize the database
+loadCounts();
 /**
  * Helper function to generate the next sequential UID
  * Format: CNT[A-Z]00001, CNT[A-Z]00002, etc.
@@ -104,8 +163,8 @@ function generateNextSequentialUID(): string {
   const existingUIDs = Array.from(generatedUIDs);
 
   if (existingUIDs.length === 0) {
-    // If no UIDs exist, start with CNTA00001
-    return 'CNTA00001';
+    // If no UIDs exist, start with CNTA000001
+    return 'CNTA000001';
   }
 
   // Sort existing UIDs to find the last one
@@ -116,13 +175,13 @@ function generateNextSequentialUID(): string {
   const letter = lastUID[3]; // Get the letter (A, B, etc.)
   const number = parseInt(lastUID.slice(4)); // Get the number part
 
-  if (number >= 99999) {
-    // If we've reached 99999, move to the next letter
+  if (number >= 999999) {
+    // If we've reached 999999, move to the next letter
     const nextLetter = String.fromCharCode(letter.charCodeAt(0) + 1);
-    return `CNT${nextLetter}00001`;
+    return `CNT${nextLetter}000001`;
   } else {
     // Increment the number and pad with zeros
-    return `CNT${letter}${(number + 1).toString().padStart(5, '0')}`;
+    return `CNT${letter}${(number + 1).toString().padStart(6, '0')}`;
   }
 }
 /**
@@ -143,7 +202,6 @@ function handlePatientUID(
   // For generating a new UID or using an existing one
   if (operation === 'generate') {
     let uid: string;
-
     if (existingUID) {
       // If an existing UID is provided, check if it exists
       if (!generatedUIDs.has(existingUID)) {
@@ -198,20 +256,71 @@ const generateImageRecords = (noOfImageRecords: number) => {
   return imageRecords;
 };
 
-const generateUniqueCaseId = (submitterId: string) => {
+const generateUniqueCaseId = (submitterId: string, uniqueUID: string, signatureDate: Date) => {
   // this will be total 20 digit unique case id
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const day = currentDate.getDate();
-  const hour = currentDate.getHours();
-  const minute = currentDate.getMinutes();
-  const second = currentDate.getSeconds();
-  const uniqueCaseId = `${submitterId}${year}${month}${day}${hour}${minute}${second}`;
+  const currentDate = new Date(signatureDate);
+  const year = currentDate.getFullYear().toString().slice(-2);
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = currentDate.getDate().toString().padStart(2, '0');
+  const uniqueCaseId = `${submitterId}${uniqueUID}${month}${day}${year}`;
   return uniqueCaseId;
 };
+
+const createUniqueUID = () => {
+  const currentUID = parseInt(counts.patientUID);
+  const newUID = (currentUID + 1).toString().padStart(6, '0');
+  counts.patientUID = newUID;
+  const uniqueUID = `CNTA${newUID}`;
+  saveCounts();
+  return uniqueUID;
+};
+
+const getUniqueUID = () => {
+  const currentUID = parseInt(counts.patientUID);
+  return `CNTA${currentUID.toString().padStart(6, '0')}`;
+};
+
+const updateBatchNumber = () => {
+  const currentBatch = parseInt(counts.batchCount);
+  const newBatch = (currentBatch + 1).toString().padStart(4, '0');
+  counts.batchCount = newBatch;
+  saveCounts();
+  return newBatch;
+};
+
+const getBatchNumber = () => {
+  return counts.batchCount.toString().padStart(4, '0');
+};
+
+const createFolder = () => {
+  const path = `processed_files/${formatDate(new Date(), 'mmddyyyy')}${getBatchNumber()}`;
+  fs.mkdirSync(path, { recursive: true });
+  return path;
+};
+
+const getSubmitterId = () => {
+  return '0004';
+};
+
+const countPdfPages = async (filePath: string): Promise<number> => {
+    try {
+        // Check if file exists at the path
+        if (!fs.existsSync(filePath)) {
+            logger.error(`File not found at path: ${filePath}`);
+            throw new Error(`File not found at path: ${filePath}`);
+        }
+        
+        const pdfBytes = fs.readFileSync(filePath);
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        return pdfDoc.getPageCount();
+    } catch (error: any) {
+        logger.error('Error counting PDF pages:', error);
+        throw new Error(`Failed to count PDF pages: ${error.message}`);
+    }
+}
+
 export {
-  dateMenupulation,
+  formatDate,
   ensureUniqueUID,
   generateImageRecords,
   generateRecordSent,
@@ -219,4 +328,13 @@ export {
   generateUniqueCaseId,
   getGeneratedUIDCount,
   isUIDGenerated,
+  createUniqueUID,
+  updateBatchNumber,
+  getBatchNumber,
+  loadCounts,
+  createFolder,
+  getSubmitterId,
+  getUniqueUID,
+  countPdfPages,
+  getTime,
 };
