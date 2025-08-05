@@ -1,8 +1,15 @@
 import { Application } from './application.model';
 import { Application as ApplicationInterface } from './application.interface';
+import { ApplicationFrontend } from './application.frontend.interface';
+import { today } from '../../utils/utilityFunction';
+import { formatForFrontend } from './Formats/backendToFrontend';
+import { formatForBackend } from './Formats/frontendToBackend';
+import { mergeApplication } from './Formats/application.merge';
+import { formatForSubmit } from './Formats/formatForSubmit';
 
 export class ApplicationService {
     async create(applicationData: ApplicationInterface): Promise<ApplicationInterface> {
+        applicationData.caseId = "1111" + applicationData.patientId + today();
         const application = new Application(applicationData);
         return await application.save();
     }
@@ -11,15 +18,49 @@ export class ApplicationService {
         return await Application.find();
     }
 
-    async findById(id: string): Promise<ApplicationInterface | null> {
-        return await Application.findById(id);
+    async findById(id: string): Promise<ApplicationFrontend | null> {
+        const application = await Application.findById(id);
+        if (!application) {
+            return null;
+        }
+        return formatForFrontend(application) as ApplicationFrontend;
     }
 
-    async update(id: string, applicationData: Partial<ApplicationInterface>): Promise<ApplicationInterface | null> {
-        return await Application.findByIdAndUpdate(id, applicationData, { new: true });
+    async update(id: string, applicationData: Partial<ApplicationFrontend>): Promise<ApplicationFrontend | null> {
+        // First, get the existing application
+        const existingApplication = await Application.findById(id);
+        if (!existingApplication) {
+            return null;
+        }
+        const updatedApplication = await Application.findByIdAndUpdate(id, mergeApplication(existingApplication, applicationData), { new: true });
+        
+        if (!updatedApplication) {
+            return null;
+        }
+        
+        return formatForFrontend(updatedApplication) as ApplicationFrontend;
     }
 
-    async delete(id: string): Promise<ApplicationInterface | null> {
-        return await Application.findByIdAndDelete(id);
+    async delete(id: string): Promise<ApplicationFrontend | null> {
+        const application = await Application.findByIdAndDelete(id);
+        if (!application) {
+            return null;
+        }
+        return formatForFrontend(application) as ApplicationFrontend;
+    }
+
+    async getApplicationList(): Promise<ApplicationFrontend[]> {
+        const applications = await Application.find().select('_id caseId caseName applicant status createdAt createdBy updatedAt');
+        const formattedApplications = applications.map(app => formatForFrontend(app) as ApplicationFrontend);
+        // console.log(formattedApplications);
+        return formattedApplications;
+    }
+
+    async submit(id: string): Promise<ApplicationFrontend | null> {
+        const application = await Application.findById(id);
+        if (!application) {
+            return null;
+        }
+        return formatForSubmit(formatForFrontend(application) as ApplicationFrontend);
     }
 } 

@@ -3,12 +3,20 @@ import { Application as ApplicationInterface } from './application.interface';
 
 const sampleApplications: ApplicationInterface[] = [
     {
+        caseId: "1234567890",
+        createdBy: "John Doe",
+        status: 0,
+        statusValue: "PENDING",
+        caseName: "John Doe",
+        providerId: "1234567890",
+        patientId: "1234567890",
         applicant: {
             code: 1,
             first: "John",
             middle: "Robert",
             last: "Doe"
         },
+        email: "john.doe@example.com",
         primaryPhone: {
             type: 1,
             number: 5551234567
@@ -89,10 +97,7 @@ const sampleApplications: ApplicationInterface[] = [
             accessRight: 1
         },
         contactName: "Jane Doe",
-        contactPhone: {
-            type: 1,
-            number: 5559876543
-        },
+        contactPhone: "5559876543",
         caseComposition: 1,
         edc1: 1,
         edc2: 1,
@@ -189,15 +194,15 @@ const sampleApplications: ApplicationInterface[] = [
                 ssi: 0,
                 bcs: 0,
                 relationshipToApplicant: 1,
-                cibicCc: 0,
-                cibicCdc: 0,
+                cbicCc: 0,
+                cbicCdc: 0,
                 studentId: 0,
                 aci: 0,
                 alienNumber: 0,
                 alienDateOfEntry: new Date(),
                 maritalStatus: 1,
                 educationLevel: 4,
-                elienDateEnteredCountry: new Date(),
+                alienDateEnteredCountry: new Date(),
                 pid: 0,
                 childIdentifier: 0,
                 chronicCareIndicator: 0,
@@ -212,7 +217,7 @@ const sampleApplications: ApplicationInterface[] = [
                             ctg: 1,
                             eid: 1,
                             employmentStatus: 1,
-                            earnedIncome: {
+                            income: {
                                 category: 1,
                                 type: 1,
                                 amount: 5000,
@@ -226,7 +231,7 @@ const sampleApplications: ApplicationInterface[] = [
                     ],
                     unearnedIncome: [{
                         ctg: 1,
-                        unearnedIncome: {
+                        income: {
                             category: 1,
                             type: 1,
                             amount: 5000,
@@ -239,7 +244,7 @@ const sampleApplications: ApplicationInterface[] = [
                     }],
                     resource: [{
                         ctg: 1,
-                        resource: {
+                        income: {
                             category: 1,
                             type: 1,
                             amount: 5000,
@@ -251,12 +256,12 @@ const sampleApplications: ApplicationInterface[] = [
                 healthInsurance: {
                     healthInsuranceCode: 1,
                     benefitCardId: "123456789",
-                    personsCovered: "Self",
+                    personsCovered: 1,
                     costOfPolicy: 200,
                     endDateOfCoverage: new Date("2024-12-31"),
                     monthBilled: "January",
                     moveInState: "CA",
-                    moveInCountry: "USA",
+                    moveInCounty: "USA",
                     healthPlan: {
                         healthPlanName: "Blue Cross",
                         currentDoctor: true,

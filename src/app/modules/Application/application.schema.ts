@@ -1,198 +1,241 @@
 import { Schema } from 'mongoose';
-import { Name, Phone, Address, MailingAddress, Ethnicity, Amount, ChildCare, HouseholdExpense, EarnedIncome, UnearnedIncome, Resource, Income, HealthInsurance, LivingOutside, HouseholdMember, Application } from './application.interface';
-
-const NameSchema = new Schema<Name>({
-    code: { type: Number, required: true },
-    first: { type: String, required: true },
-    middle: { type: String },
-    last: { type: String, required: true }
-});
-
-const PhoneSchema = new Schema<Phone>({
-    type: { type: Number, required: true },
-    number: { type: Number, required: true }
-});
-
-const AddressSchema = new Schema<Address>({
-    apartment: { type: Number },
-    house: { type: Number, required: true },
-    street: { type: String, required: true },
-    state: { type: String, required: true },
-    city: { type: String, required: true },
-    country: { type: String, required: true },
-    zip: { type: Number, required: true },
-    phone: { type: PhoneSchema, required: true }
-});
-
-const MailingAddressSchema = new Schema<MailingAddress>({
-    associateName: { type: NameSchema, required: true },
-    inCareOf: { type: NameSchema },
-    address: { type: AddressSchema, required: true },
-    accessRight: { type: Number, required: true }
-});
-
-const EthnicitySchema = new Schema<Ethnicity>({
-    type: { type: Number, required: true },
-    status: { type: Number, required: true }
-});
-
-const AmountSchema = new Schema<Amount>({
-    category: { type: Number, required: true },
-    type: { type: Number, required: true },
-    amount: { type: Number, required: true },
-    period: { type: Number, required: true }
-});
-
-const ChildCareSchema = new Schema<ChildCare>({
-    name: { type: String, required: true },
-    month: { type: Number, required: true },
-    year: { type: Number, required: true },
-    childCareCost: { type: AmountSchema, required: true }
-});
-
-const HouseholdExpenseSchema = new Schema<HouseholdExpense>({
-    fuelCost: { type: AmountSchema, required: true },
-    shelterCost: { type: AmountSchema, required: true },
-    waterCost: { type: AmountSchema, required: true },
-    addCost: { type: AmountSchema, required: true },
-    freeHousing: { type: Number, required: true },
-    budgetType: { type: Number, required: true },
-    childCare: { type: [ChildCareSchema], required: true },
-    ssi: {
-        ssiDm: { type: Number, required: true },
-        ssiLa: { type: Number, required: true },
-        ssiNoDm: { type: Number, required: true },
-        ssiNoAll: { type: Number, required: true },
-        ssiBuy: { type: String, required: true },
-    },
-    nursingHome: { type: Boolean, required: true },
-    blindDisableChronicallyIll: { type: Boolean, required: true },
-    chronicCare: {
-        chronicCareDateIns: { type: Date, required: true },
-        chronicCarePia: { type: String, required: true },
-        chronicCareCon: { type: Number, required: true },
-        chronicCareAmount: { type: Number, required: true },
-        chronicCareLoc: { type: Number, required: true },
-    }
-});
-
-const EarnedIncomeSchema = new Schema<EarnedIncome>({
-    employerName: { type: String, required: true },
-    ctg: { type: Number, required: true },
-    eid: { type: Number, required: true },
-    employmentStatus: { type: Number, required: true },
-    earnedIncome: { type: AmountSchema, required: true },
-    insur: { type: Number, required: true },
-    ctSup: { type: Number, required: true },
-    wkRel: { type: Number, required: true },
-    irwe: { type: Number, required: true },
-});
-
-const UnearnedIncomeSchema = new Schema<UnearnedIncome>({
-    ctg: { type: Number, required: true },
-    unearnedIncome: { type: AmountSchema, required: true },
-    cd1: { type: Number, required: true },
-    exempt1: { type: Number, required: true },
-    cd2: { type: Number, required: true },
-    exempt2: { type: Number, required: true },
-});
-
-const ResourceSchema = new Schema<Resource>({
-    ctg: { type: Number, required: true },
-    resource: { type: AmountSchema, required: true },
-    utxn2Flag: { type: Number, required: true },
-});
-
-const IncomeSchema = new Schema<Income>({
-    incomeCode: { type: Number, required: true },
-    lastJobDate: { type: Date, required: true },
-    employerName: { type: String, required: true },
-    studentType: { type: Number, required: true },
-    earnedIncome: { type: [EarnedIncomeSchema], required: true },
-    unearnedIncome: { type: [UnearnedIncomeSchema], required: true },
-    resource: { type: [ResourceSchema], required: true },
-});
-
-const HealthInsuranceSchema = new Schema<HealthInsurance>({
-    healthInsuranceCode: { type: Number, required: true },
-    benefitCardId: { type: String, required: true },
-    personsCovered: { type: String, required: true },
-    costOfPolicy: { type: Number, required: true },
-    endDateOfCoverage: { type: Date, required: true },
-    monthBilled: { type: String, required: true },
-    moveInState: { type: String, required: true },
-    moveInCountry: { type: String, required: true },
-    healthPlan: {
-        healthPlanName: { type: String, required: true },
-        currentDoctor: { type: Boolean, required: true },
-        preferredDoctor: { type: String, required: true },
-        obGyn: { type: String, required: true },
-    }
-});
-
-const LivingOutsideSchema = new Schema<LivingOutside>({
-    outsideCode: { type: Number, required: true },
-    name: { type: String, required: true },
-    dob: { type: Date, required: true },
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    ssn: { type: String, required: true },
-});
-
-const HouseholdMemberSchema = new Schema<HouseholdMember>({
-    lineNumber: { type: Number, required: true },
-    legalName: { type: NameSchema, required: true },
-    otherName: { type: NameSchema, required: true },
-    dateOfBirth: { type: Date, required: true },
-    sex: { type: Boolean, required: true },
-    gender: { type: String, required: true },
-    ssn: { type: String, required: true },
-    ethnicity: { type: [EthnicitySchema], required: true },
-    status: { type: Number, required: true },
-    pregnantDueDate: { type: Date, required: true },
-    fedChargeCd: { type: Number, required: true },
-    fedChargeDate: { type: Date, required: true },
-    tasa: { type: Number, required: true },
-    emp: { type: Number, required: true },
-    ssi: { type: Number, required: true },
-    bcs: { type: Number, required: true },
-    relationshipToApplicant: { type: Number, required: true },
-    cibicCc: { type: Number, required: true },
-    cibicCdc: { type: Number, required: true },
-    studentId: { type: Number, required: true },
-    aci: { type: Number, required: true },
-    alienNumber: { type: Number, required: true },
-    alienDateOfEntry: { type: Date, required: true },
-    maritalStatus: { type: Number, required: true },
-    educationLevel: { type: Number, required: true },
-    elienDateEnteredCountry: { type: Date, required: true },
-    pid: { type: Number, required: true },
-    childIdentifier: { type: Number, required: true },
-    chronicCareIndicator: { type: Number, required: true },
-    income: { type: IncomeSchema, required: true },
-    healthInsurance: { type: HealthInsuranceSchema, required: true },
-    parentOutside: { type: LivingOutsideSchema, required: true },
-    spouseOutside: { type: LivingOutsideSchema, required: true },
-});
+import { Application } from './application.interface';
 
 export const ApplicationSchema = new Schema<Application>({
-    applicant: { type: NameSchema, required: true },
-    primaryPhone: { type: PhoneSchema, required: true },
-    anotherPhone: { type: PhoneSchema, required: true },
-    languageSpoken: { type: String, required: true },
-    languageRead: { type: String, required: true },
-    residence: { type: AddressSchema, required: true },
-    mailingAddress: { type: MailingAddressSchema, required: true },
-    mailingAddress2: { type: MailingAddressSchema, required: true },
-    contactName: { type: String, required: true },
-    contactPhone: { type: PhoneSchema, required: true },
-    caseComposition: { type: Number, required: true },
-    edc1: { type: Number, required: true },
-    edc2: { type: Number, required: true },
-    familyPlanning: { type: Boolean, required: true },
-    householdExpence: { type: HouseholdExpenseSchema, required: true },
-    wayOfLiving: { type: String, required: true },
-    householdMember: { type: [HouseholdMemberSchema], required: true },
+    caseId: { type: String, required: true },
+    createdBy: { type: String, required: true },
+    status: { type: Number, default: 0 },
+    caseName: { type: String },
+    providerId: { type: String, required: true },
+    patientId: { type: String, required: true },
+    applicant: {
+        first: { type: String },
+        middle: { type: String },
+        last: { type: String }
+    },
+    email: { type: String, required: true },
+    primaryPhone: {
+        type: { type: Number },
+        number: { type: String }
+    },
+    anotherPhone: {
+        type: { type: Number },
+        number: { type: String }
+    },
+    residence: {
+        apartment: { type: String },
+        house: { type: String },
+        street: { type: String },
+        state: { type: String },
+        city: { type: String },
+        country: { type: String },
+        zip: { type: String },
+        phone: { type: String }
+    },
+    mailingAddress: {
+        apartment: { type: String },
+        street: { type: String },
+        state: { type: String },
+        city: { type: String },
+        zip: { type: String }
+    },
+    mailingAddress2: {
+        associateName: { type: String },
+        inCareOf: { type: String },
+        phone: { type: String },
+        street: { type: String },
+        state: { type: String },
+        city: { type: String },
+        zip: { type: String }
+    },
+    contactName: { type: String },
+    contactPhone: { type: String },
+    caseComposition: { type: Number },
+    edc1: { type: Date },
+    edc2: { type: Date },
+    languageSpoken: { type: String },
+    languageRead: { type: String },
+    applicantBooleans: { type: Number },
+    fieldStatus: {
+        personalDetails: { type: Number },
+        homeAddress: { type: Number },
+        mailingAddress: { type: Number },
+        secondMailingAddress: { type: Number },
+        otherInformation: { type: Number }
+    },
+    householdExpense: {
+        shelterType: { type: Number },
+        shelterAmount: { type: Number },
+        waterCostAmount: { type: Number },
+        waterCostPeriod: { type: Number },
+        addType: { type: Number },
+        addAmount: { type: Number },
+        budgetType: { type: Number },
+        fuelType: { type: Number },
+        freeHousing: { type: Boolean },
+        nursingHome: { type: Boolean },
+        blindDisableChronicallyIll: { type: Boolean },
+        childCare: Array<{
+            _id: { type: Schema.Types.ObjectId },
+            name: { type: String },
+            month: { type: Number },
+            year: { type: Number },
+            amount: { type: Number },
+            period: { type: Number }
+        }>,
+        ssi: {
+            ssiDm: { type: Number },
+            ssiLa: { type: Number },
+            ssiNoDm: { type: Number },
+            ssiNoAll: { type: Number },
+            ssiBuy: { type: String }
+        },
+        chronicCare: {
+            chronicCareDateIns: { type: Date },
+            chronicCarePia: { type: String },
+            chronicCareCon: { type: Number },
+            chronicCareAmount: { type: Number },
+            chronicCareLoc: { type: Number }
+        },
+        fieldStatus: {
+            housingExpense: { type: Number },
+            childCare: { type: Number },
+            otherExpenses: { type: Number }
+        }
+    },
+    wayOfLiving: { type: String },
+    householdMember: Array<{
+        _id: { type: Schema.Types.ObjectId },
+        lineNumber: { type: Number },
+        legalName: {
+            first: { type: String },
+            middle: { type: String },
+            last: { type: String }
+        },
+        otherName: {
+            code: { type: Number },
+            first: { type: String },
+            middle: { type: String },
+            last: { type: String }
+        },
+        dateOfBirth: { type: Date },
+        sex: { type: String },
+        gender: { type: String },
+        relationshipToApplicant: { type: Number },
+
+        pregnantDueDate: { type: Date },
+        maritalStatus: { type: Number },
+        studentId: { type: String },
+        educationLevel: { type: Number },
+        studentType: { type: Number },
+        
+        lastJobDate: { type: Date },
+        employerName: { type: String },
+        childIdentifier: { type: Number },
+        chronicCareIndicator: { type: String },
+        
+        ethnicity: { type: Number },
+        aci: { type: String },
+        alienNumber: { type: String },
+        alienDateOfEntry: { type: Date },
+        alienDateEnteredCountry: { type: Date },
+        fedChargeCd: { type: Number },
+        fedChargeDate: { type: Date },
+
+        ssn: { type: String },
+        tasa: { type: Number },
+        emp: { type: Number },
+        ssi: { type: Number },
+        bcs: { type: String },
+        cbicCc: { type: String },
+        cbicCdc: { type: String },
+        pid: { type: String },
+
+        householdBooleans: { type: Number },
+
+        generalInformation: {
+            personalInformation: { type: Number },
+            statusInformation: { type: Number },
+            memberIncome: { type: Number },
+            ethnicCitizenshipInformation: { type: Number },
+            otherInformation: { type: Number }
+        },
+
+        income: {
+            earnedIncome: Array<{
+                _id: { type: Schema.Types.ObjectId },
+                employerName: { type: String },
+                ctg: { type: Number },
+                eid: { type: Number },
+                employmentStatus: { type: String },
+                source: { type: Number },
+                amount: { type: Number },
+                period: { type: Number },
+                insur: { type: Number },
+                ctSup: { type: Number },
+                wkRel: { type: Number },
+                irwe: { type: Number },
+                fieldStatus: { type: Number }
+            }>,
+            unearnedIncome: Array<{
+                _id: { type: Schema.Types.ObjectId },
+                ctg: { type: Number },
+                source: { type: Number },
+                amount: { type: Number },
+                period: { type: Number },
+                cd1: { type: Number },
+                exempt1: { type: Number },
+                cd2: { type: Number },
+                exempt2: { type: Number },
+                fieldStatus: { type: Number }
+            }>,
+            resource: Array<{
+                _id: { type: Schema.Types.ObjectId },
+                ctg: { type: Number },
+                cd: { type: Number },
+                value: { type: Number },
+                period: { type: Number },
+                utxn2Flag: { type: Number },
+                fieldStatus: { type: Number }
+            }>,
+        },
+        healthInsurance: {
+            medicaidCardId: { type: String },
+            familyHealthPlusCardId: { type: String },
+            personsCovered: { type: Number },
+            costOfPolicy: { type: Number },
+            endDateOfCoverage: { type: Date },
+            monthBilled: { type: String },
+            moveInState: { type: String },
+            moveInCounty: { type: String },
+            healthPlan: {
+                healthPlanName: { type: String },
+                preferredDoctor: { type: String },
+                obGyn: { type: String }
+            }
+        },
+        parentOutside: {
+            name: { type: String },
+            dob: { type: Date },
+            street: { type: String },
+            city: { type: String },
+            ssn: { type: String }
+        },
+        spouseOutside: {
+            name: { type: String },
+            dob: { type: Date },
+            street: { type: String },
+            city: { type: String },
+            ssn: { type: String }
+        },
+        insuranceCode: { type: Number },
+        insuranceInformation: {
+            healthInsurance: { type: Number },
+            medicalExpense: { type: Number },
+            deceasedOrLivingOutside: { type: Number },
+            healthPlan: { type: Number }
+        }
+    }>,
 }, {
     timestamps: true
 }); 

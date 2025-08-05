@@ -394,8 +394,8 @@ const takeAndProcessData = async (
                         formatNumber(member.ssi, 1), // SSI
                         formatString(member.bcs, 1), // BCS
                         formatNumber(member.relationship, 2),   // Relationship to applicant
-                        formatString(member.cibicCC, 1),  // CIBIC CC
-                        formatString(member.cibicCDC, 1), // CIBIC CDC
+                        formatString(member.cbicCC, 1),  // CIBIC CC
+                        formatString(member.cbicCDC, 1), // CIBIC CDC
                         formatString(member.studentID, 9), // Student ID
                         formatString(member.aci, 1), // ACI
                         formatNumber(member.alienNumber, 10), // Alien #

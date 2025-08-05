@@ -319,6 +319,11 @@ const countPdfPages = async (filePath: string): Promise<number> => {
     }
 }
 
+const today = () => {
+  const date = new Date();
+  return formatDate(date, 'mmddyy');
+};
+
 export {
   formatDate,
   ensureUniqueUID,
@@ -337,4 +342,5 @@ export {
   getUniqueUID,
   countPdfPages,
   getTime,
+  today,
 };

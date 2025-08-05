@@ -1,12 +1,12 @@
 import { ObjectId } from "mongoose";
 
-export interface Application {
+export interface ApplicationFrontend {
     _id: ObjectId;
     caseId: string;
     createdBy: string;
     createdAt: Date;
     updatedAt: Date;
-    status: number;
+    status: string;
     caseName: string;
     providerId: string;
     patientId: string;
@@ -17,11 +17,11 @@ export interface Application {
     };
     email: string;
     primaryPhone: {
-        type: number;
+        type: string;
         number: string;
     };
     anotherPhone: {
-        type: number;
+        type: string;
         number: string;
     };
     residence: {
@@ -57,23 +57,30 @@ export interface Application {
     edc2: Date;
     languageSpoken: string;
     languageRead: string;
-    applicantBooleans: number;
+    homeless: boolean;
+    mailSame: boolean;
+    mail2Same: boolean;
+    applyOrRenew: boolean;
+    discuss: boolean;
+    getNotice: boolean;
+    clientNoticeLanguage: 'spanish' | 'english';
+    familyPlanning: boolean;
     fieldStatus: {
-        personalDetails: number;
-        homeAddress: number;
-        mailingAddress: number;
-        secondMailingAddress: number;
-        otherInformation: number;
+        personalDetails: {[key: string]: string};
+        homeAddress: {[key: string]: string};
+        mailingAddress: {[key: string]: string};
+        secondMailingAddress: {[key: string]: string};
+        otherInformation: {[key: string]: string};
     };
     householdExpense: {
-        shelterType: number;
+        shelterType: string;
         shelterAmount: number;
         waterCostAmount: number;
-        waterCostPeriod: number;
-        addType: number;
+        waterCostPeriod: string;
+        addType: string;
         addAmount: number;
-        budgetType: number;
-        fuelType: number;
+        budgetType: string;
+        fuelType: string;
         freeHousing: boolean;
         nursingHome: boolean;
         blindDisableChronicallyIll: boolean;
@@ -83,11 +90,11 @@ export interface Application {
             month: number;
             year: number;
             amount: number;
-            period: number;
+            period: string;
         }>;
         ssi: {
-            ssiDm: number;
-            ssiLa: number;
+            ssiDm: string;
+            ssiLa: string;
             ssiNoDm: number;
             ssiNoAll: number;
             ssiBuy: string;
@@ -95,14 +102,14 @@ export interface Application {
         chronicCare: {
             chronicCareDateIns: Date;
             chronicCarePia: string;
-            chronicCareCon: number;
+            chronicCareCon: string;
             chronicCareAmount: number;
             chronicCareLoc: number;
         }
         fieldStatus: {
-            housingExpense: number;
-            childCare: number;
-            otherExpenses: number;
+            housingExpense: {[key: string]: string};
+            childCare: {[key: string]: string};
+            otherExpenses: {[key: string]: string};
         }
     };
     wayOfLiving: string;
@@ -115,7 +122,7 @@ export interface Application {
             last: string;
         };
         otherName: {
-            code: number;
+            code: string;
             first: string;
             middle: string;
             last: string;
@@ -123,81 +130,86 @@ export interface Application {
         dateOfBirth: Date;
         sex: string;
         gender: string;
-        relationshipToApplicant: number;
-        
+        relationshipToApplicant: string;
+
         pregnantDueDate: Date;
-        maritalStatus: number;
+        maritalStatus: string;
         studentId: string;
-        educationLevel: number;
-        studentType: number;
+        educationLevel: string;
         
         lastJobDate: Date;
         employerName: string;
         childIdentifier: number;
         chronicCareIndicator: string;
         
-        ethnicity: number;
+        ethnicity: {[key: string]: string};
         aci: string;
         alienNumber: number;
         alienDateOfEntry: Date;
         alienDateEnteredCountry: Date;
-        fedChargeCd: number;
+        fedChargeCd: string;
         fedChargeDate: Date;
-        
+
         ssn: string;
-        tasa: number;
-        emp: number;
-        ssi: number;
+        tasa: string;
+        emp: string;
+        ssi: string;
         bcs: string;
         cbicCc: string;
         cbicCdc: string;
         pid: string;
 
-        householdBooleans: number;
-        
+        responsibleAdult: boolean;
+        veteran: boolean;
+        pregnant: boolean;
+        studentType: string;
+        selfEmployed: boolean;
+        changedJob: boolean;
+
         generalInformation: {
-            personalInformation: number;
-            statusInformation: number;
-            memberIncome: number;
-            ethnicCitizenshipInformation: number;
-            otherInformation: number;
+            personalInformation: {[key: string]: string};
+            statusInformation: {[key: string]: string};
+            memberIncome: {[key: string]: string};
+            ethnicCitizenshipInformation: {[key: string]: string};
+            otherInformation: {[key: string]: string};
         }
+
         income: {
             earnedIncome: Array<{
                 _id: ObjectId;
                 employerName: string;
-                ctg: number;
+                ctg: string;
                 eid: number;
                 employmentStatus: string;
-                source: number;
+                source: string;
                 amount: number;
-                period: number;
+                period: string;
                 insur: number;
                 ctSup: number;
                 wkRel: number;
                 irwe: number;
-                fieldStatus: number;
+                fieldStatus: {[key: string]: string};
             }>;
             unearnedIncome: Array<{
                 _id: ObjectId;
-                ctg: number;
-                source: number;
+                ctg: string;
+                source: string;
                 amount: number;
-                period: number;
-                cd1: number;
+                period: string;
+                cd1: string;
                 exempt1: number;
-                cd2: number;
+                cd2: string;
                 exempt2: number;
-                fieldStatus: number;
+                fieldStatus: {[key: string]: string};
             }>;
             resource: Array<{
                 _id: ObjectId;
-                ctg: number;
-                cd: number;
+                ctg: string;
+                cd: string;
                 value: number;
-                period: number;
-                utxn2Flag: number;
-                fieldStatus: number;
+                period: string;
+                utxn2Flag: string;
+                fieldStatus: {[key: string]: string};
             }>;
         };
         healthInsurance: {
@@ -229,12 +241,31 @@ export interface Application {
             city: string;
             ssn: string;
         };
-        insuranceCode: number;
+        medicaid: boolean;
+        familyHealthPlus: boolean;
+        commercialInsurance: boolean;
+        medicare: boolean;
+        medicalAssistance: boolean;
+        jobHealthInsurance: boolean;
+        recentMedicalBill: boolean;
+        oldMedicalBill: boolean;
+        pendingLawsuit: boolean;
+        injured: boolean;
+        recentMoveIn: boolean;
+        parentDeceased: boolean;
+        parentLivingOutside: boolean;
+        parentPrivacy: boolean;
+        spouseDeceased: boolean;
+        spouseLivingOutside: boolean;
+        spousePrivacy: boolean;
+        healthPlan: boolean;
+        currentDoctor: boolean;
+
         insuranceInformation: {
-            healthInsurance: number;
-            medicalExpense: number;
-            deceasedOrLivingOutside: number;
-            healthPlan: number;
+            healthInsurance: {[key: string]: string};
+            medicalExpense: {[key: string]: string};
+            deceasedOrLivingOutside: {[key: string]: string};
+            healthPlan: {[key: string]: string};
         }
     }>;
 }

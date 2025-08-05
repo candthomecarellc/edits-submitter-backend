@@ -3,17 +3,17 @@ import { ApiResponse } from '../../utils/ApiResponse';
 import catchAsync from '../../utils/catchAsync';
 import { userServices } from './users.service';
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;
   const createdUser = await userServices.createUser(data);
   res.status(201).json(new ApiResponse(201, createdUser, 'User created successfully'));
-};
+});
 
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const result = await userServices.loginUser(email, password);
   res.status(200).json(new ApiResponse(200, result, 'Login successful'));
-};
+});
 
 const refreshAccessToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
@@ -21,11 +21,11 @@ const refreshAccessToken = async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(200, result, 'Access token refreshed successfully'));
 };
 
-const logoutUser = async (req: Request, res: Response) => {
+const logoutUser = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?._id;
   const result = await userServices.logoutUser(userId);
-  res.status(200).json(new ApiResponse(200, result, 'Logged out successfully'));
-};
+  res.status(200).json(new ApiResponse(200, result, 'Logout successful'));
+});
 
 const getAllusers = async (req: Request, res: Response) => {
   const users = await userServices.getAllUsers();

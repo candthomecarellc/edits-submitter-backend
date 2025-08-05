@@ -63,41 +63,49 @@ const createUser = async (userData: IUser): Promise<IUser> => {
 const loginUser = async (email: string, password: string) => {
     console.log('🔍 Attempting login for email:', email);
     
-    const user = await Users.findOne({ email });
-    if (!user) {
-        console.log('❌ User not found for email:', email);
-        throw new CustomError('User not found', 404);
+    try {
+        const user = await Users.findOne({ email });
+        if (!user) {
+            console.log('❌ User not found for email:', email);
+            throw new CustomError(`No user found with email: ${email}`, 404);
+        }
+        console.log('✅ User found:', { id: user._id, email: user.email });
+
+        console.log('🔐 Verifying password...');
+        const isPasswordValid = await user.verifyPassword(password);
+        console.log('🔑 Password verification result:', isPasswordValid);
+        
+        if (!isPasswordValid) {
+            console.log('❌ Invalid password for user:', email);
+            throw new CustomError('Invalid password. Please try again.', 401);
+        }
+
+        console.log('🎟️ Generating new tokens...');
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        // Update refresh token in database
+        user.refreshToken = refreshToken;
+        await user.save();
+        console.log('✅ Login successful for user:', email);
+
+        return {
+            user: {
+                _id: user._id,
+                userName: user.userName,
+                email: user.email,
+                role: user.role,
+            },
+            accessToken,
+            refreshToken,
+        };
+    } catch (error) {
+        if (error instanceof CustomError) {
+            throw error;
+        }
+        console.error('❌ Unexpected error during login:', error);
+        throw new CustomError('An unexpected error occurred during login. Please try again.', 500);
     }
-    console.log('✅ User found:', { id: user._id, email: user.email });
-
-    console.log('🔐 Verifying password...');
-    const isPasswordValid = await user.verifyPassword(password);
-    console.log('🔑 Password verification result:', isPasswordValid);
-    
-    if (!isPasswordValid) {
-        console.log('❌ Invalid password for user:', email);
-        throw new CustomError('Invalid password', 401);
-    }
-
-    console.log('🎟️ Generating new tokens...');
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
-
-    // Update refresh token in database
-    user.refreshToken = refreshToken;
-    await user.save();
-    console.log('✅ Login successful for user:', email);
-
-    return {
-        user: {
-            _id: user._id,
-            userName: user.userName,
-            email: user.email,
-            role: user.role,
-        },
-        accessToken,
-        refreshToken,
-    };
 };
 
 const refreshAccessToken = async (refreshToken: string) => {
