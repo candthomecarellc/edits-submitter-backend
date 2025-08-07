@@ -140,6 +140,7 @@ export class ApplicationController {
     submit = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params;
+            console.log("request recieved for submitting application with id: ", id);
             const application = await this.applicationService.submit(id);
             if (!application) {
                 res.status(404).json({

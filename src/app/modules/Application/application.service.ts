@@ -6,6 +6,7 @@ import { formatForFrontend } from './Formats/backendToFrontend';
 import { formatForBackend } from './Formats/frontendToBackend';
 import { mergeApplication } from './Formats/application.merge';
 import { formatForSubmit } from './Formats/formatForSubmit';
+import { formServices } from '../Form/from.service1';
 
 export class ApplicationService {
     async create(applicationData: ApplicationInterface): Promise<ApplicationInterface> {
@@ -56,11 +57,15 @@ export class ApplicationService {
         return formattedApplications;
     }
 
-    async submit(id: string): Promise<ApplicationFrontend | null> {
+    async submit(id: string): Promise<null> {
         const application = await Application.findById(id);
         if (!application) {
             return null;
         }
-        return formatForSubmit(formatForFrontend(application) as ApplicationFrontend);
+        console.log("application found and passing it for formatting");
+        const formData = formatForSubmit(formatForFrontend(application) as ApplicationFrontend);
+        console.log("passing it to takeAndProcessData");
+        await formServices.takeAndProcessData(formData, []);
+        return null;
     }
 } 
