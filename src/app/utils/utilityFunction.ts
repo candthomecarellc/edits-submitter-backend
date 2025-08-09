@@ -49,7 +49,7 @@ const formatDate = (SubmitedDate: Date, format: 'mmddyyyy' | 'mmddyy' | 'mm/dd/y
   }
 
   if (format === 'mm/dd/yy') {
-    return `${month}/${day}${year.toString().slice(-2)}`;
+    return `${month}/${day}/${year.toString().slice(-2)}`;
   }
   return '';
 };

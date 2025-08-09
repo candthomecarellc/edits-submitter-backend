@@ -72,8 +72,8 @@ const formTextGenerator = async (data:any, file: Express.Multer.File[]) => {
     const contactName = data.contactName || '';
     const contactPhoneNumber = data.contactPhoneNumber || '';
     const caseComposition = data.caseComposition || '';
-    const EDC1 = data.EDC1 || '';
-    const EDC2 = data.EDC2 || '';
+    const EDC1 = data.EDC1 ? formatDate(data.EDC1, 'mm/dd/yy') : '';
+    const EDC2 = data.EDC2 ? formatDate(data.EDC2, 'mm/dd/yy') : '';
     const fuelType = data.fuelType || '0';
     const shelterType = data.shelterType || '01';
     const shelterAmount = data.shelterAmount || '0000000';

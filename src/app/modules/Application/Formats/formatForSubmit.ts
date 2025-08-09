@@ -9,6 +9,7 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
         ...formData,
         applicantName: application.applicant?.first + ' ' + application.applicant?.middle + ' ' + application.applicant?.last,
         applicationDate: new Date().toISOString().split('T')[0],
+        signatureDate: new Date().toISOString().split('T')[0],
         uscitizenshiporDOB: '',
         uscitizenshiporDOBFile: null,
         usCitizenship: '',
@@ -174,7 +175,7 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
     formData = {
         ...formData,
         householdVeteran: application.householdMember.some(member => member.veteran) ? 'Yes' : 'No',
-        veteranName: application.householdMember.find(member => member.veteran)?.legalName?.first + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.middle + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.last,
+        veteranName: application.householdMember.find(member => member.veteran)?.legalName?.first || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.middle || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.last || '',
         selfEmploymentInfo: '',
         earningFromWork: application.householdMember.map(member => ( member.income.earnedIncome.map(income => ({
             name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
@@ -349,7 +350,7 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
         uniqueTiffId: '',
         caseName: {
             firstName: application.caseName.split(' ')[0] || '',
-            lastName: application.caseName.split(' ')[1] || '',
+            lastName: application.caseName.split(' ')[2] || '',
         },
         clientNoticeLanguage: application.clientNoticeLanguage || '',
         languageRead: application.languageRead || '',
