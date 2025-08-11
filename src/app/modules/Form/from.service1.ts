@@ -70,88 +70,88 @@ const takeAndProcessData = async (
     // checkCheckbox(data.proofOfstudentStatus);
 
     // Set personal information
-    setTextField('applicant.first', data?.['personalInfo.firstName']);
-    setTextField('applicant.middle', data?.['personalInfo.middleName']);
-    setTextField('applicant.last', data?.['personalInfo.lastName']);
+    setTextField('applicant.first', data?.personalInfo?.firstName);
+    setTextField('applicant.middle', data?.personalInfo?.middleName);
+    setTextField('applicant.last', data?.personalInfo?.lastName);
     setTextField(
       'primaryPhone.number',
-      data?.['personalInfo.primaryPhoneNumber'],
+      data?.personalInfo?.primaryPhoneNumber,
     );
     // selectRadioGroup(
     //   'Primary Phone Type',
-    //   data?.['personalInfo.primaryPhoneType'],
+    //   data?.personalInfo.primaryPhoneType,
     // );
     checkCheckbox(
-      data?.['personalInfo.primaryPhoneType'] 
-      ? 'primaryPhone.type.'+data?.['personalInfo.primaryPhoneType'] 
+      data?.personalInfo?.primaryPhoneType 
+      ? 'primaryPhone.type.'+data?.personalInfo?.primaryPhoneType 
       : undefined
     );
     setTextField(
       'anotherPhone.number',
-      data?.['personalInfo.secondaryPhoneNumber'],
+      data?.personalInfo?.secondaryPhoneNumber,
     );
     // selectRadioGroup(
     //   'Another Phone Type',
-    //   data?.['personalInfo.secondaryPhoneType'],
+    //   data?.personalInfo.secondaryPhoneType,
     // );
     checkCheckbox(
-      data?.['personalInfo.secondaryPhoneType'] 
-      ? 'anotherPhone.type.'+data?.['personalInfo.secondaryPhoneType'] 
+      data?.personalInfo?.secondaryPhoneType 
+      ? 'anotherPhone.type.'+data?.personalInfo?.secondaryPhoneType 
       : undefined
     );
     setTextField(
       'languageSpoken',
-      data?.['personalInfo.languageSpeak'],
+      data?.personalInfo?.languageSpeak,
     );
     setTextField(
       'languageRead',
-      data?.['personalInfo.languageRead'],
+      data?.personalInfo?.languageRead,
     );
     checkCheckbox(data?.homeLess ? 'homeless' : undefined); // only check if truthy
 
     // Set address information
-    setTextField('residence.street', data?.['homeAddress.street']);
-    setTextField('residence.city', data?.['homeAddress.city']);
-    setTextField('residence.state', data?.['homeAddress.state']);
-    setTextField('residence.zip', data?.['homeAddress.zip']);
-    setTextField('residence.county', data?.['homeAddress.county']);
-    setTextField('residence.apartment', data?.['homeAddress.apt']);
+    setTextField('residence.street', data?.homeAddress?.street);
+    setTextField('residence.city', data?.homeAddress?.city);
+    setTextField('residence.state', data?.homeAddress?.state);
+    setTextField('residence.zip', data?.homeAddress?.zip);
+    setTextField('residence.county', data?.homeAddress?.county);
+    setTextField('residence.apartment', data?.homeAddress?.apt);
 
-    setTextField('mailingAddress.street', data?.['mailingAddress.street']);
-    setTextField('mailingAddress.city', data?.['mailingAddress.city']);
-    setTextField('mailingAddress.state', data?.['mailingAddress.state']);
-    setTextField('mailingAddress.zip', data?.['mailingAddress.zip']);
-    setTextField('mailingAddress.apartment', data?.['mailingAddress.apt']);
+    setTextField('mailingAddress.street', data?.mailingAddress?.street);
+    setTextField('mailingAddress.city', data?.mailingAddress?.city);
+    setTextField('mailingAddress.state', data?.mailingAddress?.state);
+    setTextField('mailingAddress.zip', data?.mailingAddress?.zip);
+    setTextField('mailingAddress.apartment', data?.mailingAddress?.apt);
 
     // Set another person information
-    setTextField('mailingAddress2.associateName', data?.['anotherPerson.Name']);
+    setTextField('mailingAddress2.associateName', data?.anotherPerson?.Name);
     setTextField(
       'mailingAddress2.phoneNumber',
-      data?.['anotherPerson.phoneHome'],
+      data?.anotherPerson?.phoneHome,
     );
-    // selectRadioGroup('Phone type', data?.['anotherPerson.phoneType']);
+    // selectRadioGroup('Phone type', data?.anotherPerson.phoneType);
     checkCheckbox(
-      data?.['anotherPerson.phoneType'] 
-      ? 'mailingAddress2.phoneType.'+data?.['anotherPerson.phoneType'] 
+      data?.anotherPerson?.phoneType 
+      ? 'mailingAddress2.phoneType.'+data?.anotherPerson?.phoneType 
       : undefined
     );
-    setTextField('mailingAddress2.street', data?.['anotherPerson.street']);
-    setTextField('mailingAddress2.city', data?.['anotherPerson.city']);
-    setTextField('mailingAddress2.state', data?.['anotherPerson.state']);
-    setTextField('mailingAddress2.zip', data?.['anotherPerson.zip']);
-    setTextField('mailingAddress2.apartment', data?.['anotherPerson.apt']);
+    setTextField('mailingAddress2.street', data?.anotherPerson?.street);
+    setTextField('mailingAddress2.city', data?.anotherPerson?.city);
+    setTextField('mailingAddress2.state', data?.anotherPerson?.state);
+    setTextField('mailingAddress2.zip', data?.anotherPerson?.zip);
+    setTextField('mailingAddress2.apartment', data?.anotherPerson?.apt);
     checkCheckbox(
-      data?.['anotherPerson.permissions.ApplyMedicaidForMe']
+      data?.anotherPerson?.permissions?.ApplyMedicaidForMe
         ? 'applyOrRenew'
         : undefined,
     );
     checkCheckbox(
-      data?.['anotherPerson.permissions.disussMyCase']
+      data?.anotherPerson?.permissions?.disussMyCase
         ? 'discuss'
         : undefined,
     );
     checkCheckbox(
-      data?.['anotherPerson.permissions.getNoticesAndCorrespondence']
+      data?.anotherPerson?.permissions?.getNoticesAndCorrespondence
         ? 'getNotice'
         : undefined,
     );
@@ -162,12 +162,12 @@ const takeAndProcessData = async (
 
     // Function to process family member info.
     const processFamilyMember = (index: number) => {
-      const firstName = data?.[`familyInfo.${index}.legalName.firstName`];
-      const middleName = data?.[`familyInfo.${index}.legalName.middleName`];
-      const lastName = data?.[`familyInfo.${index}.legalName.lastName`];
+      const first = data?.familyInfo[index]?.legalName?.firstName;
+      const middle = data?.familyInfo[index]?.legalName?.middleName;
+      const last = data?.familyInfo[index]?.legalName?.lastName;
       
       // Only include non-undefined values in the name
-      const nameParts = [firstName, middleName, lastName].filter(Boolean);
+      const nameParts = [first, middle, last].filter(Boolean);
       const fullName = nameParts.join(' ');
       
       setTextField(
@@ -175,9 +175,9 @@ const takeAndProcessData = async (
         fullName
       );
       
-      const birthFirstName = data?.[`familyInfo.${index}.birthName.firstName`];
-      const birthMiddleName = data?.[`familyInfo.${index}.birthName.middleName`];
-      const birthLastName = data?.[`familyInfo.${index}.birthName.lastName`];
+      const birthFirstName = data?.familyInfo[index]?.birthName?.firstName;
+      const birthMiddleName = data?.familyInfo[index]?.birthName?.middleName;
+      const birthLastName = data?.familyInfo[index]?.birthName?.lastName;
       
       // Only include non-undefined values in the birth name
       const birthNameParts = [birthFirstName, birthMiddleName, birthLastName].filter(Boolean);
@@ -189,174 +189,168 @@ const takeAndProcessData = async (
       );
       setTextField(
         `householdMember[${index}].birthPlace.state`,
-        data?.[`familyInfo.${index}.stateOfBirth`],
+        data?.familyInfo[index]?.stateOfBirth,
       );
       setTextField(
         `householdMember[${index}].birthPlace.city`,
-        data?.[`familyInfo.${index}.cityOfBirth`],
+        data?.familyInfo[index]?.cityOfBirth,
       );
       setTextField(
         `householdMember[${index}].birthPlace.country`,
-        data?.[`familyInfo.${index}.countryOfBirth`],
+        data?.familyInfo[index]?.countryOfBirth,
       );
       // setTextField(
       //   `householdMember[${index}].motherName`,
-      //   data?.[`familyInfo.${index}.motherName`],
+      //   data?.familyInfo[index]?.motherName,
       // );
       setTextField(
         `householdMember[${index}].dateOfBirth`,
-        data?.[`familyInfo.${index}.dateOfBirth.month`] + '/' + data?.[`familyInfo.${index}.dateOfBirth.day`] + '/' + data?.[`familyInfo.${index}.dateOfBirth.year`],
+        data?.familyInfo[index]?.dateOfBirth?.month + '/' + data?.familyInfo[index]?.dateOfBirth?.day + '/' + data?.familyInfo[index]?.dateOfBirth?.year,
       );
       // setTextField(
-      //   `familyInfo.${index}.dateOfBirth.day`,
-      //   data?.[`familyInfo.${index}.dateOfBirth.day`],
+      //   `familyInfo[index]?.dateOfBirth.day`,
+      //   data?.familyInfo[index]?.dateOfBirth.day,
       // );
       // setTextField(
-      //   `familyInfo.${index}.dateOfBirth.year`,
-      //   data?.[`familyInfo.${index}.dateOfBirth.year`],
+      //   `familyInfo[index]?.dateOfBirth.year`,
+      //   data?.familyInfo[index]?.dateOfBirth.year,
       // );
 
       // selectRadioGroup(
-      //   `familyInfo.${index}.sex`,
-      //   data?.[`familyInfo.${index}.sex`],
+      //   `familyInfo[index]?.sex`,
+      //   data?.familyInfo[index]?.sex,
       // );
       checkCheckbox(
-        data?.[`familyInfo.${index}.sex`]
-        ? `householdMember[${index}].sex.${data?.[`familyInfo.${index}.sex`]}`
+        data?.familyInfo[index]?.sex
+        ? `householdMember[${index}].sex.${data?.familyInfo[index]?.sex}`
         : undefined
       );
       // selectRadioGroup(
-      //   `familyInfo.${index}.isApplying`,
-      //   data?.[`familyInfo.${index}.isApplying`],
+      //   `familyInfo[index]?.isApplying`,
+      //   data?.familyInfo[index]?.isApplying,
       // );
       checkCheckbox(
-        data?.[`familyInfo.${index}.isApplying`]
-        ? `householdMember[${index}].applyingForHealthInsurance.${data?.[`familyInfo.${index}.isApplying`]}`
+        data?.familyInfo[index]?.isApplying
+        ? `householdMember[${index}].applyingForHealthInsurance.${data?.familyInfo[index]?.isApplying}`
         : undefined
       );
       // setTextField(
-      //   `familyInfo.${index}.genderIdentity`,
-      //   data?.[`familyInfo.${index}.genderIdentity`],
+      //   `familyInfo[index]?.genderIdentity`,
+      //   data?.familyInfo[index]?.genderIdentity,
       // );
       // selectRadioGroup(
-      //   `familyInfo.${index}.isPregnant`,
-      //   data?.[`familyInfo.${index}.isPregnant`],
+      //   `familyInfo[index]?.isPregnant`,
+      //   data?.familyInfo[index]?.isPregnant,
       // );
       checkCheckbox(
-        data?.[`familyInfo.${index}.isPregnant`]
-        ? `householdMember[${index}].pregnant.${data?.[`familyInfo.${index}.isPregnant`]}`
+        data?.familyInfo[index]?.isPregnant
+        ? `householdMember[${index}].pregnant.${data?.familyInfo[index]?.isPregnant}`
         : undefined
       );
       setTextField(
         `householdMember[${index}].pregnantDueDate`,
-        data?.[`familyInfo.${index}.pregnantDueDate.month`] + '/' + data?.[`familyInfo.${index}.pregnantDueDate.day`] + '/' + data?.[`familyInfo.${index}.pregnantDueDate.year`],
+        data?.familyInfo[index]?.pregnantDueDate?.month + '/' + data?.familyInfo[index]?.pregnantDueDate?.day + '/' + data?.familyInfo[index]?.pregnantDueDate?.year,
       );
       // setTextField(
-      //   `familyInfo.${index}.pregnantDueDate.day`,
-      //   data?.[`familyInfo.${index}.pregnantDueDate.day`],
+      //   `familyInfo[index]?.pregnantDueDate.day`,
+      //   data?.familyInfo[index]?.pregnantDueDate.day,
       // );
       // setTextField(
-      //   `familyInfo.${index}.pregnantDueDate.year`,
-      //   data?.[`familyInfo.${index}.pregnantDueDate.year`],
+      //   `familyInfo[index]?.pregnantDueDate.year`,
+      //   data?.familyInfo[index]?.pregnantDueDate.year,
       // );
       // selectRadioGroup(
-      //   `familyInfo.${index}.isParent`,
-      //   data?.[`familyInfo.${index}.isParent`],
+      //   `familyInfo[index]?.isParent`,
+      //   data?.familyInfo[index]?.isParent,
       // );
       checkCheckbox(
-        data?.[`familyInfo.${index}.isParent`]
-        ? `householdMember[${index}].responsibleAdult.${data?.[`familyInfo.${index}.isParent`]}`
+        data?.familyInfo[index]?.isParent
+        ? `householdMember[${index}].responsibleAdult.${data?.familyInfo[index]?.isParent}`
         : undefined
       );
       if (index !== 0) {
         setTextField(
           `householdMember[${index}].relationshipToApplicant`,
-          data?.[`familyInfo.${index}.relationship`],
+          data?.familyInfo[index]?.relationship,
         );
       }
 
       // selectRadioGroup(
-      //   `familyInfo.${index}.publicHealthCoverage`,
-      //   data?.[`familyInfo.${index}.publicHealthCoverage`],
+      //   `familyInfo[index]?.publicHealthCoverage`,
+      //   data?.familyInfo[index]?.publicHealthCoverage,
       // );
       // setTextField(
-      //   `familyInfo.${index}.publicHealthCoverageidNumber`,
-      //   data?.[`familyInfo.${index}.publicHealthCoverageidNumber`],
+      //   `familyInfo[index]?.publicHealthCoverageidNumber`,
+      //   data?.familyInfo[index]?.publicHealthCoverageidNumber,
       // );
       setTextField(
         `householdMember[${index}].ssn`,
-        data?.[`familyInfo.${index}.ssn`],
+        data?.familyInfo[index]?.ssn,
       );
       // selectRadioGroup(
-      //   `familyInfo.${index}.usCitizenship`,
-      //   data?.[`familyInfo.${index}.usCitizenship`],
+      //   `familyInfo[index]?.usCitizenship`,
+      //   data?.familyInfo[index]?.usCitizenship,
       // );
       checkCheckbox(
-        data?.[`familyInfo.${index}.usCitizenship`]
-        ? `householdMember[${index}].aci.${data?.[`familyInfo.${index}.usCitizenship`]}`
+        data?.familyInfo[index]?.usCitizenship
+        ? `householdMember[${index}].aci.${data?.familyInfo[index]?.usCitizenship}`
         : undefined
       );
       setTextField(
         `householdMember[${index}].alienDateOfEntry.month`,
-        data?.[
-          `familyInfo.${index}.usCitizenshipReceivedImmigrationStatusDate.month`
-        ],
+        data?.familyInfo[index]?.usCitizenshipReceivedImmigrationStatusDate?.month?.toString(),
       );
       setTextField(
         `householdMember[${index}].alienDateOfEntry.day`,
-        data?.[
-          `familyInfo.${index}.usCitizenshipReceivedImmigrationStatusDate.day`
-        ],
+        data?.familyInfo[index]?.usCitizenshipReceivedImmigrationStatusDate?.day?.toString(),
       );
       setTextField(
         `householdMember[${index}].alienDateOfEntry.year`,
-        data?.[
-          `familyInfo.${index}.usCitizenshipReceivedImmigrationStatusDate.year`
-        ],
+        data?.familyInfo[index]?.usCitizenshipReceivedImmigrationStatusDate?.year?.toString(),
       );
       setTextField(
         `householdMember[${index}].ethnicity`,
-        data?.[`familyInfo.${index}.race`],
+        data?.familyInfo[index]?.race,
       );
       // selectRadioGroup(
-      //   `familyInfo.${index}.receivedAServiceFromIHS`,
-      //   data?.[`familyInfo.${index}.receivedAServiceFromIHS`],
+      //   `familyInfo[index]?.receivedAServiceFromIHS`,
+      //   data?.familyInfo[index]?.receivedAServiceFromIHS,
       // );
     };
 
     // Process family members
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 2; i++) {
       processFamilyMember(i);
     }
 
     // selectRadioGroup('householdVeteran', data.householdVeteran);
       checkCheckbox(
-        data.householdVeteran
-        ? `veteran.${data.householdVeteran}`
+        data?.householdVeteran
+        ? `veteran.${data?.householdVeteran}`
         : undefined
       );
-    setTextField('veteran.name', data.veteranName);
+    setTextField('veteran.name', data?.veteranName);
 
-    checkCheckbox(data.selfEmploymentInfo ? 'selfEmployed' : undefined);
+    checkCheckbox(data?.selfEmploymentInfo ? 'selfEmployed' : undefined);
     // checkCheckbox(data.noEarningsFromWork ? 'noEarnedIncome' : undefined);
 
     // Function to process earning from work info.
     const processEarningFromWork = (index: number) => {
       setTextField(
         `earnedIncome[${index}].name`,
-        data?.[`earningFromWork.${index}.name`],
+        data?.earningFromWork[index]?.name,
       );
       setTextField(
         `earnedIncome[${index}].employerName`,
-        data?.[`earningFromWork.${index}.tyoeOfWork`],
+        data?.earningFromWork[index]?.tyoeOfWork,
       );
       setTextField(
         `earnedIncome[${index}].amount`,
-        data?.[`earningFromWork.${index}.howMuchEarned`],
+        data?.earningFromWork[index]?.howMuchEarned,
       );
       setTextField(
         `earnedIncome[${index}].period`,
-        data?.[`earningFromWork.${index}.howOftenPaid`],
+        data?.earningFromWork[index]?.howOftenPaid,
       );
     };
 
@@ -371,19 +365,19 @@ const takeAndProcessData = async (
     const processUnearnedIncome = (index: number) => {
       setTextField(
         `unearnedIncome[${index}].name`,
-        data?.[`unearnedIncome.${index}.name`],
+        data?.unearnedIncome[index]?.name,
       );
       setTextField(
         `unearnedIncome[${index}].source`,
-        data?.[`unearnedIncome.${index}.tyoeOfWork`],
+        data?.unearnedIncome[index]?.tyoeOfWork,
       );
       setTextField(
         `unearnedIncome[${index}].amount`,
-        data?.[`unearnedIncome.${index}.howMuchEarned`],
+        data?.unearnedIncome[index]?.howMuchEarned,
       );
       setTextField(
         `unearnedIncome[${index}].period`,
-        data?.[`unearnedIncome.${index}.howOftenPaid`],
+        data?.unearnedIncome[index]?.howOftenPaid,
       );
     };
 
@@ -398,19 +392,19 @@ const takeAndProcessData = async (
     const processContributions = (index: number) => {
       setTextField(
         `contribution[${index}].name`,
-        data?.[`contributions.${index}.name`],
+        data?.contributions[index]?.name,
       );
       setTextField(
         `contribution[${index}].source`,
-        data?.[`contributions.${index}.tyoeOfWork`],
+        data?.contributions[index]?.tyoeOfWork,
       );
       setTextField(
         `contribution[${index}].amount`,
-        data?.[`contributions.${index}.howMuchEarned`],
+        data?.contributions[index]?.howMuchEarned,
       );
       setTextField(
         `contribution[${index}].period`,
-        data?.[`contributions.${index}.howOftenPaid`],
+        data?.contributions[index]?.howOftenPaid,
       );
     };
 
@@ -425,19 +419,19 @@ const takeAndProcessData = async (
     const processOtherIncome = (index: number) => {
       setTextField(
         `otherIncome[${index}].name`,
-        data?.[`otherIncome.${index}.name`],
+        data?.otherIncome[index]?.name,
       );
       setTextField(
         `otherIncome[${index}].source`,
-        data?.[`otherIncome.${index}.tyoeOfWork`],
+        data?.otherIncome[index]?.tyoeOfWork,
       );
       setTextField(
         `otherIncome[${index}].amount`,
-        data?.[`otherIncome.${index}.howMuchEarned`],
+        data?.otherIncome[index]?.howMuchEarned,
       );
       setTextField(
         `otherIncome[${index}].period`,
-        data?.[`otherIncome.${index}.howOftenPaid`],
+        data?.otherIncome[index]?.howOftenPaid,
       );
     };
 
@@ -451,66 +445,66 @@ const takeAndProcessData = async (
     setTextField('wayOfLiving', data?.explainHowLiving);
     // selectRadioGroup(
     //   'applierChangeJob.changeJobin3Month',
-    //   data?.['applierChangeJob.changeJobin3Month'],
+    //   data?.applierChangeJob.changeJobin3Month,
     // );
     checkCheckbox(
-      data?.['applierChangeJob.changeJobin3Month'] 
-      ? `changedJob.${data?.['applierChangeJob.changeJobin3Month']}` 
+      data?.applierChangeJob?.changeJobin3Month 
+      ? `changedJob.${data?.applierChangeJob?.changeJobin3Month}` 
       : undefined
     );
     setTextField(
       'lastJobDate.month',
-      data?.['applierChangeJob.lastJobDate.month'],
+      data?.applierChangeJob?.lastJobDate?.month?.toString(),
     );
     setTextField(
       'lastJobDate.day',
-      data?.['applierChangeJob.lastJobDate.day'],
+      data?.applierChangeJob?.lastJobDate?.day?.toString(),
     );
     setTextField(
       'lastJobDate.year',
-      data?.['applierChangeJob.lastJobDate.year'],
+      data?.applierChangeJob?.lastJobDate?.year?.toString(),
     );
     setTextField(
       'lastJobEmployerName',
-      data?.['applierChangeJob.nameofEmployer'],
+      data?.applierChangeJob?.nameofEmployer,
     );
 
     // selectRadioGroup(
     //   'applierStudent.student',
-    //   data?.['applierStudent.student'],
+    //   data?.applierStudent.student,
     // );
     checkCheckbox(
-      data?.['applierStudent.student'] 
-      ? `student.${data?.['applierStudent.student']}` 
+      data?.applierStudent?.student 
+      ? `student.${data?.applierStudent?.student}` 
       : undefined
     );
     // selectRadioGroup(
     //   'applierStudent.studentType',
-    //   data?.['applierStudent.studentType'],
+    //   data?.applierStudent.studentType,
     // );
-    checkCheckbox(
-      data?.['applierStudent.studentType'] 
-      ? `studentType.${data?.['applierStudent.studentType']}` 
-      : undefined
-    );
+    // checkCheckbox(
+    //   data?.applierStudent?.studentType 
+    //   ? `studentType.${data?.applierStudent?.studentType}` 
+    //   : undefined
+    // );
     setTextField(
       'studentName',
-      data?.['applierStudent.nameOfStudent'],
+      data?.applierStudent?.nameOfStudent,
     );
-    checkCheckbox(data.payForChildCare ? 'childCare.true' : 'childCare.false');
+    checkCheckbox(data?.payForChildCare ? 'childCare.true' : 'childCare.false');
 
     const processChildCare = (index: number) => {
       setTextField(
         `householdExpense.childCare[${index}].name`,
-        data?.[`childCare.${index}.childName`],
+        data?.childCare[index]?.childName,
       );
       setTextField(
         `householdExpense.childCare[${index}].amount`,
-        data?.[`childCare.${index}.howMuchPaid`],
+        data?.childCare[index]?.howMuchPaid,
       );
       setTextField(
         `householdExpense.childCare[${index}].period`,
-        data?.[`childCare.${index}.howOftenPaid`],
+        data?.childCare[index]?.howOftenPaid,
       );
     };
 
@@ -526,15 +520,15 @@ const takeAndProcessData = async (
     );
     // selectRadioGroup(
     //   'isPayCourtOrdered.payCourtOrdered',
-    //   data?.['isPayCourtOrdered.payCourtOrdered'],
+    //   data?.isPayCourtOrdered.payCourtOrdered,
     // );
     // setTextField(
     //   'isPayCourtOrdered.payCourtOrderedAmount',
-    //   data?.['isPayCourtOrdered.payCourtOrderedAmount'],
+    //   data?.isPayCourtOrdered.payCourtOrderedAmount,
     // );
     // setTextField(
     //   'isPayCourtOrdered.whoPayCourtOrdered',
-    //   data?.['isPayCourtOrdered.whoPayCourtOrdered'],
+    //   data?.isPayCourtOrdered.whoPayCourtOrdered,
     // );
 
     checkCheckbox(
@@ -550,41 +544,41 @@ const takeAndProcessData = async (
 
     setTextField(
       'commercialInsurance.name',
-      data?.['applyingHavingCommercialInsurance.nameOfInsured'],
+      data?.applyingHavingCommercialInsurance?.nameOfInsured,
     );
     setTextField(
       'householdMember.healthInsurance.personsCovered',
-      data?.['applyingHavingCommercialInsurance.personCovered'],
+      data?.applyingHavingCommercialInsurance?.personCovered,
     );
     setTextField(
       'householdMember.healthInsurance.costOfPolicy',
-      data?.['applyingHavingCommercialInsurance.costOfPolicy'],
+      data?.applyingHavingCommercialInsurance?.costOfPolicy,
     );
     setTextField(
       'householdMember.healthInsurance.endDateOfCoverage.month',
-      data?.['applyingHavingCommercialInsurance.endOfCoverage.month'],
+      data?.applyingHavingCommercialInsurance?.endOfCoverage?.month?.toString(),
     );
     setTextField(
       'householdMember.healthInsurance.endDateOfCoverage.day',
-      data?.['applyingHavingCommercialInsurance.endOfCoverage.day'],
+      data?.applyingHavingCommercialInsurance?.endOfCoverage?.day?.toString(),
     );
     setTextField(
       'householdMember.healthInsurance.endDateOfCoverage.year',
-      data?.['applyingHavingCommercialInsurance.endOfCoverage.year'],
+      data?.applyingHavingCommercialInsurance?.endOfCoverage?.year?.toString(),
     );
     checkCheckbox(
-      data.currentJobInsurance
+      data?.currentJobInsurance
       ? 'householdMember.jobHealthInsurance.true'
       : 'householdMember.jobHealthInsurance.false'
     );
-    setTextField('householdExpense.shelterAmount', data?.['monthlyHousingPayment']);
+    setTextField('householdExpense.shelterAmount', data?.monthlyHousingPayment);
     setTextField(
       'householdExpense.waterCostAmount',
-      data?.['payForWater.payForWaterAmount'],
+      data?.payForWater?.payForWaterAmount,
     );
     checkCheckbox(
-      data?.['payForWater.howOftenPaid']
-      ? `householdExpense.waterCostPeriod.${data?.['payForWater.howOftenPaid']}`
+      data?.payForWater?.howOftenPaid
+      ? `householdExpense.waterCostPeriod.${data?.payForWater?.howOftenPaid}`
       : undefined
     );
     checkCheckbox(
@@ -603,17 +597,17 @@ const takeAndProcessData = async (
     );
 
     checkCheckbox(
-      data?.['prescriptionBill3Month.prescriptionBill']
+      data?.prescriptionBill3Month?.prescriptionBill
       ? 'householdMember.recentMedicalBill.true'
       : 'householdMember.recentMedicalBill.false'
     );
     setTextField(
       'recentMedicalBill.name',
-      data?.['prescriptionBill3Month.name'],
+      data?.prescriptionBill3Month?.name,
     );
     setTextField(
       'householdMember.healthInsurance.monthBilled',
-      data?.['prescriptionBill3Month.whichMonth'],
+      data?.prescriptionBill3Month?.whichMonth,
     );
 
     checkCheckbox(
@@ -622,140 +616,140 @@ const takeAndProcessData = async (
       : 'householdMember.oldMedicalBill.false'
     );
     checkCheckbox(
-      data?.['moveIntoThisCounty.move']
+      data?.moveIntoThisCounty?.move
       ? 'householdMember.recentMoveIn.true'
       : 'householdMember.recentMoveIn.false'
     );
-    setTextField('recentMoveIn.name', data?.['moveIntoThisCounty.who']);
+    setTextField('recentMoveIn.name', data?.moveIntoThisCounty?.who);
     setTextField(
       'householdMember.healthInsurance.moveInState',
-      data?.['moveIntoThisCounty.whichState'],
+      data?.moveIntoThisCounty?.whichState,
     );
     setTextField(
       'householdMember.healthInsurance.moveInCounty',
-      data?.['moveIntoThisCounty.whichCounty'],
+      data?.moveIntoThisCounty?.whichCounty,
     );
 
     checkCheckbox(
-      data?.['pendingLawSuit.pending']
+      data?.pendingLawSuit?.pending
       ? 'householdMember.pendingLawsuit.true'
       : 'householdMember.pendingLawsuit.false'
     );
-    setTextField('pendingLawsuit.name', data?.['pendingLawSuit.who']);
+    setTextField('pendingLawsuit.name', data?.pendingLawSuit?.who);
     checkCheckbox(
-      data?.['workersCompensationCase.workersCompensation']
+      data?.workersCompensationCase?.workersCompensation
       ? 'householdMember.injured.true'
       : 'householdMember.injured.false'
     );
     setTextField(
       'injured.name',
-      data?.['workersCompensationCase.who'],
+      data?.workersCompensationCase?.who,
     );
-    checkCheckbox(data?.['deceased.deceased'] ? 'deceased.true' : 'deceased.false');
-    setTextField('deceased.name', data?.['deceased.who']);
+    checkCheckbox(data?.deceased?.deceased ? 'deceased.true' : 'deceased.false');
+    setTextField('deceased.name', data?.deceased?.who);
 
     checkCheckbox(
-      data?.['parentLiveOutside.parentLiveOutside']
+      data?.parentLiveOutside?.parentLiveOutside
       ? 'householdMember.parentLivingOutside.true'
       : 'householdMember.parentLivingOutside.false'
     );
     checkCheckbox(
-      data?.['parentLiveOutside.fearOfHarm']
+      data?.parentLiveOutside?.fearOfHarm
         ? 'householdMember.parentPrivacy'
         : undefined,
     );
     setTextField(
       'parentLivingOutside[0].name',
-      data?.['parentLiveOutside.childName1'],
+      data?.parentLiveOutside?.childName1,
     );
     setTextField(
       'parentLivingOutside[1].name',
-      data?.['parentLiveOutside.childName2'],
+      data?.parentLiveOutside?.childName2,
     );
     setTextField(
       'householdMember[0].parentOutside.name',
-      data?.['parentLiveOutside.nameOfParent1'],
+      data?.parentLiveOutside?.nameOfParent1,
     );
     setTextField(
       'householdMember[1].parentOutside.name',
-      data?.['parentLiveOutside.nameOfParent2'],
+      data?.parentLiveOutside?.nameOfParent2,
     );
     setTextField(
       'householdMember[0].parentOutside.dob.month',
-      data?.['parentLiveOutside.dateOfBirth1.month'],
+      data?.parentLiveOutside?.dateOfBirth1?.month?.toString(),
     );
     setTextField(
       'householdMember[0].parentOutside.dob.day',
-      data?.['parentLiveOutside.dateOfBirth1.day'],
+      data?.parentLiveOutside?.dateOfBirth1?.day?.toString(),
     );
     setTextField(
       'householdMember[0].parentOutside.dob.year',
-      data?.['parentLiveOutside.dateOfBirth1.year'],
+      data?.parentLiveOutside?.dateOfBirth1?.year?.toString(),
     );
     setTextField(
       'householdMember[1].parentOutside.dob.month',
-      data?.['parentLiveOutside.dateOfBirth2.month'],
+      data?.parentLiveOutside?.dateOfBirth2?.month?.toString(),
     );
     setTextField(
       'householdMember[1].parentOutside.dob.day',
-      data?.['parentLiveOutside.dateOfBirth2.day'],
+      data?.parentLiveOutside?.dateOfBirth2?.day?.toString(),
     );
     setTextField(
       'householdMember[1].parentOutside.dob.year',
-      data?.['parentLiveOutside.dateOfBirth2.year'],
+      data?.parentLiveOutside?.dateOfBirth2?.year?.toString(),
     );
     setTextField(
       'householdMember[0].parentOutside.street',
-      data?.['parentLiveOutside.street1'],
+      data?.parentLiveOutside?.street1,
     );
     setTextField(
       'householdMember[1].parentOutside.street',
-      data?.['parentLiveOutside.street2'],
+      data?.parentLiveOutside?.street2,
     );
-    setTextField('householdMember[0].parentOutside.city', data?.['parentLiveOutside.city1']);
-    setTextField('householdMember[1].parentOutside.city', data?.['parentLiveOutside.city2']);
-    setTextField('householdMember[0].parentOutside.ssn', data?.['parentLiveOutside.ssn1']);
-    setTextField('householdMember[1].parentOutside.ssn', data?.['parentLiveOutside.ssn2']);
+    setTextField('householdMember[0].parentOutside.city', data?.parentLiveOutside?.city1);
+    setTextField('householdMember[1].parentOutside.city', data?.parentLiveOutside?.city2);
+    setTextField('householdMember[0].parentOutside.ssn', data?.parentLiveOutside?.ssn1);
+    setTextField('householdMember[1].parentOutside.ssn', data?.parentLiveOutside?.ssn2);
 
     checkCheckbox(
-      data?.['marriedLivesOutside.marriedLivesOutside']
+      data?.marriedLivesOutside?.marriedLivesOutside
       ? 'householdMember.spouseLivingOutside.true'
       : 'householdMember.spouseLivingOutside.false'
     );
     checkCheckbox(
-      data?.['marriedLivesOutside.fearOfHarm']
+      data?.marriedLivesOutside?.fearOfHarm
         ? 'householdMember.spousePrivacy'
         : undefined,
     );
     setTextField(
       'spouseLivingOutside.name',
-      data?.['marriedLivesOutside.applyingPerson'],
+      data?.marriedLivesOutside?.applyingPerson,
     );
     setTextField(
       'householdMember.spouseOutside.name',
-      data?.['marriedLivesOutside.spouseName'],
+      data?.marriedLivesOutside?.spouseName,
     );
     setTextField(
       'householdMember.spouseOutside.dob.month',
-      data?.['marriedLivesOutside.dateOfBirth.month'],
+      data?.marriedLivesOutside?.dateOfBirth?.month?.toString(),
     );
     setTextField(
       'householdMember.spouseOutside.dob.day',
-      data?.['marriedLivesOutside.dateOfBirth.day'],
+      data?.marriedLivesOutside?.dateOfBirth?.day?.toString(),
     );
     setTextField(
       'householdMember.spouseOutside.dob.year',
-      data?.['marriedLivesOutside.dateOfBirth.year'],
+      data?.marriedLivesOutside?.dateOfBirth?.year?.toString(),
     );
     setTextField(
       'householdMember.spouseOutside.street',
-      data?.['marriedLivesOutside.street'],
+      data?.marriedLivesOutside?.street,
     );
     setTextField(
       'householdMember.spouseOutside.city',
-      data?.['marriedLivesOutside.city'],
+      data?.marriedLivesOutside?.city,
     );
-    setTextField('householdMember.spouseOutside.ssn', data?.['marriedLivesOutside.ssn']);
+    setTextField('householdMember.spouseOutside.ssn', data?.marriedLivesOutside?.ssn);
     checkCheckbox(
       data?.doWanttoJoinHealthPlan ? 'householdMember.healthPlan' : undefined,
     );
@@ -764,36 +758,36 @@ const takeAndProcessData = async (
     const processHealthPlan = (index: number) => {
       setTextField(
         `member[${index}].legalName.last`,
-        data?.[`healthPlan.${index}.lastName`],
+        data?.healthPlan[index]?.lastName,
       );
       setTextField(
         `member[${index}].legalName.first`,
-        data?.[`healthPlan.${index}.firstName`],
+        data?.healthPlan[index]?.firstName,
       );
       setTextField(
         `member[${index}].dateOfBirth`,
-        data?.[`healthPlan.${index}.dob`],
+        data?.healthPlan[index]?.dob,
       );
       setTextField(
         `member[${index}].ssn`,
-        data?.[`healthPlan.${index}.ssn`],
+        data?.healthPlan[index]?.ssn,
       );
       setTextField(
         `member[${index}].healthInsurance.healthPlan.healthPlanName`,
-        data?.[`healthPlan.${index}.nameOfHealthPlan`],
+        data?.healthPlan[index]?.nameOfHealthPlan,
       );
       setTextField(
         `member[${index}].healthInsurance.healthPlan.preferredDoctor`,
-        data?.[`healthPlan.${index}.preferred.preferredDoctorOrClinic`],
+        data?.healthPlan[index]?.preferred?.preferredDoctorOrClinic,
       );
       checkCheckbox(
-        data?.[`healthPlan.${index}.preferred.currentProvider`]
+        data?.healthPlan[index]?.preferred?.currentProvider
           ? `member[${index}].currentDoctor`
           : undefined,
       );
       setTextField(
         `member[${index}].healthInsurance.healthPlan.obGyn`,
-        data?.[`healthPlan.${index}.obGyn`],
+        data?.healthPlan[index]?.obGyn,
       );
     };
 

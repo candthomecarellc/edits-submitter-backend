@@ -1,0 +1,5 @@
+H,0004,00000001,08102025,531,01215512,
+N,,001,0004CNTA000085080925,0004CNTA000085080925,08/09/25,Luffy Monkey,,MA,,E,E ,,45,87th ave,45,jamaica,ny,11435,,87th ave,45,jamaica,ny,11435,,,,,,,,E ,,76,23,07/31/25,,natural-gas,rent-public,245,22,lunch-dinner,445,,,,,,Tue Jul 15 2025 20:00:00 GMT-0400 (Eastern Daylight Time),d,less-adjudicated,365,8,1,ssi-blind,,Y,4,commission-income,monthly,full-time,500,df,eg,eg,ge,,,,,,,,,,,,,,,,,,,,,,,02,,,
+M,01,Monkey,D,Dragon,5221978,male,23455,Y,Y,,,,,,,,Dragon,D,Revolution,N,,,,pregnant,needed-in-home,pending,deceased-parent,01,non-photo-card,mailed,,active-duty,2345342,2025-04-15,separated,7,2025-05-26,1,,,,,,,,,,M,01,weg,rr,retg,12311969,M,,Y,Y,,,,,,,,,,,N,,,,pregnant,needed-in-home,pending,deceased-parent,01,non-photo-card,mailed,,active-duty,2345342,2025-04-15,separated,7,2025-05-26,1,,,,,,,,,,
+I,0004CNTA0000850809250001.pdf,0001,008,,
+T,08/10/2025

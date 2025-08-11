@@ -149,6 +149,10 @@ export class ApplicationController {
                 });
                 return;
             }
+            res.status(200).json({
+                success: true,
+                message: 'Application submitted successfully'
+            });
         } catch (error) {
         }
     };

@@ -4,9 +4,7 @@ import { ApplicationFrontend } from "../application.frontend.interface";
 export const formatForSubmit = (application: ApplicationFrontend) => {
 
     console.log("starting formatting for submission");
-    let formData = {};
-    formData = {
-        ...formData,
+    const formData1 = {
         applicantName: application.applicant?.first + ' ' + application.applicant?.middle + ' ' + application.applicant?.last,
         applicationDate: new Date().toISOString().split('T')[0],
         signatureDate: new Date().toISOString().split('T')[0],
@@ -78,9 +76,8 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
         proofOfstudentStatus: '',
         proofOfstudentStatusFile: null,
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData1);
+    const formData2 = {
         //page 9
         personalInfo: {
             firstName: application.applicant?.first || '',
@@ -124,9 +121,8 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             },
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData2);
+    const formData3 = {
         blindNoticeType: '',
         familyInfo: application.householdMember.map(member => ({
             legalName: {
@@ -171,25 +167,64 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             receivedAServiceFromIHS: '',
         })),
     };
-    console.log(formData);
-    formData = {
-        ...formData,
-        householdVeteran: application.householdMember.some(member => member.veteran) ? 'Yes' : 'No',
-        veteranName: application.householdMember.find(member => member.veteran)?.legalName?.first || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.middle || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.last || '',
+    console.log(formData3);
+    const earningsFromWork: {
+        name: string;
+        tyoeOfWork: string;
+        howMuchEarned: string;
+        howOftenPaid: string;
+    }[] = [];
+    application.householdMember.forEach(member => {
+        member.income.earnedIncome.forEach(income => {
+            earningsFromWork.push({
+                name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
+                tyoeOfWork: income.employerName || '',
+                howMuchEarned: income.amount.toString() || '',
+                howOftenPaid: income.period || '',
+            })
+        })
+    })
+    const unearnedIncomes: {
+        name: string;
+        typeOfIncome: string;
+        howMuchEarned: string;
+        howOftenPaid: string;
+    }[] = [];
+    application.householdMember.forEach(member => {
+        member.income.unearnedIncome.forEach(income => {
+            unearnedIncomes.push({
+                name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
+                typeOfIncome: income.source || '',
+                howMuchEarned: income.amount.toString() || '',
+                howOftenPaid: income.period || '',
+            })
+        })
+    })
+    const otherIncomes: {
+        name: string;
+        typeOfIncome: string;
+        howMuch: string;
+        howOftenPaid: string;
+    }[] = [];
+    application.householdMember.forEach(member => {
+        member.income.resource.forEach(resource => {
+            otherIncomes.push({
+                name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
+                typeOfIncome: resource.cd || '',
+                howMuch: resource.value.toString() || '',
+                howOftenPaid: resource.period || '',
+            })
+        })
+    })  
+    const formData4 = {
+        householdVeteran: application.householdMember.some(member => member.veteran),
+        veteranName: application.householdMember.some(member => member.veteran)
+        ? application.householdMember.find(member => member.veteran)?.legalName?.first || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.middle || '' + ' ' + application.householdMember.find(member => member.veteran)?.legalName?.last || ''
+        : '',
         selfEmploymentInfo: '',
-        earningFromWork: application.householdMember.map(member => ( member.income.earnedIncome.map(income => ({
-            name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
-            tyoeOfWork: income.employerName || '',
-            howMuchEarned: income.amount || '',
-            howOftenPaid: income.period || '',
-        })))),
+        earningFromWork: earningsFromWork,
         noUnearnedIncome: application.householdMember.some(member => member.income.unearnedIncome.length > 0) ? false : true,
-        unearnedIncome: application.householdMember.map(member => ( member.income.unearnedIncome.map(income => ({
-            name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
-            typeOfIncome: income.source || '',
-            howMuchEarned: income.amount || '',
-            howOftenPaid: income.period || '',
-        })))),
+        unearnedIncome: unearnedIncomes,
         noContributions: '',
         contributions: [
             {
@@ -200,16 +235,10 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             },
         ],
         noOtherIncome: application.householdMember.some(member => member.income.resource.length > 0) ? false : true,
-        otherIncome: application.householdMember.map(member => ( member.income.resource.map(income => ({
-            name: member.legalName?.first + ' ' + member.legalName?.middle + ' ' + member.legalName?.last,
-            typeOfIncome: income.cd || '',
-            howMuch: income.value || '',
-            howOftenPaid: income.period || '',
-        })))),
+        otherIncome: otherIncomes,
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData4);
+    const formData5 = {
         applingAdulthaveNoIncome: application.householdMember.some(member => member.income.earnedIncome.length > 0) ? false : true,
         explainHowLiving: application.wayOfLiving || '',
         applierChangeJob: {
@@ -251,9 +280,8 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             },
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData5);
+    const formData6 = {
         currentJobInsurance: application.householdMember.some(member => member.jobHealthInsurance) ? 'Yes' : 'No',
         monthlyHousingPayment: application.householdExpense.shelterAmount.toString() || '',
         payForWater: {
@@ -286,12 +314,13 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
         },
         deceased: {
             deceased: application.householdMember.some(member => member.parentDeceased || member.spouseDeceased),
-            who: application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.first + ' ' + application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.middle + ' ' + application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.last,
+            who: application.householdMember.some(member => member.parentDeceased || member.spouseDeceased)
+            ? application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.first + ' ' + application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.middle + ' ' + application.householdMember.find(member => member.parentDeceased || member.spouseDeceased)?.legalName?.last
+            : '',
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData6);
+    const formData7 = {
         parentLiveOutside: {
             parentLiveOutside: application.householdMember.some(member => member.parentLivingOutside),
             fearOfHarm: application.householdMember.find(member => member.parentLivingOutside)?.parentPrivacy ? true : false,
@@ -331,9 +360,8 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             ssn: application.householdMember.find(member => member.spouseLivingOutside)?.spouseOutside?.ssn || '',
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData7);
+    const formData8 = {
         doWanttoJoinHealthPlan: application.householdMember.some(member => member.healthPlan),
         healthPlan: application.householdMember.map(member => ({
             firstName: member.legalName?.first || '',
@@ -381,9 +409,8 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             phoneNumber: application.mailingAddress2?.phone || '',
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData8);
+    const formData9 = {
         languageSpoken: application.languageSpoken || '',
         contactName: application.contactName || '',
         contactPhoneNumber: application.contactPhone || '',
@@ -426,15 +453,14 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             IRWE: application.householdMember.find(member => member.income.earnedIncome.length > 0)?.income.earnedIncome[0].irwe || '',
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
+    console.log(formData9);
+    const formData10 = {
         child_Care: {
-            MOYR1: application.householdExpense.childCare[0].month + '' + application.householdExpense.childCare[0].year,
+            MOYR1: application.householdExpense.childCare[0].month + '' + application.householdExpense.childCare[0].year.toString().slice(-2),
             amount1: application.householdExpense.childCare[0].amount || '',
-            MOYR2: application.householdExpense.childCare[1].month + '' + application.householdExpense.childCare[1].year,
+            MOYR2: application.householdExpense.childCare[1].month + '' + application.householdExpense.childCare[1].year.toString().slice(-2),
             amount2: application.householdExpense.childCare[1].amount || '',
-            MOYR3: application.householdExpense.childCare[2].month + '' + application.householdExpense.childCare[2].year,
+            MOYR3: application.householdExpense.childCare[2].month + '' + application.householdExpense.childCare[2].year.toString().slice(-2),
             amount3: application.householdExpense.childCare[2].amount || '',
         },
         unearned_Income: {
@@ -461,49 +487,48 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             UTXN2_Flag: application.householdMember.find(member => member.income.resource.length > 0)?.income.resource[0].utxn2Flag || '',
         },
     };
-    console.log(formData);
-    formData = {
-        ...formData,
-        householdComposition: {
+    console.log(formData10);
+    const formData11 = {
+        householdComposition: application.householdMember.map(member => ({
             submitionType: '',
-            line: application.householdMember[0].lineNumber || '',
-            name_First: application.householdMember[0].legalName?.first || '',
-            name_Middle: application.householdMember[0].legalName?.middle || '',
-            name_Last: application.householdMember[0].legalName?.last || '',
-            birth_date: application.householdMember[0].dateOfBirth || '',
-            sex: application.householdMember[0].sex || '',
-            ssn: application.householdMember[0].ssn || '',
-            ma: application.householdMember[0].medicalAssistance || '',
-            resp_adult: application.householdMember[0].responsibleAdult || '',
-            ethnicH: application.householdMember[0].ethnicity.hispanic || '',
-            ethnicI: application.householdMember[0].ethnicity.indian || '',
-            ethnicA: application.householdMember[0].ethnicity.asian || '',
-            ethnicB: application.householdMember[0].ethnicity.black || '',
-            ethnicP: application.householdMember[0].ethnicity.pacificIslander || '',
-            ethnicW: application.householdMember[0].ethnicity.white || '',
-            name_code: application.householdMember[0].otherName?.code || '',
-            aliasFirst: application.householdMember[0].otherName?.first || '',
-            aliasMiddle: application.householdMember[0].otherName?.middle || '',
-            aliasLast: application.householdMember[0].otherName?.last || '',
-            pregnant: application.householdMember[0].pregnant || '',
+            line: member.lineNumber || '',
+            name_First: member.legalName?.first || '',
+            name_Middle: member.legalName?.middle || '',
+            name_Last: member.legalName?.last || '',
+            birth_date: member.dateOfBirth || '',
+            sex: member.sex || '',
+            ssn: member.ssn || '',
+            ma: member.medicalAssistance || '',
+            resp_adult: member.responsibleAdult || '',
+            ethnicH: member.ethnicity.hispanic || '',
+            ethnicI: member.ethnicity.indian || '',
+            ethnicA: member.ethnicity.asian || '',
+            ethnicB: member.ethnicity.black || '',
+            ethnicP: member.ethnicity.pacificIslander || '',
+            ethnicW: member.ethnicity.white || '',
+            name_code: member.otherName?.code || '',
+            aliasFirst: member.otherName?.first || '',
+            aliasMiddle: member.otherName?.middle || '',
+            aliasLast: member.otherName?.last || '',
+            pregnant: member.pregnant || '',
             cin: '',
-            state_charge_cd: application.householdMember[0].fedChargeCd || '',
-            state_chg_date: application.householdMember[0].fedChargeDate || '',
-            TASA: application.householdMember[0].tasa || '',
-            EMP: application.householdMember[0].emp || '',
-            SSI: application.householdMember[0].ssi || '',
-            BCS: application.householdMember[0].bcs || '',
-            relationship_to_applicant: application.householdMember[0].relationshipToApplicant || '',
-            CIBIC_CC: application.householdMember[0].cbicCc || '',
-            CIBIC_CDC: application.householdMember[0].cbicCdc || '',
-            student_ID: application.householdMember[0].studentId || '',
-            ACI: application.householdMember[0].aci || '',
-            AlienNo: application.householdMember[0].alienNumber || '',
-            AlienDOE: application.householdMember[0].alienDateOfEntry || '',
-            maritalStatus: application.householdMember[0].maritalStatus || '',
-            educationLevel: application.householdMember[0].educationLevel || '',
-            alienEnteredCountry: application.householdMember[0].alienDateEnteredCountry || '',
-            PID: application.householdMember[0].pid || '',
+            state_charge_cd: member.fedChargeCd || '',
+            state_chg_date: member.fedChargeDate || '',
+            TASA: member.tasa || '',
+            EMP: member.emp || '',
+            SSI: member.ssi || '',
+            BCS: member.bcs || '',
+            relationship_to_applicant: member.relationshipToApplicant || '',
+            CIBIC_CC: member.cbicCc || '',
+            CIBIC_CDC: member.cbicCdc || '',
+            student_ID: member.studentId || '',
+            ACI: member.aci || '',
+            AlienNo: member.alienNumber || '',
+            AlienDOE: member.alienDateOfEntry || '',
+            maritalStatus: member.maritalStatus || '',
+            educationLevel: member.educationLevel || '',
+            alienEnteredCountry: member.alienDateEnteredCountry || '',
+            PID: member.pid || '',
             SSN_Validation: '',
             DOH_BirthVerification: '',
             WMS_Cat_CD: '',
@@ -513,9 +538,26 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             sub_DOH5178A: '',
             sub_DOH4495A: '',
             sub_DOH5149: '',
-        },
+        })),
     };
-    console.log(formData);
+    console.log(formData11);
     console.log("formatting completed");
+    const formData = {
+        ...formData1,
+        ...formData2,
+        ...formData3,
+        ...formData4,
+        ...formData5,
+        ...formData6,
+        ...formData7,
+        ...formData8,
+        ...formData9,
+        ...formData10,
+        ...formData11,
+    }
+    console.log('first: ',application.householdMember.find(member => member.veteran)?.legalName?.first || '');
+    console.log('middle: ',application.householdMember.find(member => member.veteran)?.legalName?.middle || '');
+    console.log('last: ',application.householdMember.find(member => member.veteran)?.legalName?.last || '');
+        
     return formData;
 }

@@ -31,6 +31,9 @@ const generateSubmitionType = (type: string) => {
 
 // this function is used to manipulate the date
 const formatDate = (SubmitedDate: Date, format: 'mmddyyyy' | 'mmddyy' | 'mm/dd/yyyy' | 'mm/dd/yy') => {
+  if (!SubmitedDate) {
+    return '';
+  }
   const date = new Date(SubmitedDate);
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based in JavaScript

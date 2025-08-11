@@ -57,7 +57,7 @@ export class ApplicationService {
         return formattedApplications;
     }
 
-    async submit(id: string): Promise<null> {
+    async submit(id: string): Promise<unknown> {
         const application = await Application.findById(id);
         if (!application) {
             return null;
@@ -65,7 +65,6 @@ export class ApplicationService {
         console.log("application found and passing it for formatting");
         const formData = formatForSubmit(formatForFrontend(application) as ApplicationFrontend);
         console.log("passing it to takeAndProcessData");
-        await formServices.takeAndProcessData(formData, []);
-        return null;
+        return await formServices.takeAndProcessData(formData, []);
     }
 } 
