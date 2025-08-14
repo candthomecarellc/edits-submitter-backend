@@ -8,6 +8,7 @@
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
     "build": "tsc",
     "start": "node ./dist/server.js",
+    "test:batch": "ts-node test-batch-log-parser.ts",
     "lint": "eslint",
     "lint:fix": "eslint src --fix",
     "prettier": "prettier --ignore-path .gitignore --write ./src/**/*"

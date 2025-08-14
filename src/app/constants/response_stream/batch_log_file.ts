@@ -1,11 +1,4 @@
 const BATCH_LOG_FILE = {
-    Batch_File_Record : {
-        Max_Len : 0,
-        Field_Type : "",
-        Index_Attr : "",
-        Format : "",
-        Specific_Business_Rules : ""
-    },
     Batch_File_Record_Indicator : {
         Max_Len : 1,
         Field_Type : "A",

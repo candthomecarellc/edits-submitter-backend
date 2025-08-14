@@ -1,5 +1,0 @@
-H,0004,00000001,08072025,1415,01215512,
-N,,001,0004CNTA000077NaNNaNaN,0004CNTA000077NaNNaNaN,NaN/NaNaN,undefined undefined,,MA,,E,E ,,,,,,,,,,,,,,,,,,,,,E ,,76,23,Thu Jul 31 2025 20:00:00 GMT-0400 (Eastern Daylight Time),,natural-gas,rent-public,245,22,lunch-dinner,445,,,,,,01011990,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,02,,,
-M,01,,,,,M,,Y,Y,,,,,,,,,,,N,,,,,,,,01,,,,C,,,,,,,,,,,,,,,,
-I,0004CNTA000077NaNNaNaN0001.pdf,0001,020,,
-T,08/07/2025

@@ -1,30 +1,42 @@
 export const MA_STATUS = [
     {
         code: 'AC',
-        value: 'active'
-    },
-    {
-        code: 'CL',
-        value: 'closed'
-    },
-    {
-        code: 'RJ',
-        value: 'rejected'
-    },
-    {
-        code: 'DD',
-        value: 'dead'
+        value: 'Active'
     },
     {
         code: 'AP',
-        value: 'applying'
+        value: 'Applying'
+    },
+    {
+        code: 'CD',
+        value: 'Cancel Deferral'
+    },
+    {
+        code: 'CL',
+        value: 'Closed'
+    },
+    {
+        code: 'DD',
+        value: 'Dead'
+    },
+    {
+        code: 'DE',
+        value: 'Deferral Extension'
+    },
+    {
+        code: 'DF',
+        value: 'Deferral'
+    },
+    {
+        code: 'RJ',
+        value: 'Rejected'
     },
     {
         code: 'NA',
-        value: 'not-applying'
+        value: 'Not Applying'
     },
     {
         code: 'SN',
-        value: 'sanctioned'
-    }
+        value: 'Sanctioned'
+    },
 ]

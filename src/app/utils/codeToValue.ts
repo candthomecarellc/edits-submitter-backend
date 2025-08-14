@@ -31,6 +31,7 @@ import { UNEARNED_INCOME_CD } from "../constants/WMS_Codes/unearnedIncomeCD";
 import { UNEARNED_INCOME_SOURCES } from "../constants/WMS_Codes/unearnedIncomeSources";
 import { UTXN2_FLAG } from "../constants/utxn2flag";
 import { VETERAN_INDICATOR } from "../constants/WMS_Codes/veteran";
+import { ERROR_CODES } from "../constants/WMS_Codes/error_codes"
 
 export const codeToValue = {
     additionalAllowanceType: (code: number) => ADDITIONAL_ALLOWANCE_TYPES.find(type => type.code === code)?.value,
@@ -70,4 +71,5 @@ export const codeToValue = {
     utxn2Flag: (code: number) => UTXN2_FLAG.find(flag => flag.code === code)?.value,
     veteranIndicator: (code: number) => VETERAN_INDICATOR.find(indicator => indicator.code === code)?.value,
     fieldStatus: (code: number) => FIELD_STATUS.find(status => status.code === code)?.value,
+    errorCodes: (code: number) => ERROR_CODES.find(error => error.Error_Code === code)?.Error_Message,
 }
