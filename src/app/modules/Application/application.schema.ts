@@ -8,6 +8,10 @@ export const ApplicationSchema = new Schema<Application>({
     caseName: { type: String },
     providerId: { type: String, required: true },
     patientId: { type: String, required: true },
+    applicationType: { type: Number, default: 0 },
+    submitionType: { type: String, default: 'N' },
+    signatureDate: { type: Date },
+    deferralExtension: { type: Number, default: -1 },
     applicant: {
         first: { type: String },
         middle: { type: String },
@@ -28,7 +32,7 @@ export const ApplicationSchema = new Schema<Application>({
         street: { type: String },
         state: { type: String },
         city: { type: String },
-        country: { type: String },
+        county: { type: String },
         zip: { type: String },
         phone: { type: String }
     },
@@ -42,7 +46,9 @@ export const ApplicationSchema = new Schema<Application>({
     mailingAddress2: {
         associateName: { type: String },
         inCareOf: { type: String },
-        phone: { type: String },
+        phoneNumber: { type: String },
+        phoneType: { type: Number },
+        apartment: { type: String },
         street: { type: String },
         state: { type: String },
         city: { type: String },
@@ -122,6 +128,10 @@ export const ApplicationSchema = new Schema<Application>({
         sex: { type: String },
         gender: { type: String },
         relationshipToApplicant: { type: Number },
+        birthCity: { type: String },
+        birthState: { type: String },
+        birthCountry: { type: String },
+        motherName: { type: String },
 
         pregnantDueDate: { type: Date },
         maritalStatus: { type: Number },
@@ -229,6 +239,7 @@ export const ApplicationSchema = new Schema<Application>({
             ssn: { type: String }
         },
         insuranceCode: { type: Number },
+        documentVerifications: { type: Number },
         insuranceInformation: {
             healthInsurance: { type: Number },
             medicalExpense: { type: Number },

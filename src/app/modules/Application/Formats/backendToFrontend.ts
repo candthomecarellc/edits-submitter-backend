@@ -16,6 +16,10 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
         caseName: application.caseName,
         providerId: application.providerId,
         patientId: application.patientId,
+        applicationType: codeToValue.applicationType(application.applicationType || 0) || 'unknown',
+        submitionType: codeToValue.submissionType(application.submitionType || '') || 'unknown',
+        signatureDate: application.signatureDate,
+        deferralExtension: application.deferralExtension,
         applicant: application.applicant,
         email: application.email,
         primaryPhone: {
@@ -32,7 +36,7 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
             street: application.residence?.street || '',
             state: application.residence?.state || '',
             city: application.residence?.city || '',
-            country: application.residence?.country || '',
+            county: application.residence?.county || '',
             zip: application.residence?.zip || '',
             phone: application.residence?.phone || '',
         },
@@ -46,7 +50,9 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
         mailingAddress2: {
             associateName: application.mailingAddress2?.associateName || '',
             inCareOf: application.mailingAddress2?.inCareOf || '',
-            phone: application.mailingAddress2?.phone || '',
+            phoneNumber: application.mailingAddress2?.phoneNumber || '',
+            phoneType: codeToValue.phoneType(application.mailingAddress2?.phoneType || 0) || 'unknown',
+            apartment: application.mailingAddress2?.apartment || '',
             street: application.mailingAddress2?.street || '',
             state: application.mailingAddress2?.state || '',
             city: application.mailingAddress2?.city || '',
@@ -67,6 +73,7 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
         getNotice: decodeValueBooleans.applicantBooleans(application.applicantBooleans || 0).getNotice,
         clientNoticeLanguage: decodeValueBooleans.applicantBooleans(application.applicantBooleans || 0).clientNoticeLanguage ? 'spanish' : 'english',
         familyPlanning: decodeValueBooleans.applicantBooleans(application.applicantBooleans || 0).familyPlanning,
+        healthPlan: decodeValueBooleans.applicantBooleans(application.applicantBooleans || 0).healthPlan,
         fieldStatus: {
             personalDetails: decodeStatusBooleans.applicantInformation("personalDetails", application.fieldStatus?.personalDetails || 0),
             homeAddress: decodeStatusBooleans.applicantInformation("homeAddress", application.fieldStatus?.homeAddress || 0),
@@ -133,7 +140,11 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
             sex: codeToValue.sex(member.sex || '') || '',
             gender: codeToValue.gender(member.gender || '') || 'unknown',
             relationshipToApplicant: codeToValue.relationship(member.relationshipToApplicant || 0) || 'unknown',
-            
+            birthCity: member.birthCity || '',
+            birthState: member.birthState || '',
+            birthCountry: member.birthCountry || '',
+            motherName: member.motherName || '',
+
             pregnantDueDate: member.pregnantDueDate || null,
             maritalStatus: codeToValue.maritalStatus(member.maritalStatus || 0) || 'unknown',
             studentId: member.studentId || '',
@@ -167,6 +178,7 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
             pregnant: decodeValueBooleans.householdBooleans(member.householdBooleans || 0).pregnant,
             selfEmployed: decodeValueBooleans.householdBooleans(member.householdBooleans || 0).selfEmployed,
             changedJob: decodeValueBooleans.householdBooleans(member.householdBooleans || 0).changedJob,
+            applying: decodeValueBooleans.householdBooleans(member.householdBooleans || 0).applying,
 
             generalInformation: {
                 personalInformation: decodeStatusBooleans.generalInformation("personalInformation", member.generalInformation?.personalInformation || 0),
@@ -261,8 +273,8 @@ export const formatForFrontend = (application: Partial<ApplicationInterface>) =>
             spouseDeceased: decodeValueBooleans.insuranceBooleans(member.insuranceCode || 0).spouseDeceased,
             spouseLivingOutside: decodeValueBooleans.insuranceBooleans(member.insuranceCode || 0).spouseLivingOutside,
             spousePrivacy: decodeValueBooleans.insuranceBooleans(member.insuranceCode || 0).spousePrivacy,
-            healthPlan: decodeValueBooleans.insuranceBooleans(member.insuranceCode || 0).healthPlan,
             currentDoctor: decodeValueBooleans.insuranceBooleans(member.insuranceCode || 0).currentDoctor,
+            documentVerifications: decodeValueBooleans.documentVerifications(member.documentVerifications || 0),
 
             insuranceInformation: {
                 healthInsurance: decodeStatusBooleans.insuranceInformation("healthInsurance", member.insuranceInformation?.healthInsurance || 0),

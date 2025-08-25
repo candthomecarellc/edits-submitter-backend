@@ -10,6 +10,10 @@ export interface ApplicationFrontend {
     caseName: string;
     providerId: string;
     patientId: string;
+    applicationType: string;
+    submitionType: string;
+    signatureDate: Date;
+    deferralExtension: number;
     applicant: {
         first: string;
         middle: string;
@@ -30,7 +34,7 @@ export interface ApplicationFrontend {
         street: string;
         state: string;
         city: string;
-        country: string;
+        county: string;
         zip: string;
         phone: string;
     };
@@ -44,7 +48,9 @@ export interface ApplicationFrontend {
     mailingAddress2: {
         associateName: string;
         inCareOf: string;
-        phone: string;
+        phoneNumber: string;
+        phoneType: string;
+        apartment: string;
         street: string;
         state: string;
         city: string;
@@ -65,6 +71,7 @@ export interface ApplicationFrontend {
     getNotice: boolean;
     clientNoticeLanguage: 'spanish' | 'english';
     familyPlanning: boolean;
+    healthPlan: boolean;
     fieldStatus: {
         personalDetails: {[key: string]: string};
         homeAddress: {[key: string]: string};
@@ -131,6 +138,10 @@ export interface ApplicationFrontend {
         sex: string;
         gender: string;
         relationshipToApplicant: string;
+        birthCity: string;
+        birthState: string;
+        birthCountry: string;
+        motherName: string;
 
         pregnantDueDate: Date;
         maritalStatus: string;
@@ -165,6 +176,7 @@ export interface ApplicationFrontend {
         studentType: string;
         selfEmployed: boolean;
         changedJob: boolean;
+        applying: boolean;
 
         generalInformation: {
             personalInformation: {[key: string]: string};
@@ -258,8 +270,8 @@ export interface ApplicationFrontend {
         spouseDeceased: boolean;
         spouseLivingOutside: boolean;
         spousePrivacy: boolean;
-        healthPlan: boolean;
         currentDoctor: boolean;
+        documentVerifications: {[key: string]: boolean};
 
         insuranceInformation: {
             healthInsurance: {[key: string]: string};

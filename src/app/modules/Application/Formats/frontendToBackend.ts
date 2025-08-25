@@ -12,6 +12,10 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
         caseName: application.caseName,
         providerId: application.providerId,
         patientId: application.patientId,
+        applicationType: valueToCode.applicationType(application.applicationType || '') || 0,
+        submitionType: valueToCode.submissionType(application.submitionType || '') || '',
+        signatureDate: application.signatureDate,
+        deferralExtension: application.deferralExtension,
         applicant: application.applicant,
         email: application.email,
         primaryPhone: {
@@ -28,7 +32,7 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
             street: application.residence?.street || '',
             state: application.residence?.state || '',
             city: application.residence?.city || '',
-            country: application.residence?.country || '',
+            county: application.residence?.county || '',
             zip: application.residence?.zip || '',
             phone: application.residence?.phone || '',
         },
@@ -42,7 +46,9 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
         mailingAddress2: {
             associateName: application.mailingAddress2?.associateName || '',
             inCareOf: application.mailingAddress2?.inCareOf || '',
-            phone: application.mailingAddress2?.phone || '',
+            phoneNumber: application.mailingAddress2?.phoneNumber || '',
+            phoneType: valueToCode.phoneType(application.mailingAddress2?.phoneType || '') || 0,
+            apartment: application.mailingAddress2?.apartment || '',
             street: application.mailingAddress2?.street || '',
             state: application.mailingAddress2?.state || '',
             city: application.mailingAddress2?.city || '',
@@ -64,6 +70,7 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
             getNotice: application.getNotice || false,
             clientNoticeLanguage: application.clientNoticeLanguage === 'spanish' ? true : false,
             familyPlanning: application.familyPlanning || false,
+            healthPlan: application.healthPlan || false,
         }),
         fieldStatus: {
             personalDetails: encodeStatusBooleans.applicantInformation("personalDetails", application.fieldStatus?.personalDetails || {}),
@@ -131,7 +138,11 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
             sex: valueToCode.sex(member.sex || '') || '',
             gender: valueToCode.gender(member.gender || '') || '',
             relationshipToApplicant: valueToCode.relationship(member.relationshipToApplicant || '') || 0,
-            
+            birthCity: member.birthCity || '',
+            birthState: member.birthState || '',
+            birthCountry: member.birthCountry || '',
+            motherName: member.motherName || '',
+
             pregnantDueDate: member.pregnantDueDate || null,
             maritalStatus: valueToCode.maritalStatus(member.maritalStatus || '') || 0,
             studentId: member.studentId || '',
@@ -166,6 +177,7 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
                 pregnant: member.pregnant || false,
                 selfEmployed: member.selfEmployed || false,
                 changedJob: member.changedJob || false,
+                applying: member.applying || false,
             }),
 
             generalInformation: {
@@ -262,9 +274,9 @@ export const formatForBackend = (application: Partial<ApplicationFrontend>) => {
                 spouseDeceased: member.spouseDeceased || false,
                 spouseLivingOutside: member.spouseLivingOutside || false,
                 spousePrivacy: member.spousePrivacy || false,
-                healthPlan: member.healthPlan || false,
                 currentDoctor: member.currentDoctor || false,
             }),
+            documentVerifications: encodeValueBooleans.documentVerifications(member.documentVerifications || {}),
 
             insuranceInformation: {
                 healthInsurance: encodeStatusBooleans.insuranceInformation("healthInsurance", member.insuranceInformation?.healthInsurance || {}),

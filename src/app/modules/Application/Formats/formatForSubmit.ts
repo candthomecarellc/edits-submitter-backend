@@ -96,7 +96,7 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             city: application.residence?.city || '',
             state: application.residence?.state || '',
             zip: application.residence?.zip || '',
-            county: application.residence?.country || '',
+            county: application.residence?.county || '',
             apt: application.residence?.apartment || '',
         },
         mailingAddress: {
@@ -108,8 +108,9 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
         },
         anotherPerson: {
             name: application.mailingAddress2?.associateName || '',
-            phoneNumber: application.mailingAddress2?.phone || '',
-            phoneType: 'home',
+            phoneNumber: application.mailingAddress2?.phoneNumber || '',
+            phoneType: application.mailingAddress2?.phoneType || '',
+            apartment: application.mailingAddress2?.apartment || '',
             street: application.mailingAddress2?.street || '',
             city: application.mailingAddress2?.city || '',
             zip: application.mailingAddress2?.zip || '',
@@ -406,7 +407,7 @@ export const formatForSubmit = (application: ApplicationFrontend) => {
             city: application.mailingAddress2?.city || '',
             state: application.mailingAddress2?.state || '',
             zipCode: application.mailingAddress2?.zip || '',
-            phoneNumber: application.mailingAddress2?.phone || '',
+            phoneNumber: application.mailingAddress2?.phoneNumber || '',
         },
     };
     console.log(formData8);

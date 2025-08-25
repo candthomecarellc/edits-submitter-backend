@@ -95,6 +95,16 @@ const insuranceBooleans = (booleans: { [key: string]: boolean }) => {
     return code;
 }
 
+const documentVerifications = (booleans: { [key: string]: boolean }) => {
+    let code = 0;
+    for (const key in booleans) {
+        if (booleans[key]) {
+            code |= FIELD_VALUE.documentVerifications[key as keyof typeof FIELD_VALUE.documentVerifications];
+        }
+    }
+    return code;
+}
+
 export const encodeStatusBooleans = {
     applicantInformation,
     householdExpense,
@@ -107,5 +117,6 @@ export const encodeValueBooleans = {
     ethnicity,
     applicantBooleans,
     householdBooleans,
-    insuranceBooleans
+    insuranceBooleans,
+    documentVerifications
 }

@@ -22,6 +22,7 @@ export const FIELD_VALUE = {
         getNotice: 1 << 5,
         clientNoticeLanguage: 1 << 6,
         familyPlanning: 1 << 7,
+        healthPlan: 1 << 8,
     },
 
     // 1 bit 1 field
@@ -31,6 +32,7 @@ export const FIELD_VALUE = {
         pregnant: 1 << 2,
         selfEmployed: 1 << 3,
         changedJob: 1 << 4,
+        applying: 1 << 5,
     },
 
     // 1 bit 1 field
@@ -52,7 +54,19 @@ export const FIELD_VALUE = {
         spouseDeceased: 1 << 14,
         spouseLivingOutside: 1 << 15,
         spousePrivacy: 1 << 16,
-        healthPlan: 1 << 17,
-        currentDoctor: 1 << 18,
+        currentDoctor: 1 << 17,
+    },
+
+    // 1 bit 1 field
+    documentVerifications: {
+        ssn: 1 << 0,
+        dohBirth: 1 << 1,
+        wmsCatCD: 1 << 2,
+        dai: 1 << 3,
+        nhStay: 1 << 4,
+        map3044: 1 << 5,
+        doh5178A: 1 << 6,
+        doh4495A: 1 << 7,
+        doh5149: 1 << 8
     }
 };

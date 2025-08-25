@@ -3,14 +3,14 @@ import { Application as ApplicationInterface } from './application.interface';
 import { ApplicationFrontend } from './application.frontend.interface';
 import { today } from '../../utils/utilityFunction';
 import { formatForFrontend } from './Formats/backendToFrontend';
-import { formatForBackend } from './Formats/frontendToBackend';
 import { mergeApplication } from './Formats/application.merge';
-import { formatForSubmit } from './Formats/formatForSubmit';
-import { formServices } from '../Form/from.service1';
+import { formatForPdf } from './Formats/formatForPdf';
+import { formatForCsv } from './Formats/formatForCsv';
 import { Document } from '../Document/document.model';
+import { createBatchFolder } from './imageFileUpload';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Express } from 'express';
+import CustomError from '../../errors/CusromError';
 
 export class ApplicationService {
     async create(applicationData: ApplicationInterface): Promise<ApplicationInterface> {
@@ -67,7 +67,7 @@ export class ApplicationService {
             return null;
         }
         console.log("application found and passing it for formatting");
-        const formData = formatForSubmit(formatForFrontend(application) as ApplicationFrontend);
+        const formData = formatForFrontend(application) as ApplicationFrontend;
         
         // Fetch all documents for this application
         console.log("fetching documents for application");
@@ -77,9 +77,23 @@ export class ApplicationService {
         // Convert documents to Express.Multer.File[] format
         const documentFiles = await this.convertDocumentsToMulterFiles(documents);
         console.log(`Converted ${documentFiles.length} documents to Multer files`);
-        
-        console.log("passing it to takeAndProcessData");
-        return await formServices.takeAndProcessData(formData, documentFiles);
+
+        const { fileName, filePath, batchFileName } = await createBatchFolder(documentFiles);
+
+        const pdfData = await formatForPdf(formData);
+        fs.writeFileSync(path.join(filePath, fileName), pdfData);
+        const csvData = await formatForCsv(formData, documents.length + 1);
+        if (csvData) {
+            fs.writeFile(path.join(filePath, `${batchFileName}.txt`), csvData, (err) => {
+                if (err) {
+                    new CustomError(String(err), 400);
+                } else {
+                    console.log('File saved successfully as output.txt');
+                }
+            });
+        }
+
+        return formData;
     }
 
     private async convertDocumentsToMulterFiles(documents: any[]): Promise<Express.Multer.File[]> {

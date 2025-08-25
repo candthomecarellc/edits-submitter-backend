@@ -2,10 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { createFolder, formatDate, getBatchNumber, getSubmitterId, updateBatchNumber } from '../../utils/utilityFunction';
 import { createUniqueUID } from '../../utils/utilityFunction';
-import { formTextGenerator } from './form.textGenerator';
 import CustomError from '../../errors/CusromError';
 
-const imageFileUpload = async (file: Express.Multer.File, folderPath: string, imageFileName: string) => {
+export const imageFileUpload = async (file: Express.Multer.File, folderPath: string, imageFileName: string) => {
     try {
         
         // Ensure the folder exists
@@ -31,7 +30,7 @@ const imageFileUpload = async (file: Express.Multer.File, folderPath: string, im
     }
 }
 
-const createBatchFolder = async (data: any, file: Express.Multer.File[], csvString: string, filledPdfBuffer: Buffer) => {
+export const createBatchFolder = async (file: Express.Multer.File[]) => {
     const uniqueUID = createUniqueUID();
     updateBatchNumber();
     const folderPath = createFolder();
@@ -44,9 +43,9 @@ const createBatchFolder = async (data: any, file: Express.Multer.File[], csvStri
         fs.mkdirSync(filePath, { recursive: true });
     }
 
-    const date = formatDate(data.signatureDate, 'mmddyy');
+    const SIGNATURE_DATE = new Date();
+    const date = formatDate(SIGNATURE_DATE, 'mmddyy');
     const fileName = `${submitterId}${uniqueUID}${date}0001.pdf`;
-    fs.writeFileSync(path.join(filePath, fileName), filledPdfBuffer);
 
     // Process files sequentially to ensure proper numbering
     for (let i = 0; i < file.length; i++) {
@@ -55,35 +54,23 @@ const createBatchFolder = async (data: any, file: Express.Multer.File[], csvStri
         await imageFileUpload(currentFile, filePath, imageFileName);
     }
 
-    const formText = await formTextGenerator(data, file);
     const batchFileName = `${submitterId}${formatDate(new Date(), 'mmddyyyy')}${getBatchNumber()}`;
 
-    if (formText) {
-        fs.writeFile(path.join(filePath, `${batchFileName}.txt`), formText, (err) => {
-            if (err) {
-                new CustomError(String(err), 400);
-            } else {
-                console.log('File saved successfully as output.txt');
-            }
-        });
-    }
-
-    fs.writeFile(path.join(folderPath, `${formatDate(new Date(), 'mmddyyyy')}${getBatchNumber()}.EOB`), csvString, (err) => {
+    fs.writeFile(path.join(folderPath, `${formatDate(new Date(), 'mmddyyyy')}${getBatchNumber()}.EOB`), '', (err) => {
         if (err) {
             new CustomError(String(err), 400);
         }
     });
 
-    fs.writeFile(path.join(folderPath, 'output.txt'), csvString, (err) => {
-        if (err) {
-            new CustomError(String(err), 400);
-        } else {
-            console.log('File saved successfully as output.txt');
-        }
-    });
-}
+    console.log('Batch folder created successfully');
 
-export default {
-    imageFileUpload,
-    createBatchFolder,
+    // fs.writeFile(path.join(folderPath, 'output.txt'), , (err) => {
+    //     if (err) {
+    //         new CustomError(String(err), 400);
+    //     } else {
+    //         console.log('File saved successfully as output.txt');
+    //     }
+    // });
+
+    return { fileName, filePath, batchFileName }
 }

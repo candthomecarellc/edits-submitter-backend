@@ -85,6 +85,10 @@ const mergeHouseholdMembers = (existingMembers: ApplicationFrontend['householdMe
                     ...existingMember.spouseOutside,
                     ...newMember.spouseOutside
                 },
+                documentVerifications: {
+                    ...existingMember.documentVerifications,
+                    ...newMember.documentVerifications
+                },
                 insuranceInformation: {
                     ...existingMember.insuranceInformation,
                     ...newMember.insuranceInformation,

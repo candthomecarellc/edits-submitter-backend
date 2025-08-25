@@ -10,6 +10,10 @@ export interface Application {
     caseName: string;
     providerId: string;
     patientId: string;
+    applicationType: number;
+    submitionType: string;
+    signatureDate: Date;
+    deferralExtension: number;
     applicant: {
         first: string;
         middle: string;
@@ -30,7 +34,7 @@ export interface Application {
         street: string;
         state: string;
         city: string;
-        country: string;
+        county: string;
         zip: string;
         phone: string;
     };
@@ -44,7 +48,9 @@ export interface Application {
     mailingAddress2: {
         associateName: string;
         inCareOf: string;
-        phone: string;
+        phoneNumber: string;
+        phoneType: number;
+        apartment: string;
         street: string;
         state: string;
         city: string;
@@ -124,6 +130,10 @@ export interface Application {
         sex: string;
         gender: string;
         relationshipToApplicant: number;
+        birthCity: string;
+        birthState: string;
+        birthCountry: string;
+        motherName: string;
         
         pregnantDueDate: Date;
         maritalStatus: number;
@@ -230,6 +240,7 @@ export interface Application {
             ssn: string;
         };
         insuranceCode: number;
+        documentVerifications: number;
         insuranceInformation: {
             healthInsurance: number;
             medicalExpense: number;

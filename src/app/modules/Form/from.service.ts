@@ -3,7 +3,7 @@
 import fs from 'fs';
 import { PDFDocument } from 'pdf-lib';
 import CustomError from '../../errors/CusromError';
-import formImageFileUpload from './form.imageFileUpload';
+import formImageFileUpload from '../Application/imageFileUpload';
   
 const takeAndProcessData = async (
   data: any,

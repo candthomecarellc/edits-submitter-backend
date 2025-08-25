@@ -1,6 +1,6 @@
 node_modules
 logs
-
+processed_files
 *.log
 
 dist

@@ -31,12 +31,15 @@ import { UNEARNED_INCOME_CD } from "../constants/WMS_Codes/unearnedIncomeCD";
 import { UNEARNED_INCOME_SOURCES } from "../constants/WMS_Codes/unearnedIncomeSources";
 import { UTXN2_FLAG } from "../constants/utxn2flag";
 import { VETERAN_INDICATOR } from "../constants/WMS_Codes/veteran";
+import { APPLICATION_TYPES } from "../constants/WMS_Codes/applicationTypes";
+import { SUBMISSION_TYPES } from "../constants/WMS_Codes/submissionTypes";
 
 export const valueToCode = {
     additionalAllowanceTypes: (value: string) => ADDITIONAL_ALLOWANCE_TYPES.find(type => type.value === value)?.code,
     afisExemption: (value: string) => AFIS_EXEMPTION.find(exemption => exemption.value === value)?.code,
     alienIndicator: (value: string) => ALIEN_INDICATOR.find(indicator => indicator.value === value)?.code,
     applicationStatus: (value: string) => APPLICATION_STATUS.find(status => status.value === value)?.code,
+    applicationType: (value: string) => APPLICATION_TYPES.find(type => type.value === value)?.code,
     bcs: (value: string) => BCS.find(bcs => bcs.value === value)?.code,
     budgetTypes: (value: string) => BUDGET_TYPES.find(type => type.value === value)?.code,
     cbicCc: (value: string) => CBIC_CC.find(cbic => cbic.value === value)?.code,
@@ -64,6 +67,7 @@ export const valueToCode = {
     ssiDM: (value: string) => SSI_DM.find(dm => dm.value === value)?.code,
     ssiIndicator: (value: string) => SSI_INDICATOR.find(indicator => indicator.value === value)?.code,
     ssiLA: (value: string) => SSI_LA.find(la => la.value === value)?.code,
+    submissionType: (value: string) => SUBMISSION_TYPES.find(type => type.value === value)?.code,
     tasa: (value: string) => TASA.find(tasa => tasa.value === value)?.code,
     unearnedIncomeCd: (value: string) => UNEARNED_INCOME_CD.find(cd => cd.value === value)?.code,
     unearnedIncomeSources: (value: string) => UNEARNED_INCOME_SOURCES.find(source => source.value === value)?.code,

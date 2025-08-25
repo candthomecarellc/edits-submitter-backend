@@ -14,7 +14,11 @@ export const GENERAL_INFORMATION_STATUS = {
         dateOfBirth: 16,
         sex: 18,
         gender: 20,
-        relationshipToApplicant: 22
+        relationshipToApplicant: 22,
+        birthCity: 24,
+        birthState: 26,
+        birthCountry: 28,
+        motherName: 30
     },
     statusInformation: {
         responsibleAdult: 0,
@@ -24,7 +28,8 @@ export const GENERAL_INFORMATION_STATUS = {
         maritalStatus: 8,
         studentId: 10,
         educationLevel: 12,
-        studentType: 14
+        studentType: 14,
+        applying: 16,
     },
     memberIncome: {
         selfEmployed: 0,

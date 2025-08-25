@@ -11,6 +11,8 @@ export const APPLICANT_INFORMATION_STATUS = {
         primaryPhoneType: 10,   // 0 | 1024 | 2048 | 3072
         anotherPhone: 12,       // 0 | 4096 | 8192 | 12288
         anotherPhoneType: 14,   // 0 | 16384 | 32768 | 49152
+        applicationType: 16,    // 0 | 65536 | 131072 | 196608
+        submitionType: 18,      // 0 | 262144 | 524288 | 786432
     },
     homeAddress: {
         homeless: 0,
@@ -21,7 +23,7 @@ export const APPLICANT_INFORMATION_STATUS = {
         city: 10,
         state: 12,
         zip: 14,
-        country: 16,
+        county: 16,
     },
     mailingAddress: {
         sameAsHomeAddress: 0,
@@ -36,11 +38,13 @@ export const APPLICANT_INFORMATION_STATUS = {
         associateName: 2,
         inCareOf: 4,
         phoneNumber: 6,
-        streetName: 8,
-        city: 10,
-        state: 12,
-        zip: 14,
-        accessRights: 16
+        phoneType: 8,
+        apartment: 10,
+        streetName: 12,
+        city: 14,
+        state: 16,
+        zip: 18,
+        accessRights: 20
     },
     otherInformation: {
         providerId: 0,
@@ -54,6 +58,8 @@ export const APPLICANT_INFORMATION_STATUS = {
         caseName: 16,
         caseComposition: 18,
         clientNoticeLanguage: 20,
-        familyPlanning: 22
+        signatureDate: 22,
+        familyPlanning: 24,
+        healthPlan: 26,
     }
 }
